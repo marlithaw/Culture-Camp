@@ -3,695 +3,1463 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Matchbook Live Culture Tracker</title>
+  <title>Matchbook Culture Build Board</title>
   <style>
     :root {
-      --bg: #f6efe4;
-      --bg-accent: #e6efe3;
-      --ink: #16202b;
-      --muted: #5d6a72;
-      --card: rgba(255, 252, 247, 0.92);
-      --line: rgba(22, 32, 43, 0.12);
-      --shadow: 0 24px 60px rgba(36, 41, 46, 0.12);
-      --met: #2d7d46;
-      --partial: #c7791b;
-      --gap: #b73a31;
-      --na: #64748b;
-      --closed: #21536b;
-      --accent: #154e63;
-      --accent-soft: #d7e7ec;
+      --bg: #1f120d;
+      --bg-2: #2a1812;
+      --panel: rgba(39, 30, 25, 0.94);
+      --panel-2: rgba(52, 40, 33, 0.92);
+      --panel-3: rgba(29, 24, 20, 0.96);
+      --line: rgba(255, 214, 143, 0.16);
+      --line-strong: rgba(255, 214, 143, 0.3);
+      --text: #f8eddb;
+      --muted: #d0bda1;
+      --soft: #b1947f;
+      --glow: #ffb857;
+      --glow-2: #ffdf7b;
+      --track-spine: #ff8c79;
+      --track-anchors: #8fd0ff;
+      --track-spaces: #9af0a2;
+      --track-classroom: #ffc384;
+      --track-repair: #d3acff;
+      --track-recognition: #ffe68a;
+      --track-adult: #84e2d1;
+      --track-evidence: #c6d1df;
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.34);
     }
 
     * {
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
-      font-family: Aptos, "Segoe UI", sans-serif;
-      color: var(--ink);
-      background:
-        radial-gradient(circle at top left, rgba(201, 109, 58, 0.14), transparent 28%),
-        radial-gradient(circle at top right, rgba(44, 106, 90, 0.15), transparent 24%),
-        linear-gradient(180deg, #fbf6ef 0%, #eef3eb 100%);
       min-height: 100vh;
+      color: var(--text);
+      font-family: Aptos, "Segoe UI", sans-serif;
+      background:
+        linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        radial-gradient(circle at 50% 0%, rgba(255, 160, 85, 0.12), transparent 36%),
+        linear-gradient(180deg, #2b160f 0%, #17100c 100%);
+      background-size: 176px 96px, 176px 96px, auto, auto;
     }
 
     .page-shell {
-      width: min(1400px, calc(100vw - 32px));
+      width: min(1960px, calc(100vw - 16px));
       margin: 0 auto;
-      padding: 24px 0 40px;
+      padding: 14px 0 28px;
     }
 
-    .hero {
-      display: grid;
-      grid-template-columns: minmax(0, 1.7fr) minmax(280px, 0.9fr);
-      gap: 18px;
+    .masthead {
+      text-align: center;
       margin-bottom: 18px;
     }
 
-    .hero-copy,
-    .hero-panel,
-    .toolbar,
-    .summary-card,
-    .highlights-panel,
-    .folder-card {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(10px);
+    .title-frame {
+      display: inline-block;
+      margin: 0 auto 16px;
+      padding: 18px 28px;
+      border: 2px solid rgba(255, 184, 87, 0.8);
+      border-radius: 22px;
+      box-shadow:
+        0 0 0 1px rgba(255, 238, 204, 0.18) inset,
+        0 0 28px rgba(255, 170, 71, 0.22),
+        0 0 80px rgba(255, 170, 71, 0.14);
+      background: linear-gradient(180deg, rgba(65, 31, 17, 0.9), rgba(41, 22, 15, 0.95));
     }
 
-    .hero-copy {
-      padding: 28px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-copy::after {
-      content: "";
-      position: absolute;
-      inset: auto -80px -100px auto;
-      width: 220px;
-      height: 220px;
-      border-radius: 999px;
-      background: linear-gradient(180deg, rgba(21, 78, 99, 0.18), rgba(21, 78, 99, 0));
-    }
-
-    .eyebrow {
-      margin: 0 0 10px;
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--accent);
-    }
-
-    h1,
-    h2,
-    h3,
-    h4 {
-      font-family: "Book Antiqua", "Palatino Linotype", Georgia, serif;
+    .title-frame h1 {
       margin: 0;
-      line-height: 1.05;
+      font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      line-height: 0.95;
+      font-size: clamp(2.7rem, 5.7vw, 6rem);
+      color: #ffd46f;
+      text-shadow:
+        0 0 12px rgba(255, 188, 91, 0.85),
+        0 0 32px rgba(255, 135, 73, 0.55);
     }
 
-    h1 {
-      font-size: clamp(2rem, 4vw, 3.5rem);
-      max-width: 12ch;
-      margin-bottom: 14px;
-    }
-
-    .hero-copy p,
-    .hero-panel p,
-    .status-message,
-    .meta-note,
-    .criterion-detail,
-    .folder-path,
-    .main-gap-copy,
-    .empty-state,
-    .pill-note {
-      line-height: 1.5;
+    .masthead p {
+      width: min(1100px, 100%);
+      margin: 0 auto;
       color: var(--muted);
+      font-size: clamp(1rem, 1.5vw, 1.2rem);
+      line-height: 1.45;
     }
 
-    .hero-panel {
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 16px;
-    }
-
-    .hero-panel-grid {
+    .control-stack {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 12px;
-    }
-
-    .mini-stat {
-      padding: 14px;
-      border-radius: 18px;
-      background: rgba(255, 255, 255, 0.72);
-      border: 1px solid rgba(22, 32, 43, 0.08);
-    }
-
-    .mini-stat strong {
-      display: block;
-      font-size: 1.4rem;
-      margin-bottom: 4px;
-      color: var(--ink);
-    }
-
-    .mini-stat span {
-      font-size: 0.9rem;
-      color: var(--muted);
-    }
-
-    .toolbar {
-      padding: 18px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      align-items: center;
       margin-bottom: 12px;
     }
 
-    .toolbar input,
-    .toolbar select,
-    .toolbar a,
-    .toolbar label {
-      border-radius: 14px;
-      border: 1px solid rgba(22, 32, 43, 0.12);
-      background: rgba(255, 255, 255, 0.92);
-      color: var(--ink);
+    .mode-row,
+    .legend-row,
+    .filter-row {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .mode-pill,
+    .filter-pill,
+    .legend-pill,
+    .link-pill {
+      border: 1px solid rgba(255, 232, 194, 0.2);
+      border-radius: 999px;
+      background: rgba(82, 57, 40, 0.7);
+      color: var(--text);
       font: inherit;
       text-decoration: none;
+      transition: transform 140ms ease, border-color 140ms ease, background 140ms ease, box-shadow 140ms ease;
     }
 
-    .toolbar input,
-    .toolbar select {
-      padding: 12px 14px;
-      min-height: 46px;
+    .mode-pill,
+    .filter-pill,
+    .link-pill {
+      padding: 12px 22px;
+      cursor: pointer;
+      font-weight: 700;
     }
 
-    #searchInput {
-      flex: 1 1 280px;
-      min-width: 220px;
+    .mode-pill:hover,
+    .filter-pill:hover,
+    .link-pill:hover {
+      transform: translateY(-1px);
+      border-color: rgba(255, 217, 140, 0.56);
+      background: rgba(114, 81, 58, 0.82);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
     }
 
-    .toolbar select {
-      min-width: 190px;
+    .mode-pill.active,
+    .filter-pill.active {
+      background: linear-gradient(180deg, #ffe27c, #f8cb54);
+      color: #2d1c0f;
+      border-color: rgba(255, 238, 204, 0.95);
+      box-shadow:
+        0 0 0 1px rgba(255, 246, 219, 0.55) inset,
+        0 0 22px rgba(255, 213, 102, 0.3);
     }
 
-    .button-link,
-    .upload-label {
+    .legend-pill {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      padding: 12px 16px;
-      min-height: 46px;
-      cursor: pointer;
-      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+      gap: 8px;
+      padding: 9px 14px;
+      color: var(--muted);
+      background: rgba(50, 35, 27, 0.84);
     }
 
-    .button-link:hover,
-    .upload-label:hover,
-    .toolbar input:focus,
-    .toolbar select:focus {
-      border-color: rgba(21, 78, 99, 0.45);
-      background: #ffffff;
-      outline: none;
-      transform: translateY(-1px);
+    .legend-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      box-shadow: 0 0 10px currentColor;
     }
 
-    .status-message {
+    .overview-bar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 16px;
+      align-items: center;
       margin: 0 0 16px;
-      padding: 0 4px;
-      font-size: 0.95rem;
+      padding: 18px 22px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: rgba(37, 26, 21, 0.88);
+      box-shadow: var(--shadow);
     }
 
-    .status-message.error {
-      color: var(--gap);
+    .overview-bar h2 {
+      margin: 0 0 6px;
+      font-size: clamp(1.2rem, 2vw, 1.55rem);
+      color: #ffe08c;
+      letter-spacing: 0.02em;
     }
 
-    .status-message.success {
-      color: var(--accent);
-    }
-
-    .summary-grid {
-      display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 14px;
-      margin-bottom: 18px;
-    }
-
-    .summary-card {
-      padding: 18px;
-    }
-
-    .summary-card .label {
-      font-size: 0.82rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
+    .overview-bar p {
+      margin: 0;
       color: var(--muted);
-      margin-bottom: 8px;
+      line-height: 1.5;
     }
 
-    .summary-card .value {
-      font-size: clamp(1.6rem, 3vw, 2.3rem);
-      font-weight: 800;
-      color: var(--ink);
+    .overview-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-end;
     }
 
-    .summary-card .subtext {
-      font-size: 0.92rem;
-      color: var(--muted);
-      margin-top: 6px;
-    }
-
-    .content-grid {
+    .dashboard-shell {
       display: grid;
-      grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
+      grid-template-columns: minmax(0, 1.95fr) minmax(320px, 390px);
       gap: 18px;
       align-items: start;
     }
 
-    .highlights-panel {
-      padding: 20px;
-      position: sticky;
-      top: 20px;
-    }
-
-    .panel-heading {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      align-items: baseline;
-      margin-bottom: 14px;
-    }
-
-    .priority-list {
-      display: grid;
-      gap: 10px;
-    }
-
-    .priority-item {
-      width: 100%;
-      text-align: left;
-      padding: 14px;
-      border-radius: 16px;
-      border: 1px solid rgba(22, 32, 43, 0.08);
-      background: rgba(255, 255, 255, 0.82);
-      cursor: pointer;
-      color: inherit;
-      font: inherit;
-      transition: transform 160ms ease, border-color 160ms ease;
-    }
-
-    .priority-item:hover {
-      transform: translateY(-1px);
-      border-color: rgba(21, 78, 99, 0.35);
-    }
-
-    .priority-item strong {
-      display: block;
-      margin-bottom: 4px;
-      color: var(--ink);
-    }
-
-    .priority-item small {
-      color: var(--muted);
-    }
-
-    .folder-grid {
-      display: grid;
-      gap: 16px;
-    }
-
-    .folder-card {
-      padding: 20px;
-      scroll-margin-top: 24px;
-    }
-
-    .folder-card.severity-gap {
-      border-color: rgba(183, 58, 49, 0.24);
-    }
-
-    .folder-card.severity-partial {
-      border-color: rgba(199, 121, 27, 0.22);
-    }
-
-    .folder-card.severity-met {
-      border-color: rgba(45, 125, 70, 0.22);
-    }
-
-    .folder-top {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      gap: 16px;
-      align-items: start;
-    }
-
-    .folder-id {
-      margin: 0 0 4px;
-      font-size: 0.82rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--accent);
-    }
-
-    .folder-title {
-      font-size: clamp(1.35rem, 2vw, 1.7rem);
-      margin-bottom: 8px;
-      overflow-wrap: anywhere;
-    }
-
-    .folder-path {
-      margin: 0;
-      font-size: 0.92rem;
-      overflow-wrap: anywhere;
-    }
-
-    .score-box {
-      min-width: 112px;
-      padding: 14px 16px;
-      border-radius: 18px;
-      background: linear-gradient(180deg, rgba(21, 78, 99, 0.11), rgba(255, 255, 255, 0.75));
-      border: 1px solid rgba(21, 78, 99, 0.16);
-      text-align: right;
-    }
-
-    .score-box strong {
-      display: block;
-      font-size: 1.65rem;
-      color: var(--ink);
-    }
-
-    .score-box span {
-      font-size: 0.88rem;
-      color: var(--muted);
-    }
-
-    .progress-track {
-      margin: 14px 0 16px;
-      height: 10px;
-      border-radius: 999px;
-      background: rgba(22, 32, 43, 0.08);
+    .matrix-panel,
+    .detail-panel {
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: rgba(29, 24, 20, 0.95);
+      box-shadow: var(--shadow);
       overflow: hidden;
     }
 
-    .progress-fill {
-      height: 100%;
-      border-radius: inherit;
-      background: linear-gradient(90deg, #154e63, #2d7d46);
+    .matrix-scroll {
+      overflow-x: auto;
+      overflow-y: hidden;
+      scrollbar-color: rgba(255, 202, 109, 0.48) rgba(53, 38, 30, 0.7);
     }
 
-    .chip-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 14px;
-    }
-
-    .status-chip,
-    .note-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      border-radius: 999px;
-      padding: 6px 10px;
-      font-size: 0.82rem;
-      font-weight: 700;
-      letter-spacing: 0.01em;
-      border: 1px solid transparent;
-      white-space: nowrap;
-    }
-
-    .status-chip.met,
-    .note-chip.met {
-      color: var(--met);
-      background: rgba(45, 125, 70, 0.1);
-      border-color: rgba(45, 125, 70, 0.18);
-    }
-
-    .status-chip.partial,
-    .note-chip.partial {
-      color: var(--partial);
-      background: rgba(199, 121, 27, 0.11);
-      border-color: rgba(199, 121, 27, 0.2);
-    }
-
-    .status-chip.gap,
-    .note-chip.gap {
-      color: var(--gap);
-      background: rgba(183, 58, 49, 0.1);
-      border-color: rgba(183, 58, 49, 0.2);
-    }
-
-    .status-chip.na,
-    .note-chip.na {
-      color: var(--na);
-      background: rgba(100, 116, 139, 0.11);
-      border-color: rgba(100, 116, 139, 0.2);
-    }
-
-    .status-chip.closed,
-    .note-chip.closed {
-      color: var(--closed);
-      background: rgba(33, 83, 107, 0.1);
-      border-color: rgba(33, 83, 107, 0.18);
-    }
-
-    .main-gap-block {
-      padding: 16px;
-      border-radius: 18px;
-      background: rgba(255, 255, 255, 0.74);
-      border: 1px solid rgba(22, 32, 43, 0.08);
-      margin-bottom: 14px;
-    }
-
-    .main-gap-label {
-      margin: 0 0 8px;
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--muted);
-    }
-
-    .main-gap-copy {
-      margin: 0;
-      color: var(--ink);
-      overflow-wrap: anywhere;
-    }
-
-    details {
-      border-top: 1px solid rgba(22, 32, 43, 0.08);
-      padding-top: 14px;
-    }
-
-    summary {
-      cursor: pointer;
-      font-weight: 700;
-      color: var(--accent);
-      list-style: none;
-    }
-
-    summary::-webkit-details-marker {
-      display: none;
-    }
-
-    summary::after {
-      content: "+";
-      float: right;
-      font-size: 1.1rem;
-      color: var(--accent);
-    }
-
-    details[open] summary::after {
-      content: "-";
-    }
-
-    .details-grid {
+    .matrix-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-      margin-top: 14px;
+      grid-template-columns: 300px repeat(10, minmax(104px, 1fr));
+      min-width: 1340px;
     }
 
-    .criterion-card {
-      padding: 14px;
-      border-radius: 16px;
-      background: rgba(255, 255, 255, 0.86);
-      border: 1px solid rgba(22, 32, 43, 0.08);
+    .corner-cell,
+    .session-cell,
+    .track-cell,
+    .matrix-cell {
+      border-right: 1px solid rgba(255, 239, 210, 0.14);
+      border-bottom: 1px solid rgba(255, 239, 210, 0.12);
     }
 
-    .criterion-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      align-items: flex-start;
-      margin-bottom: 10px;
-    }
-
-    .criterion-title {
+    .corner-cell {
+      padding: 22px 20px;
+      background: linear-gradient(180deg, rgba(214, 201, 181, 0.96), rgba(146, 133, 116, 0.92));
+      color: #1c1713;
+      font-family: "Book Antiqua", "Palatino Linotype", Georgia, serif;
+      font-size: 1.05rem;
       font-weight: 700;
-      color: var(--ink);
-    }
-
-    .criterion-detail {
-      margin: 0;
-      font-size: 0.93rem;
-      white-space: pre-wrap;
-      overflow-wrap: anywhere;
-    }
-
-    .meta-note {
-      margin-top: 14px;
-      font-size: 0.92rem;
-    }
-
-    .empty-state {
-      padding: 20px;
-      border-radius: 20px;
-      border: 1px dashed rgba(22, 32, 43, 0.18);
-      background: rgba(255, 255, 255, 0.6);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
       text-align: center;
     }
 
-    @media (max-width: 1080px) {
-      .summary-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
+    .session-cell {
+      padding: 10px 8px 12px;
+      min-height: 88px;
+      background: linear-gradient(180deg, rgba(205, 194, 177, 0.95), rgba(152, 141, 126, 0.92));
+      color: #261d17;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+      justify-content: flex-start;
+    }
 
-      .content-grid {
+    .session-button {
+      width: 100%;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      cursor: pointer;
+      text-align: center;
+      font: inherit;
+    }
+
+    .session-label {
+      display: block;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.82rem;
+      margin-bottom: 6px;
+    }
+
+    .session-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 34px;
+      width: 100%;
+      padding: 6px 8px;
+      border-radius: 8px;
+      background: linear-gradient(180deg, rgba(112, 58, 36, 0.96), rgba(140, 79, 48, 0.92));
+      color: #ffd679;
+      border: 1px solid rgba(255, 224, 154, 0.28);
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      line-height: 1;
+      box-shadow: 0 10px 18px rgba(0, 0, 0, 0.14) inset;
+    }
+
+    .session-button.active .session-chip {
+      background: linear-gradient(180deg, #ffd45c, #f2b24d);
+      color: #2e1809;
+      border-color: rgba(255, 247, 210, 0.9);
+      box-shadow:
+        0 0 0 1px rgba(255, 240, 207, 0.55) inset,
+        0 0 18px rgba(255, 184, 87, 0.25);
+    }
+
+    .track-cell {
+      padding: 20px 16px;
+      background: linear-gradient(180deg, rgba(69, 69, 68, 0.98), rgba(43, 43, 42, 0.98));
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .track-index {
+      min-width: 100px;
+      color: #faf3e7;
+      font-family: "Book Antiqua", "Palatino Linotype", Georgia, serif;
+      font-size: 0.92rem;
+      font-weight: 700;
+      line-height: 0.98;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .track-index strong {
+      display: block;
+      font-size: 1.02rem;
+      margin-bottom: 4px;
+    }
+
+    .track-strap {
+      color: #d6c7b4;
+      font-size: 0.78rem;
+      line-height: 1.2;
+      max-width: 118px;
+      font-weight: 700;
+    }
+
+    .matrix-cell {
+      min-height: 126px;
+      padding: 10px 8px;
+      background:
+        linear-gradient(180deg, rgba(48, 44, 41, 0.97), rgba(31, 29, 27, 0.97));
+      position: relative;
+    }
+
+    .matrix-cell.session-active {
+      background:
+        linear-gradient(180deg, rgba(62, 52, 44, 0.98), rgba(42, 35, 30, 0.98));
+    }
+
+    .matrix-card-stack {
+      display: grid;
+      gap: 10px;
+      align-content: start;
+      height: 100%;
+    }
+
+    .matrix-card {
+      display: block;
+      width: 100%;
+      min-height: 84px;
+      padding: 11px 9px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 245, 226, 0.22);
+      text-align: left;
+      cursor: pointer;
+      font: inherit;
+      color: #23160e;
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.1) inset,
+        0 10px 22px rgba(0, 0, 0, 0.18);
+      transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
+      overflow: hidden;
+      word-break: break-word;
+    }
+
+    .matrix-card:hover {
+      transform: translateY(-1px);
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.16) inset,
+        0 14px 28px rgba(0, 0, 0, 0.24);
+      border-color: rgba(255, 247, 220, 0.52);
+    }
+
+    .matrix-card.active {
+      transform: translateY(-1px) scale(1.01);
+      border-color: rgba(255, 247, 210, 0.96);
+      box-shadow:
+        0 0 0 2px rgba(255, 247, 210, 0.36) inset,
+        0 0 0 3px rgba(255, 184, 87, 0.15),
+        0 18px 34px rgba(0, 0, 0, 0.28);
+    }
+
+    .matrix-card .mini-kicker {
+      display: block;
+      font-size: 0.76rem;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      opacity: 0.76;
+    }
+
+    .matrix-card .mini-title {
+      display: block;
+      font-size: 0.72rem;
+      line-height: 1.03;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.01em;
+    }
+
+    .domain-spine {
+      background: linear-gradient(180deg, #ffd3ce, #ff8f82);
+    }
+
+    .domain-anchors {
+      background: linear-gradient(180deg, #e8f7ff, #8fd4ff);
+    }
+
+    .domain-spaces {
+      background: linear-gradient(180deg, #ebffe6, #9cf0a5);
+    }
+
+    .domain-classroom {
+      background: linear-gradient(180deg, #fff0d5, #ffc78f);
+    }
+
+    .domain-repair {
+      background: linear-gradient(180deg, #f0ddff, #cfb0ff);
+    }
+
+    .domain-recognition {
+      background: linear-gradient(180deg, #fff7ca, #ffe287);
+    }
+
+    .domain-adult {
+      background: linear-gradient(180deg, #dffbf6, #8de3d2);
+    }
+
+    .domain-evidence {
+      background: linear-gradient(180deg, #edf4fb, #c9d5e3);
+    }
+
+    .detail-panel {
+      position: sticky;
+      top: 12px;
+      padding: 18px 18px 24px;
+      background: rgba(27, 22, 18, 0.96);
+      max-height: calc(100vh - 24px);
+      overflow: auto;
+    }
+
+    .detail-panel .mode-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 227, 170, 0.2);
+      background: rgba(69, 49, 37, 0.72);
+      color: var(--muted);
+      font-size: 0.86rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-weight: 800;
+    }
+
+    .detail-panel h3 {
+      margin: 0 0 8px;
+      font-family: "Book Antiqua", "Palatino Linotype", Georgia, serif;
+      font-size: clamp(2rem, 2.65vw, 3.1rem);
+      line-height: 0.94;
+      text-transform: uppercase;
+      color: #ffd97a;
+      letter-spacing: 0.01em;
+    }
+
+    .detail-subhead {
+      margin: 0 0 18px;
+      color: #d6c5b0;
+      font-size: 1rem;
+      line-height: 1.35;
+      font-weight: 700;
+    }
+
+    .detail-meta-row,
+    .flag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 0 0 18px;
+    }
+
+    .detail-meta-pill,
+    .flag-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 220, 163, 0.14);
+      background: rgba(70, 54, 42, 0.92);
+      color: var(--muted);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+
+    .flag-pill.yes {
+      color: #ffe8a9;
+      border-color: rgba(255, 223, 123, 0.25);
+      background: rgba(118, 86, 36, 0.52);
+    }
+
+    .flag-pill.no {
+      color: #cfb7a1;
+      border-color: rgba(207, 183, 161, 0.16);
+      background: rgba(58, 46, 38, 0.92);
+      opacity: 0.86;
+    }
+
+    .detail-block {
+      margin-bottom: 20px;
+    }
+
+    .detail-block h4 {
+      margin: 0 0 8px;
+      color: #f9cc72;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 900;
+    }
+
+    .detail-block p,
+    .detail-block li {
+      margin: 0;
+      color: #f0e8da;
+      line-height: 1.48;
+      font-size: 0.98rem;
+    }
+
+    .detail-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .detail-field {
+      padding: 12px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 220, 163, 0.1);
+      background: rgba(44, 35, 29, 0.92);
+    }
+
+    .detail-field-label {
+      display: block;
+      margin: 0 0 6px;
+      color: #f9cc72;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 900;
+    }
+
+    .detail-field-value {
+      margin: 0;
+      color: #f0e8da;
+      line-height: 1.45;
+      font-size: 0.96rem;
+    }
+
+    .problem-callout {
+      padding: 14px 16px;
+      border-left: 4px solid #ffdf69;
+      border-radius: 0 12px 12px 0;
+      background: rgba(117, 94, 50, 0.24);
+    }
+
+    .micro-list {
+      display: grid;
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .source-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .source-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(70, 54, 42, 0.92);
+      color: var(--muted);
+      font-size: 0.82rem;
+      border: 1px solid rgba(255, 220, 163, 0.14);
+    }
+
+    .footer-note {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 223, 171, 0.14);
+      color: var(--soft);
+      font-size: 0.92rem;
+      line-height: 1.45;
+    }
+
+    .muted-empty {
+      color: var(--soft);
+      font-size: 0.86rem;
+      line-height: 1.4;
+      opacity: 0.86;
+    }
+
+    @media (max-width: 1240px) {
+      .dashboard-shell {
         grid-template-columns: 1fr;
       }
 
-      .highlights-panel {
+      .detail-panel {
         position: static;
       }
     }
 
     @media (max-width: 760px) {
       .page-shell {
-        width: min(100vw - 20px, 1400px);
-        padding-top: 14px;
+        width: min(100vw - 16px, 1880px);
       }
 
-      .hero {
+      .overview-bar {
         grid-template-columns: 1fr;
       }
 
-      .summary-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+      .overview-actions {
+        justify-content: flex-start;
       }
 
-      .folder-top,
-      .details-grid,
-      .hero-panel-grid {
-        grid-template-columns: 1fr;
+      .title-frame {
+        width: 100%;
       }
 
-      .score-box {
-        text-align: left;
+      .title-frame h1 {
+        font-size: clamp(2.2rem, 10vw, 4rem);
       }
     }
   </style>
 </head>
 <body>
   <div class="page-shell">
-    <header class="hero">
-      <section class="hero-copy">
-        <p class="eyebrow">Culture Camp rollout board</p>
-        <h1>Matchbook Live Culture Tracker</h1>
-        <p>This board reads the tracker CSV in the same folder and turns the folder-first audit into a searchable implementation view. Use it to see where the rollout is closed, where it is partial, and which folders still need the next operating move.</p>
-      </section>
-      <aside class="hero-panel">
-        <div>
-          <p class="eyebrow">What this board expects</p>
-          <p>The page looks for <strong>matchbook_tracker_data.csv</strong> beside the HTML file. If you open the page locally and auto-load is blocked, use the manual CSV loader below.</p>
-        </div>
-        <div class="hero-panel-grid">
-          <div class="mini-stat">
-            <strong>20</strong>
-            <span>rollout folders tracked</span>
-          </div>
-          <div class="mini-stat">
-            <strong>10</strong>
-            <span>completion chains per folder</span>
-          </div>
-          <div class="mini-stat">
-            <strong>CSV</strong>
-            <span>same-folder template support</span>
-          </div>
-          <div class="mini-stat">
-            <strong>Live</strong>
-            <span>search, filter, and sort controls</span>
-          </div>
-        </div>
-      </aside>
+    <header class="masthead">
+      <div class="title-frame">
+        <h1>Matchbook Culture Build Board<br>BOY Training + 10-Day Culture Camp</h1>
+      </div>
+      <p id="boardSubtitle"></p>
     </header>
 
-    <section class="toolbar">
-      <input id="searchInput" type="search" placeholder="Search folders, gaps, paths, or evidence..." aria-label="Search tracker rows">
-      <select id="focusFilter" aria-label="Focus filter">
-        <option value="all">All folders</option>
-        <option value="gap">Folders with at least one GAP</option>
-        <option value="partial">Folders with no GAP but at least one PARTIAL</option>
-        <option value="closed">Folders whose main gap is marked CLOSED</option>
-        <option value="met">Folders with every actionable chain MET</option>
-      </select>
-      <select id="sortMode" aria-label="Sort mode">
-        <option value="priority">Sort by priority</option>
-        <option value="complete">Sort by completion</option>
-        <option value="folder">Sort by folder ID</option>
-      </select>
-      <label class="upload-label" for="csvInput">Load CSV manually</label>
-      <input id="csvInput" type="file" accept=".csv,text/csv" hidden>
-      <a class="button-link" href="./matchbook_tracker_data.csv" download>Download CSV template</a>
+    <section class="control-stack">
+      <div class="mode-row" id="modeRow"></div>
+      <div class="legend-row" id="legendRow"></div>
+      <div class="filter-row" id="filterRow"></div>
     </section>
 
-    <p id="statusMessage" class="status-message">Loading matchbook_tracker_data.csv...</p>
+    <section class="overview-bar">
+      <div>
+        <h2 id="overviewTitle"></h2>
+        <p id="overviewCopy"></p>
+      </div>
+      <div class="overview-actions">
+        <a class="link-pill" href="./matchbook_tracker_data.csv" download>Download Tracker Data CSV</a>
+      </div>
+    </section>
 
-    <section id="summaryGrid" class="summary-grid" hidden></section>
-
-    <section class="content-grid">
-      <aside class="highlights-panel">
-        <div class="panel-heading">
-          <h2>Priority view</h2>
+    <section class="dashboard-shell">
+      <div class="matrix-panel">
+        <div class="matrix-scroll">
+          <div class="matrix-grid" id="matrixGrid"></div>
         </div>
-        <p class="meta-note">These folders rise to the top when they carry the most open GAP and PARTIAL chains.</p>
-        <div id="priorityList" class="priority-list"></div>
-      </aside>
+      </div>
 
-      <main>
-        <div id="folderGrid" class="folder-grid"></div>
-      </main>
+      <aside class="detail-panel" id="detailPanel"></aside>
     </section>
   </div>
 
   <script>
-    const CRITERIA = [
-      'path_locked',
-      'operating_artifacts_visible',
-      'adult_moves_named',
-      'audience_separation',
-      'training_facilitation',
-      'coaching_observation',
-      'data_permissions',
-      'grade_band_differences',
-      'slide_alignment',
-      'tracker_crosswalk_backlog'
+    const TRACKS = [
+      { id: 'spine', short: 'Track 1', title: 'Culture Spine', strap: 'Shared values, shared language', color: 'var(--track-spine)', className: 'domain-spine' },
+      { id: 'anchors', short: 'Track 2', title: 'Daily Anchors', strap: 'Entry, First Five, Morning Meeting', color: 'var(--track-anchors)', className: 'domain-anchors' },
+      { id: 'spaces', short: 'Track 3', title: 'Physical Spaces', strap: 'Movement and public culture', color: 'var(--track-spaces)', className: 'domain-spaces' },
+      { id: 'classroom', short: 'Track 4', title: 'Classroom Systems', strap: 'Learning routines and independence', color: 'var(--track-classroom)', className: 'domain-classroom' },
+      { id: 'repair', short: 'Track 5', title: 'Repair and Regulation', strap: 'Reteach before escalation', color: 'var(--track-repair)', className: 'domain-repair' },
+      { id: 'recognition', short: 'Track 6', title: 'Identity and Recognition', strap: 'Evidence, not popularity', color: 'var(--track-recognition)', className: 'domain-recognition' },
+      { id: 'adult', short: 'Track 7', title: 'Adult Calibration', strap: 'Adults rehearse before students', color: 'var(--track-adult)', className: 'domain-adult' },
+      { id: 'evidence', short: 'Track 8', title: 'Evidence and Sustainability', strap: 'Walkthroughs, proof, and next steps', color: 'var(--track-evidence)', className: 'domain-evidence' }
     ];
 
-    const LABELS = {
-      path_locked: 'Path locked',
-      operating_artifacts_visible: 'Operating artifacts visible',
-      adult_moves_named: 'Adult moves named',
-      audience_separation: 'Audience separation',
-      training_facilitation: 'Training facilitation',
-      coaching_observation: 'Coaching observation',
-      data_permissions: 'Data permissions',
-      grade_band_differences: 'Grade-band differences',
-      slide_alignment: 'Slide alignment',
-      tracker_crosswalk_backlog: 'Tracker crosswalk backlog'
+    const TRACK_LOOKUP = Object.fromEntries(TRACKS.map((track) => [track.id, track]));
+
+    const BOARD_DATA = {
+      adult: {
+        key: 'adult',
+        button: 'BOY Adult Calibration Track',
+        subtitle: 'Interactive planning dashboard: adult BOY calibration installs the teacher moves first. Student Culture Camp then teaches, rehearses, resets, and transfers the full culture playbook across spaces, relationships, recognition, re-entry, and routines.',
+        overviewTitle: 'Adult BOY calibration should let leaders see the whole system at once.',
+        overviewCopy: 'This board maps each adult session against the eight culture lanes so you can spot where shared language, routines, regulation, recognition, and evidence get installed before students ever touch the system.',
+        sessions: [
+          { id: 'a1', label: 'Session 1', short: 'Spine', title: 'BOY Session 1: Culture Spine' },
+          { id: 'a2', label: 'Session 2', short: 'Teach Routines', title: 'BOY Session 2: Teach Routines' },
+          { id: 'a3', label: 'Session 3', short: 'Daily Anchor', title: 'BOY Session 3: Daily Anchor' },
+          { id: 'a4', label: 'Session 4', short: 'Movement', title: 'BOY Session 4: Movement' },
+          { id: 'a5', label: 'Session 5', short: 'Shared Spaces', title: 'BOY Session 5: Shared Spaces' },
+          { id: 'a6', label: 'Session 6', short: 'Classroom', title: 'BOY Session 6: Classroom Systems' },
+          { id: 'a7', label: 'Session 7', short: 'Recognition', title: 'BOY Session 7: Recognition' },
+          { id: 'a8', label: 'Session 8', short: 'Repair', title: 'BOY Session 8: Repair and Regulation' },
+          { id: 'a9', label: 'Session 9', short: 'Houses', title: 'BOY Session 9: Identity and Houses' },
+          { id: 'a10', label: 'Session 10', short: 'Whole Culture', title: 'BOY Session 10: Whole Culture Logic Check' }
+        ],
+        cards: [
+          {
+            id: 'adult-a1-spine',
+            session: 'a1',
+            track: 'spine',
+            kicker: 'Calibrate',
+            label: 'Safe, respectful, responsible behavior matrix',
+            title: 'BOY Session 1: Culture Spine',
+            subhead: 'Adult Calibration | Culture Spine',
+            vision: 'Adults name the same values, the same behaviors, and the same system purpose before they ever teach students.',
+            consensus: 'This is the shared language layer. No classroom gets its own culture dialect.',
+            problem: 'When adults define “respect” differently, students experience contradiction instead of consistency.',
+            skill: 'Align the value language, the behavior matrix, and the non-negotiable identity lines.',
+            bridge: 'A shared spine reduces mixed messages and gives every later routine a common reference point.',
+            resources: 'Executive Overview, Implementation Non-Negotiables, Core Language Glossary, Matchbook-Specific Culture Alignment Page.',
+            action: 'Have adults rewrite vague value language into observable behavior examples by grade band and space.',
+            debrief: 'What definition still feels fuzzy? Where might one team still improvise the meaning?',
+            sources: ['01_START_HERE/Executive_Overview.md', '01_START_HERE/Implementation_Non-Negotiables.md', '01_START_HERE/Core_Language_Glossary.md']
+          },
+          {
+            id: 'adult-a1-adult',
+            session: 'a1',
+            track: 'adult',
+            kicker: 'Anchor',
+            label: 'Agree on adult posture, cues, and facilitation stance',
+            title: 'BOY Session 1: Adult Posture Agreement',
+            subhead: 'Adult Calibration | Adult Calibration',
+            vision: 'Adults model brevity, calm, visible regulation, and shared cue language from the first training minute.',
+            consensus: 'The adult move is part of the curriculum. Facilitation style cannot undercut the culture we are trying to build.',
+            problem: 'Adults often teach a calm system with rushed bodies, long speeches, or public correction.',
+            skill: 'Calibrate cue language, reset posture, voice volume, and the “correct the routine, not the child” stance.',
+            bridge: 'When adults embody the system, teacher credibility rises and student confusion drops.',
+            resources: 'PD Facilitator Guide, 90-Minute Synchronous Training Plan, Teacher Practice Lab Guide.',
+            action: 'Open training by rehearsing what an adult reset sounds like in hallway, circle, and classroom contexts.',
+            debrief: 'Which adult habit is most likely to fracture consistency on Day 1?',
+            sources: ['04_PROFESSIONAL_DEVELOPMENT/PD_Facilitator_Guide.md', '04_PROFESSIONAL_DEVELOPMENT/90-Minute_Synchronous_Training_Plan.md']
+          },
+          {
+            id: 'adult-a2-spine',
+            session: 'a2',
+            track: 'spine',
+            kicker: 'Method',
+            label: 'Model, practice, reset, rebuild, recognize',
+            title: 'BOY Session 2: Teach Routines',
+            subhead: 'Adult Calibration | Culture Spine',
+            vision: 'Adults share one teaching method for culture routines: demonstrate, practice, reset, rebuild, then name evidence.',
+            consensus: 'Culture is taught the same way as any high-leverage skill: explicit model first, then fast loops.',
+            problem: 'Without a common method, some adults lecture while others skip directly to correction.',
+            skill: 'Use the same instructional sequence in every room so reteach feels familiar rather than punitive.',
+            bridge: 'A repeatable method speeds student learning and helps coaches give low-inference feedback.',
+            resources: 'Culture Camp Overview, Day-by-Day Teacher Guide, Teacher Practice Lab Guide.',
+            action: 'Practice one routine and force a reset so adults feel what rebuilding a move should look like.',
+            debrief: 'At what point do we move too fast and stop truly teaching the routine?',
+            sources: ['05_CULTURE_CAMP/Culture_Camp_Overview.md', '05_CULTURE_CAMP/Day-by-Day_Teacher_Guide.md']
+          },
+          {
+            id: 'adult-a2-repair',
+            session: 'a2',
+            track: 'repair',
+            kicker: 'Lens',
+            label: 'Correct the routine, not the child',
+            title: 'BOY Session 2: Correct the Routine, Not the Child',
+            subhead: 'Adult Calibration | Repair and Regulation',
+            vision: 'Adults redirect the move that broke instead of personalizing the student.',
+            consensus: 'The reset targets the procedure. Dignity stays intact.',
+            problem: 'Publicly naming children as the problem creates shame and escalates resistance.',
+            skill: 'Translate reactive language into routine language and attach the reteach to a specific move.',
+            bridge: 'This keeps correction instructional and protects relationships while still holding the line.',
+            resources: 'Low-Word Response Scripts, Responsive Behavior Plan Overview, Restorative Stance and Community Principles.',
+            action: 'Turn five common adult corrections into routine-focused language and practice saying them at full speed.',
+            debrief: 'Which phrases still sound like blame even if the intention is calm?',
+            sources: ['03_TEACHER_IMPLEMENTATION/TEACHER_FIELD_PACKET/Low-Word_Response_Scripts.md', '09_RESPONSIVE_BEHAVIOR_PLAN/Responsive_Behavior_Plan_Overview.md']
+          },
+          {
+            id: 'adult-a3-anchors',
+            session: 'a3',
+            track: 'anchors',
+            kicker: 'Rehearse',
+            label: 'Arrival, breakfast, holding, first five, morning meeting',
+            title: 'BOY Session 3: Daily Anchors',
+            subhead: 'Adult Calibration | Daily Anchors',
+            vision: 'Adults can run the opening anchor from threshold greeting through Morning Meeting without dead air or contradiction.',
+            consensus: 'The first minutes of the day set the nervous system for everything that follows.',
+            problem: 'Weak first-five systems create drift before instruction has even begun.',
+            skill: 'Rehearse threshold entry, materials, breakfast or Do Now, circle launch, and the shift into academics.',
+            bridge: 'A strong anchor lowers noise, reduces reactive correction, and gives students predictable footing.',
+            resources: 'Day-by-Day Teacher Guide, Daily Morning Meeting SOP, Teacher Quick-Start Guide.',
+            action: 'Run a full Day-1 opening with timers and force a regroup when one transition exceeds the target.',
+            debrief: 'Which opening step still depends too much on verbal prompting?',
+            sources: ['05_CULTURE_CAMP/Day-by-Day_Teacher_Guide.md', '03_TEACHER_IMPLEMENTATION/Daily_Morning_Meeting_SOP.md']
+          },
+          {
+            id: 'adult-a4-spaces',
+            session: 'a4',
+            track: 'spaces',
+            kicker: 'Practice',
+            label: 'In-room exit, hallway, bathroom, re-entry',
+            title: 'BOY Session 4: Movement',
+            subhead: 'Adult Calibration | Physical Spaces',
+            vision: 'Adults teach movement as a chain of linked routines, not isolated commands.',
+            consensus: 'Space-to-space movement is where culture becomes visible to the whole building.',
+            problem: 'A class can look strong in seats and fall apart the second bodies cross a doorway.',
+            skill: 'Teach doorway pause, line posture, bathroom signal, transition timing, and calm re-entry.',
+            bridge: 'Movement routines recover instructional time and prevent hallway culture from becoming a separate system.',
+            resources: 'Hallway Transitions Guide, Arrival and First Five Guide, Day-by-Day Teacher Guide.',
+            action: 'Walk the adult team through the exact path students will take and calibrate every handoff point.',
+            debrief: 'Where is the first leak between classroom control and public-space control?',
+            sources: ['17_SCHOOLWIDE_ROUTINES/Hallway_Transitions_Guide.md', '17_SCHOOLWIDE_ROUTINES/Arrival_and_First_Five_Guide.md']
+          },
+          {
+            id: 'adult-a5-spaces',
+            session: 'a5',
+            track: 'spaces',
+            kicker: 'Shared',
+            label: 'Cafeteria, recess, specials, assemblies, dismissal',
+            title: 'BOY Session 5: Shared Spaces',
+            subhead: 'Adult Calibration | Physical Spaces',
+            vision: 'Adults rehearse cafeteria, recess, specials or electives, assemblies, and dismissal as one coherent public-space lane.',
+            consensus: 'Common spaces are where schoolwide alignment is most visible.',
+            problem: 'Use student and adult pain point: routines fall apart when handoffs are unclear.',
+            skill: 'Practice adult positioning, flow, voice levels, recall, dismissal lanes, and cross-team handoffs.',
+            bridge: 'This reduces crowding, noise, conflict, and transition fatigue.',
+            resources: 'Cafeteria guide, recess guide, dismissal guide, assemblies mini-protocol, specials handoff card.',
+            action: 'Run a shared-space simulation with adult handoff and a quick reteach.',
+            debrief: 'Where does the handoff blur: ownership, language, or timing?',
+            sources: ['17_SCHOOLWIDE_ROUTINES/Cafeteria_Routines_Guide.md', '17_SCHOOLWIDE_ROUTINES/Recess_and_Playground_Guide.md', '05_CULTURE_CAMP/Day-by-Day_Teacher_Guide.md']
+          },
+          {
+            id: 'adult-a6-classroom',
+            session: 'a6',
+            track: 'classroom',
+            kicker: 'Build',
+            label: 'Help-seeking, materials, technology, work submission, collaboration',
+            title: 'BOY Session 6: Classroom Systems',
+            subhead: 'Adult Calibration | Classroom Systems',
+            vision: 'Adults can teach the invisible classroom systems that usually get left to assumption.',
+            consensus: 'Independence only appears when the systems are explicit.',
+            problem: 'Students often get labeled off-task when the actual issue is unclear procedure.',
+            skill: 'Build routines for materials access, help-seeking, tech use, partner work, turn-in, and room reset.',
+            bridge: 'Clear systems lower teacher narration and let academic stamina survive after the opening block.',
+            resources: 'Teacher Implementation Playbook, Teacher Planning Checklist, Classroom Exit Routine Guide.',
+            action: 'List every classroom procedure that currently lives in teacher memory and turn it into visible student steps.',
+            debrief: 'Which classroom routine still depends on adult rescue instead of student ownership?',
+            sources: ['03_TEACHER_IMPLEMENTATION/Teacher_Implementation_Playbook.md', '03_TEACHER_IMPLEMENTATION/Teacher_Planning_Checklist.md', '17_SCHOOLWIDE_ROUTINES/Classroom_Exit_Routine_Guide.md']
+          },
+          {
+            id: 'adult-a7-recognition',
+            session: 'a7',
+            track: 'recognition',
+            kicker: 'Define',
+            label: 'Recognition evidence, not popularity',
+            title: 'BOY Session 7: Recognition',
+            subhead: 'Adult Calibration | Identity and Recognition',
+            vision: 'Adults tie celebration to observed evidence instead of charisma, favoritism, or noise.',
+            consensus: 'Recognition should reinforce the culture system, not distract from it.',
+            problem: 'Loose recognition systems reward visibility over actual practice.',
+            skill: 'Use evidence-based nominations, shared criteria, and clear links to Safe, Respectful, Responsible behavior.',
+            bridge: 'Fair recognition increases trust and keeps Friday Cypher or shout-outs from becoming social politics.',
+            resources: 'Recognition Eligibility Rules, Friday Cypher Data Tracker, Winner Roster Tracker.',
+            action: 'Have adults sort sample recognitions into “evidence” or “vibe” and defend the call.',
+            debrief: 'What would make a student say recognition here feels unfair?',
+            sources: ['14_DATA_TRACKING_AND_APP_READINESS/Recognition_Eligibility_Rules.md', '07_FRIDAY_CYPHER/Friday_Cypher_Data_Tracker.md']
+          },
+          {
+            id: 'adult-a8-repair',
+            session: 'a8',
+            track: 'repair',
+            kicker: 'Rehearse',
+            label: 'Regulation, repair language, conflict intro, re-entry',
+            title: 'BOY Session 8: Repair and Regulation',
+            subhead: 'Adult Calibration | Repair and Regulation',
+            vision: 'Adults can move from dysregulation to dignity-protecting repair without losing structure.',
+            consensus: 'Repair follows regulation. We do not force apology from a flooded nervous system.',
+            problem: 'When adults improvise under stress, correction becomes louder and recovery becomes less teachable.',
+            skill: 'Rehearse regulation tools, low-word correction, harm repair, and the return to community.',
+            bridge: 'A reliable repair lane lowers escalation and keeps accountability aligned to the culture stance.',
+            resources: 'Repair and Re-Entry Routine, Teacher Reset Scripts, Restorative Repair Framework.',
+            action: 'Run role plays where adults must de-escalate, repair, and re-enter in under three minutes of narration.',
+            debrief: 'Where are we still mistaking urgency for effectiveness?',
+            sources: ['09_RESPONSIVE_BEHAVIOR_PLAN/Repair_and_Re-Entry_Routine.md', '09_RESPONSIVE_BEHAVIOR_PLAN/Teacher_Reset_Scripts.md', '10_RESTORATIVE_REPAIR/Restorative_Repair_Framework.md']
+          },
+          {
+            id: 'adult-a9-recognition',
+            session: 'a9',
+            track: 'recognition',
+            kicker: 'Launch',
+            label: 'Houses, Friday Cypher, walk-in-nine, student identity',
+            title: 'BOY Session 9: Identity and Houses',
+            subhead: 'Adult Calibration | Identity and Recognition',
+            vision: 'Adults layer houses, belonging, and public celebration onto the culture system without loosening fidelity.',
+            consensus: 'Identity should deepen commitment, not replace structure.',
+            problem: 'Schools often launch identity systems that feel exciting but detached from routine discipline.',
+            skill: 'Connect houses, Friday Cypher, origin story, and recognition rituals back to evidence and role ownership.',
+            bridge: 'This gives students belonging while keeping celebration inside the operating system.',
+            resources: 'Houses Launch SOP, First House Meeting Guide, House Origin Story and Mantra Brief.',
+            action: 'Map exactly how a student experiences house identity from line-up to celebration to re-entry.',
+            debrief: 'Where could identity energy accidentally outrun instructional coherence?',
+            sources: ['05_CULTURE_CAMP/Houses_Launch_SOP.md', '05_CULTURE_CAMP/First_House_Meeting_Guide.md', '17_SCHOOLWIDE_ROUTINES/House_Origin_Story_and_Mantra_Brief.md']
+          },
+          {
+            id: 'adult-a9-evidence',
+            session: 'a9',
+            track: 'evidence',
+            kicker: 'Align',
+            label: 'Celebration stays tied to evidence',
+            title: 'BOY Session 9: Evidence Bridge for Celebration',
+            subhead: 'Adult Calibration | Evidence and Sustainability',
+            vision: 'Every recognition ritual points back to real observations, not memory drift.',
+            consensus: 'Evidence is the bridge between coaching, celebration, and fairness.',
+            problem: 'Without a proof lane, staff revert to subjective recall and loudest-name patterns.',
+            skill: 'Use nomination evidence, quick trackers, and light-touch data language to validate celebration calls.',
+            bridge: 'This protects trust and lets leaders trace recognition back to actual student practice.',
+            resources: 'Recognition Eligibility Rules, Teacher Burden Check, Dashboard Indicator Map.',
+            action: 'Choose the minimum evidence needed to celebrate well without overloading teachers.',
+            debrief: 'Which proof matters, and which proof only creates burden?',
+            sources: ['14_DATA_TRACKING_AND_APP_READINESS/Recognition_Eligibility_Rules.md', '14_DATA_TRACKING_AND_APP_READINESS/Teacher_Burden_Check.md']
+          },
+          {
+            id: 'adult-a10-spine',
+            session: 'a10',
+            track: 'spine',
+            kicker: 'Prove',
+            label: 'Adults can explain the whole culture logic',
+            title: 'BOY Session 10: Whole Culture Logic Check',
+            subhead: 'Adult Calibration | Culture Spine',
+            vision: 'Adults prove they can explain the whole Matchbook culture operating system.',
+            consensus: 'Before students enter, adults need a shared mental model of the system.',
+            problem: 'Use readiness question: can we teach this without contradicting each other?',
+            skill: 'Connect values, routines, recognition, repair, reteach, data, and coaching.',
+            bridge: 'This gives staff confidence and reduces launch confusion.',
+            resources: 'BOY readiness checklist and culture system one-pager.',
+            action: 'Adults explain the system in 90 seconds and identify their first implementation move.',
+            debrief: 'Reflection: What is clear? Resistance: What still feels loose?',
+            sources: ['01_START_HERE/Executive_Overview.md', '01_START_HERE/Stakeholder_Navigation_Map.md']
+          },
+          {
+            id: 'adult-a10-anchors',
+            session: 'a10',
+            track: 'anchors',
+            kicker: 'Run',
+            label: 'Adult simulation of day 1 opening routines',
+            title: 'BOY Session 10: Opening Routine Simulation',
+            subhead: 'Adult Calibration | Daily Anchors',
+            vision: 'Adults can run the opening sequence at launch speed without extra coaching.',
+            consensus: 'The opening routine is the first live proof that the system holds.',
+            problem: 'If Day 1 opening routines still need improvisation, the rest of the day starts behind.',
+            skill: 'Simulate threshold, first five, Morning Meeting, and transition into academics.',
+            bridge: 'A clean launch protects the rest of Culture Camp from preventable drift.',
+            resources: 'Day-by-Day Teacher Guide, Daily Morning Meeting SOP.',
+            action: 'Time the full opening; stop only for the exact move that still leaks.',
+            debrief: 'What did adults still overtalk? Where did students still need invisible directions?',
+            sources: ['05_CULTURE_CAMP/Day-by-Day_Teacher_Guide.md', '03_TEACHER_IMPLEMENTATION/Daily_Morning_Meeting_SOP.md']
+          },
+          {
+            id: 'adult-a10-spaces',
+            session: 'a10',
+            track: 'spaces',
+            kicker: 'Stress Test',
+            label: 'Space-to-space routine run-through',
+            title: 'BOY Session 10: Shared Space Stress Test',
+            subhead: 'Adult Calibration | Physical Spaces',
+            vision: 'Adults can hold the line across hallways, lunch, recess, specials, and dismissal under real pressure.',
+            consensus: 'Public-space culture has to survive movement, crowding, and handoffs.',
+            problem: 'Shared spaces are where inconsistency becomes public instantly.',
+            skill: 'Run the cross-space chain with adult positions, hand signals, and recall language calibrated.',
+            bridge: 'This is where leaders catch the handoff gaps before students do.',
+            resources: 'Hallway, cafeteria, recess, dismissal, and schoolwide routines guides.',
+            action: 'Walk the exact route adults will own and practice the moment where one team releases to the next.',
+            debrief: 'What space still depends on personality instead of system?',
+            sources: ['17_SCHOOLWIDE_ROUTINES/Hallway_Transitions_Guide.md', '17_SCHOOLWIDE_ROUTINES/Cafeteria_Routines_Guide.md', '17_SCHOOLWIDE_ROUTINES/Recess_and_Playground_Guide.md']
+          },
+          {
+            id: 'adult-a10-classroom',
+            session: 'a10',
+            track: 'classroom',
+            kicker: 'Check',
+            label: 'Teachers run classroom systems without overtalk',
+            title: 'BOY Session 10: Classroom Systems Check',
+            subhead: 'Adult Calibration | Classroom Systems',
+            vision: 'Teachers can run materials, collaboration, and submission systems with fewer words and clearer structure.',
+            consensus: 'If adults still over-explain, the system is not truly installed.',
+            problem: 'Overtalk is often a hidden signal that the routine is not yet visible enough.',
+            skill: 'Watch for over-narration, rescue habits, and missing student-facing cues.',
+            bridge: 'This lets academic learning happen without abandoning the culture lane.',
+            resources: 'Teacher Implementation Playbook, Classroom Exit Routine Guide, Teacher Weekly Prep Sheet.',
+            action: 'Run a mini-lesson and mark every place the teacher had to verbally carry the system.',
+            debrief: 'What needs to move from teacher memory onto visible student supports?',
+            sources: ['03_TEACHER_IMPLEMENTATION/Teacher_Implementation_Playbook.md', '17_SCHOOLWIDE_ROUTINES/Classroom_Exit_Routine_Guide.md']
+          },
+          {
+            id: 'adult-a10-repair',
+            session: 'a10',
+            track: 'repair',
+            kicker: 'Scenario Lab',
+            label: 'Routine breaks, adult stays regulated',
+            title: 'BOY Session 10: Repair Scenario Lab',
+            subhead: 'Adult Calibration | Repair and Regulation',
+            vision: 'Adults can stay regulated when the routine breaks and move students back into the system quickly.',
+            consensus: 'Launch readiness includes pressure testing the adult nervous system, not just the student routine.',
+            problem: 'A calm plan can still collapse when adults feel rushed, challenged, or publicly observed.',
+            skill: 'Practice regulation-first adult responses under stress and return to the routine without drama.',
+            bridge: 'This is what keeps the culture system from disappearing on the first hard day.',
+            resources: 'Adult Practice Scenarios, Teacher Reset Scripts, Repair and Re-Entry Routine.',
+            action: 'Run live scenarios that force adults to choose brevity, dignity, and sequence under pressure.',
+            debrief: 'Which adult stress pattern still makes the system wobble?',
+            sources: ['04_PROFESSIONAL_DEVELOPMENT/Adult_Practice_Scenarios.md', '09_RESPONSIVE_BEHAVIOR_PLAN/Teacher_Reset_Scripts.md']
+          },
+          {
+            id: 'adult-a10-adult',
+            session: 'a10',
+            track: 'adult',
+            kicker: 'Explain Back',
+            label: 'Adults name the system in 90 seconds',
+            title: 'BOY Session 10: Adult Explain-Back',
+            subhead: 'Adult Calibration | Adult Calibration',
+            vision: 'Every adult can name the system in simple language and locate their role in it.',
+            consensus: 'If the system cannot be explained clearly, it will not be taught clearly.',
+            problem: 'Adults often understand their lane but not the connective tissue across lanes.',
+            skill: 'Explain the full arc: values, anchors, spaces, classroom systems, repair, recognition, evidence.',
+            bridge: 'This creates coherence across leaders, teachers, coaches, and support staff.',
+            resources: 'Stakeholder Navigation Map, Executive Overview, How to Use This Bundle.',
+            action: 'Pair adults up for 90-second explain-backs and have partners mark what was missing.',
+            debrief: 'What part of the system still gets described as “extra” instead of core?',
+            sources: ['01_START_HERE/Stakeholder_Navigation_Map.md', '01_START_HERE/Executive_Overview.md']
+          },
+          {
+            id: 'adult-a10-evidence',
+            session: 'a10',
+            track: 'evidence',
+            kicker: 'Capture',
+            label: 'Calibration walk, proof lane, next reteach',
+            title: 'BOY Session 10: Evidence and Sustainability Check',
+            subhead: 'Adult Calibration | Evidence and Sustainability',
+            vision: 'Leaders leave launch with a proof lane, a next-reteach list, and low-burden monitoring plan.',
+            consensus: 'Evidence should answer a coaching question, not create spreadsheet theater.',
+            problem: 'Too much data overwhelms teachers; too little data makes improvement invisible.',
+            skill: 'Identify the minimum walk-through look-fors, the fastest feedback loop, and the next reteach priority.',
+            bridge: 'This keeps the system alive after the glow of BOY fades.',
+            resources: 'Teacher Burden Check, Dashboard Indicator Map, Observation and Coaching Tool.',
+            action: 'Name the three indicators leaders will actually look at in Weeks 1-3 and why.',
+            debrief: 'What are we collecting only because it feels sophisticated, not because it helps?',
+            sources: ['14_DATA_TRACKING_AND_APP_READINESS/Teacher_Burden_Check.md', '14_DATA_TRACKING_AND_APP_READINESS/Dashboard_Indicator_Map.md', '13_COACHING_OBSERVATION_AND_RUBRIC_ALIGNMENT/Observation_and_Coaching_Tool.md']
+          }
+        ]
+      },
+      student: {
+        key: 'student',
+        button: '10-Day Student Culture Camp Track',
+        subtitle: 'Interactive planning dashboard: students learn the full culture system on Day 1, then keep rehearsing it across all 10 days. Adults gradually shorten narration while students grow more independent, more visible, and more accountable.',
+        overviewTitle: 'Culture Camp should show the whole student launch arc at a glance.',
+        overviewCopy: 'This board tracks what students are actually learning each day across values, anchors, public spaces, classroom systems, repair, recognition, adult support, and readiness evidence.',
+        sessions: [
+          { id: 'd1', label: 'Day 1', short: 'Launch', title: 'Culture Camp Day 1: Full-System Launch' },
+          { id: 'd2', label: 'Day 2', short: 'Listening', title: 'Culture Camp Day 2: Listening and Speaking Norms' },
+          { id: 'd3', label: 'Day 3', short: 'Respect', title: 'Culture Camp Day 3: Visible Respect' },
+          { id: 'd4', label: 'Day 4', short: 'Voice + Roles', title: 'Culture Camp Day 4: Voice Tone and Early Roles' },
+          { id: 'd5', label: 'Day 5', short: 'Commitments', title: 'Culture Camp Day 5: The Power of Commitments' },
+          { id: 'd6', label: 'Day 6', short: 'Regulation', title: 'Culture Camp Day 6: Regulation Toolbox and Transitions' },
+          { id: 'd7', label: 'Day 7', short: 'Repair', title: 'Culture Camp Day 7: Repair Language and Recovery' },
+          { id: 'd8', label: 'Day 8', short: 'Leadership', title: 'Culture Camp Day 8: Student Leadership Without Loss of Fidelity' },
+          { id: 'd9', label: 'Day 9', short: 'Recognition', title: 'Culture Camp Day 9: Recognition Through Evidence' },
+          { id: 'd10', label: 'Day 10', short: 'Readiness', title: 'Culture Camp Day 10: Readiness Review and Launch' }
+        ],
+        cards: [
+          {
+            id: 'student-d1-spine',
+            session: 'd1',
+            track: 'spine',
+            kicker: 'Launch',
+            label: 'Full culture system on day 1',
+            title: 'Culture Camp Day 1: Full-System Launch',
+            subhead: 'Student Culture Camp | Culture Spine',
+            vision: 'Students meet the whole system on Day 1 instead of being drip-fed disconnected routines.',
+            consensus: 'Culture Camp is full-build mode. We do not wait for later to teach what matters most.',
+            problem: 'When schools slow-roll routines, students build habits from improvisation before the system is clear.',
+            skill: 'Introduce Safe, Respectful, Responsible as live behavior, not wall language.',
+            bridge: 'This creates one strong reference point for the rest of the ten days.',
+            resources: 'Culture Camp Overview, Executive Overview, Day-by-Day Teacher Guide.',
+            action: 'Teach the why of the full system before expecting speed inside any one part.',
+            debrief: 'Do students know the point of the routine or only the order of the moves?',
+            sources: ['05_CULTURE_CAMP/Culture_Camp_Overview.md', '05_CULTURE_CAMP/Day-by-Day_Teacher_Guide.md']
+          },
+          {
+            id: 'student-d1-anchors',
+            session: 'd1',
+            track: 'anchors',
+            kicker: 'Teach',
+            label: 'Arrival, first five, morning meeting',
+            title: 'Culture Camp Day 1: Daily Anchors',
+            subhead: 'Student Culture Camp | Daily Anchors',
+            vision: 'Students learn how to enter, settle, regulate, and start the day with structure.',
+            consensus: 'The day should begin with predictability, not guesswork.',
+            problem: 'Loose entry and first-five minutes create noise before learning starts.',
+            skill: 'Practice threshold pause, materials flow, breathing, values, and the transition into academics.',
+            bridge: 'A strong anchor makes every later reset faster and calmer.',
+            resources: 'Day-by-Day Teacher Guide, Daily Morning Meeting SOP.',
+            action: 'Redo the first five until students can tell you what happens without prompts.',
+            debrief: 'What part of the opening still needs too much teacher voice?',
+            sources: ['05_CULTURE_CAMP/Day-by-Day_Teacher_Guide.md', '03_TEACHER_IMPLEMENTATION/Daily_Morning_Meeting_SOP.md']
+          },
+          {
+            id: 'student-d1-spaces',
+            session: 'd1',
+            track: 'spaces',
+            kicker: 'Walk',
+            label: 'Hallway, cafeteria, recess, dismissal routines',
+            title: 'Culture Camp Day 1: Shared Space Routines',
+            subhead: 'Student Culture Camp | Physical Spaces',
+            vision: 'Students experience the same culture logic beyond the classroom threshold.',
+            consensus: 'Public space behavior is part of the curriculum, not an afterthought.',
+            problem: 'Students often hear one set of expectations in class and another in common areas.',
+            skill: 'Practice line posture, bathroom flow, lunch sequence, recess recall, and dismissal.',
+            bridge: 'This prevents space-to-space whiplash and shows students the system travels with them.',
+            resources: 'Day-by-Day Teacher Guide, Hallway Transitions Guide, Cafeteria Routines Guide.',
+            action: 'Pause and reset immediately when the class crosses into chaos in public space.',
+            debrief: 'Which shared space makes the routine feel least secure right now?',
+            sources: ['05_CULTURE_CAMP/Day-by-Day_Teacher_Guide.md', '17_SCHOOLWIDE_ROUTINES/Hallway_Transitions_Guide.md']
+          },
+          {
+            id: 'student-d1-classroom',
+            session: 'd1',
+            track: 'classroom',
+            kicker: 'Build',
+            label: 'Live transitions, materials, cleanup, room reset',
+            title: 'Culture Camp Day 1: Classroom Systems',
+            subhead: 'Student Culture Camp | Classroom Systems',
+            vision: 'Students learn that classroom procedures are culture, not just management tricks.',
+            consensus: 'The room works when every invisible step becomes teachable.',
+            problem: 'Teachers often correct “off-task” behavior when the system itself was never made explicit.',
+            skill: 'Teach movement into tasks, group changes, cleanup, and room restoration.',
+            bridge: 'Classroom systems are what let academics ride on top of culture instead of competing with it.',
+            resources: 'Day-by-Day Teacher Guide, Teacher Planning Checklist, Classroom Exit Routine Guide.',
+            action: 'Practice one classroom system at a time until students can describe the sequence back.',
+            debrief: 'Which procedure still lives only in the teacher’s head?',
+            sources: ['05_CULTURE_CAMP/Day-by-Day_Teacher_Guide.md', '03_TEACHER_IMPLEMENTATION/Teacher_Planning_Checklist.md']
+          },
+          {
+            id: 'student-d1-repair',
+            session: 'd1',
+            track: 'repair',
+            kicker: 'Reset',
+            label: 'If a routine breaks, stop and repractice',
+            title: 'Culture Camp Day 1: Reset and Repractice',
+            subhead: 'Student Culture Camp | Repair and Regulation',
+            vision: 'Students learn immediately that a reset is the work, not a punishment detour.',
+            consensus: 'During Culture Camp, the reset is not the interruption. It is the lesson.',
+            problem: 'Adults often push through broken routines to save time and lose the larger build.',
+            skill: 'Accept reteach as normal and return to the exact point of the break.',
+            bridge: 'This normalizes correction and keeps the tone instructional rather than personal.',
+            resources: 'Culture Camp Overview, Day-by-Day Teacher Guide.',
+            action: 'Narrate resets as routine repair, not adult frustration.',
+            debrief: 'Do students experience the reset as clarity or as unpredictability?',
+            sources: ['05_CULTURE_CAMP/Culture_Camp_Overview.md', '05_CULTURE_CAMP/Day-by-Day_Teacher_Guide.md']
+          },
+          {
+            id: 'student-d2-anchors',
+            session: 'd2',
+            track: 'anchors',
+            kicker: 'Practice',
+            label: 'Listening body + sentence frames',
+            title: 'Culture Camp Day 2: Listening and Speaking Norms',
+            subhead: 'Student Culture Camp | Daily Anchors',
+            vision: 'Students learn that voice in this system is structured, protected, and visible.',
+            consensus: 'Speaking and listening are culture moves, not just academic habits.',
+            problem: 'Without structure, discussion quickly becomes interruption or silence.',
+            skill: 'Use listening posture, sentence frames, and partner share routines with dignity.',
+            bridge: 'This protects student voice while keeping the room predictable.',
+            resources: 'Day-by-Day Teacher Guide, Student Voice SOP.',
+            action: 'Repeat the share until students can use the frame and protect the speaker.',
+            debrief: 'Is the room quieter because students are regulated, or because students are opting out?',
+            sources: ['05_CULTURE_CAMP/Day-by-Day_Teacher_Guide.md', '03_TEACHER_IMPLEMENTATION/Student_Voice_SOP.md']
+          },
+          {
+            id: 'student-d3-spine',
+            session: 'd3',
+            track: 'spine',
+            kicker: 'Show',
+            label: 'Respect has a body, not just words',
+            title: 'Culture Camp Day 3: Visible Respect',
+            subhead: 'Student Culture Camp | Culture Spine',
+            vision: 'Students learn that values show up in posture, attention, and movement, not just language.',
+            consensus: 'Respect must be visible enough for peers and adults to observe clearly.',
+            problem: 'Students often hear “be respectful” without seeing what it looks like in their bodies.',
+            skill: 'Rehearse eye line, shoulder orientation, quiet hands, and listening posture.',
+            bridge: 'Visible respect helps the room feel safer and easier to coach.',
+            resources: 'Day-by-Day Teacher Guide, Teacher Quick-Start Guide.',
+            action: 'Model the contrast between performative compliance and actual listening posture.',
+            debrief: 'What body-language signal still tells you the room is not really with you?',
+            sources: ['05_CULTURE_CAMP/Day-by-Day_Teacher_Guide.md', '03_TEACHER_IMPLEMENTATION/Teacher_Quick-Start_Guide.md']
+          },
+          {
+            id: 'student-d4-classroom',
+            session: 'd4',
+            track: 'classroom',
+            kicker: 'Cue',
+            label: 'Voice tone, role clarity, early student jobs',
+            title: 'Culture Camp Day 4: Voice Tone and Early Student Roles',
+            subhead: 'Student Culture Camp | Classroom Systems',
+            vision: 'Students begin carrying small jobs without confusing leadership for looseness.',
+            consensus: 'Ownership grows only if the structure stays tight.',
+            problem: 'Students often interpret “leadership” as permission to get louder or freer.',
+            skill: 'Use role cues, tone expectations, and early responsibility without dropping fidelity.',
+            bridge: 'This lays the groundwork for later student leadership and house roles.',
+            resources: 'Day-by-Day Teacher Guide, Student Role Cards.',
+            action: 'Assign one visible role and coach it with the same precision as any routine.',
+            debrief: 'Did student leadership strengthen the routine or only change who was talking?',
+            sources: ['05_CULTURE_CAMP/Day-by-Day_Teacher_Guide.md', '11_STUDENT_TRAINING_AND_VOICE/Student_Role_Cards.md']
+          },
+          {
+            id: 'student-d5-recognition',
+            session: 'd5',
+            track: 'recognition',
+            kicker: 'Commit',
+            label: 'Specific commitments create visible evidence',
+            title: 'Culture Camp Day 5: The Power of Commitments',
+            subhead: 'Student Culture Camp | Identity and Recognition',
+            vision: 'Students learn that a commitment must be concrete enough for someone else to see.',
+            consensus: 'A commitment is not a wish. It is a visible next step.',
+            problem: 'Vague commitments sound positive but cannot be coached or recognized.',
+            skill: 'Turn broad intentions into observable actions tied to the day.',
+            bridge: 'Specific commitments become the raw material for evidence-based recognition and reflection.',
+            resources: 'Day-by-Day Teacher Guide, Morning Meeting Data Tracker, Student Leadership Tracker.',
+            action: 'Coach students from “be nice” into observable commitment language.',
+            debrief: 'Can students state the move in a way that someone else could verify?',
+            sources: ['05_CULTURE_CAMP/Day-by-Day_Teacher_Guide.md', '11_STUDENT_TRAINING_AND_VOICE/Student_Leadership_Tracker.md']
+          },
+          {
+            id: 'student-d5-evidence',
+            session: 'd5',
+            track: 'evidence',
+            kicker: 'Check',
+            label: 'Midday evidence: did the action match the commitment?',
+            title: 'Culture Camp Day 5: Commitment Evidence Check',
+            subhead: 'Student Culture Camp | Evidence and Sustainability',
+            vision: 'Students begin to see evidence as proof of growth rather than adult judgment.',
+            consensus: 'Reflection gets stronger when it uses examples instead of vibes.',
+            problem: 'Students often say they “did good” without naming what actually happened.',
+            skill: 'Notice the behavior, connect it to the commitment, and revisit it before dismissal.',
+            bridge: 'This creates a feedback loop that later supports Cypher nominations and coaching.',
+            resources: 'Day-by-Day Teacher Guide, Dashboard Indicator Map.',
+            action: 'Ask for one piece of midday proof that a student’s commitment is already visible.',
+            debrief: 'What counts as proof here, and what is still only a feeling?',
+            sources: ['05_CULTURE_CAMP/Day-by-Day_Teacher_Guide.md', '14_DATA_TRACKING_AND_APP_READINESS/Dashboard_Indicator_Map.md']
+          },
+          {
+            id: 'student-d6-repair',
+            session: 'd6',
+            track: 'repair',
+            kicker: 'Use',
+            label: 'Regulation tools before transition fatigue takes over',
+            title: 'Culture Camp Day 6: Regulation Toolbox',
+            subhead: 'Student Culture Camp | Repair and Regulation',
+            vision: 'Students choose and use a regulation tool before energy spills into the next move.',
+            consensus: 'We regulate before rigor and before re-entry.',
+            problem: 'Students often wait until they are already dysregulated to look for a tool.',
+            skill: 'Practice finger breathing, grounding, breath work, and proactive reset language.',
+            bridge: 'This gives students a repeatable way to stay inside the system when the day gets harder.',
+            resources: 'Day-by-Day Teacher Guide, Responsive Behavior Plan Overview.',
+            action: 'Make students name when they will use a tool, not only which tool they like.',
+            debrief: 'Are students using tools preventively or only after an adult flags the problem?',
+            sources: ['05_CULTURE_CAMP/Day-by-Day_Teacher_Guide.md', '09_RESPONSIVE_BEHAVIOR_PLAN/Responsive_Behavior_Plan_Overview.md']
+          },
+          {
+            id: 'student-d6-spaces',
+            session: 'd6',
+            track: 'spaces',
+            kicker: 'Re-enter',
+            label: 'Carry regulation from recess and lunch back into learning',
+            title: 'Culture Camp Day 6: Re-entry from Shared Spaces',
+            subhead: 'Student Culture Camp | Physical Spaces',
+            vision: 'Students do not drag playground or lunch energy back into instruction untreated.',
+            consensus: 'Shared-space energy has to be actively reset before learning starts again.',
+            problem: 'Afternoon re-entry often becomes the hidden collapse point in otherwise strong classrooms.',
+            skill: 'Pause, choose a tool, settle the body, and re-enter the room with intention.',
+            bridge: 'A strong re-entry preserves learning time and prevents unnecessary escalation.',
+            resources: 'Day-by-Day Teacher Guide, Hallway Transitions Guide.',
+            action: 'Practice the re-entry as its own routine, not just the last step of recess.',
+            debrief: 'What space generates the most re-entry work for this class?',
+            sources: ['05_CULTURE_CAMP/Day-by-Day_Teacher_Guide.md', '17_SCHOOLWIDE_ROUTINES/Hallway_Transitions_Guide.md']
+          },
+          {
+            id: 'student-d7-repair',
+            session: 'd7',
+            track: 'repair',
+            kicker: 'Repair',
+            label: 'Routine error vs relational harm',
+            title: 'Culture Camp Day 7: Repair Language and Recovery',
+            subhead: 'Student Culture Camp | Repair and Regulation',
+            vision: 'Students learn the difference between a quick routine fix and a fuller relational repair.',
+            consensus: 'Not every mistake needs the same kind of response, but every mistake needs a path back.',
+            problem: 'Students often blur routine errors, conflict, and harm into one unhelpful category.',
+            skill: 'Use “my bad, I’ll fix it” for routine errors and fuller repair language for harm.',
+            bridge: 'This gives students a humane recovery path without minimizing impact.',
+            resources: 'Day-by-Day Teacher Guide, Repair and Re-Entry Routine, Restorative Repair Framework.',
+            action: 'Role-play both kinds of repair and have students decide which language fits which moment.',
+            debrief: 'When do students still over-apologize, under-own, or skip the actual repair?',
+            sources: ['05_CULTURE_CAMP/Day-by-Day_Teacher_Guide.md', '09_RESPONSIVE_BEHAVIOR_PLAN/Repair_and_Re-Entry_Routine.md']
+          },
+          {
+            id: 'student-d8-recognition',
+            session: 'd8',
+            track: 'recognition',
+            kicker: 'Lead',
+            label: 'Student leadership and houses without losing fidelity',
+            title: 'Culture Camp Day 8: Student Leadership',
+            subhead: 'Student Culture Camp | Identity and Recognition',
+            vision: 'Students begin leading parts of the routine while the culture stays tight.',
+            consensus: 'Leadership is real only if it strengthens the group routine.',
+            problem: 'Peer leadership can become excitement without structure if adults fade too fast.',
+            skill: 'Use role cards, board reader, practice leader, house identity, and peer cueing with discipline.',
+            bridge: 'This creates belonging and ownership while preserving the non-negotiables.',
+            resources: 'Day-by-Day Teacher Guide, House Captain and Ambassador Role Progression, Houses Launch SOP.',
+            action: 'Assign visible student roles and coach whether the routine stays tighter because of them.',
+            debrief: 'Did leadership make the room stronger, or just busier?',
+            sources: ['05_CULTURE_CAMP/Day-by-Day_Teacher_Guide.md', '11_STUDENT_TRAINING_AND_VOICE/House_Captain_and_Ambassador_Role_Progression.md', '05_CULTURE_CAMP/Houses_Launch_SOP.md']
+          },
+          {
+            id: 'student-d8-adult',
+            session: 'd8',
+            track: 'adult',
+            kicker: 'Fade',
+            label: 'Adults step back without lowering the bar',
+            title: 'Culture Camp Day 8: Adult Fade with Fidelity',
+            subhead: 'Student Culture Camp | Adult Calibration',
+            vision: 'Adults reduce narration but not expectations.',
+            consensus: 'Less adult talk should reveal stronger student ownership, not hidden adult confusion.',
+            problem: 'Teachers often think stepping back means letting precision drift.',
+            skill: 'Observe more, intervene less, and only re-enter where fidelity actually breaks.',
+            bridge: 'This is the shift from teacher-carried routine to student-held culture.',
+            resources: 'Day-by-Day Teacher Guide, Teacher Practice Lab Guide.',
+            action: 'Mark the moments where adults can truly fade and the moments where they still need to teach.',
+            debrief: 'Where is adult silence productive, and where is it abandonment?',
+            sources: ['05_CULTURE_CAMP/Day-by-Day_Teacher_Guide.md', '04_PROFESSIONAL_DEVELOPMENT/Teacher_Practice_Lab_Guide.md']
+          },
+          {
+            id: 'student-d9-recognition',
+            session: 'd9',
+            track: 'recognition',
+            kicker: 'Nominate',
+            label: 'Friday Cypher evidence, not popularity',
+            title: 'Culture Camp Day 9: Recognition Through Evidence',
+            subhead: 'Student Culture Camp | Identity and Recognition',
+            vision: 'Students learn that recognition is earned through visible culture moves, not status.',
+            consensus: 'Celebration should validate the work students are practicing all week.',
+            problem: 'Without evidence language, nominations can turn into popularity contests.',
+            skill: 'Name evidence aloud, tie it to values, and separate celebration from favoritism.',
+            bridge: 'This makes Friday Cypher feel fair and culture-building.',
+            resources: 'Friday Cypher Data Tracker, Recognition Eligibility Rules, Winner Roster Tracker.',
+            action: 'Practice weak versus strong nominations and ask students to justify the stronger one.',
+            debrief: 'What would make a nomination feel earned to the whole class?',
+            sources: ['07_FRIDAY_CYPHER/Friday_Cypher_Data_Tracker.md', '14_DATA_TRACKING_AND_APP_READINESS/Recognition_Eligibility_Rules.md']
+          },
+          {
+            id: 'student-d9-spine',
+            session: 'd9',
+            track: 'spine',
+            kicker: 'Hold',
+            label: 'Celebration does not lower the bar',
+            title: 'Culture Camp Day 9: Celebration with Fidelity',
+            subhead: 'Student Culture Camp | Culture Spine',
+            vision: 'Students feel energy and pride without losing discipline.',
+            consensus: 'High energy still needs structure.',
+            problem: 'Celebratory days often signal to students that routine expectations are optional.',
+            skill: 'Carry the same culture spine into applause, recognition, movement, and transition.',
+            bridge: 'This teaches that joy and order can coexist without one erasing the other.',
+            resources: 'Day-by-Day Teacher Guide, Friday Cypher Program Guide.',
+            action: 'Name the specific routine that keeps celebration from turning chaotic.',
+            debrief: 'Where does excitement most often become drift for this group?',
+            sources: ['05_CULTURE_CAMP/Day-by-Day_Teacher_Guide.md', '07_FRIDAY_CYPHER/Friday_Cypher_Program_Guide.md']
+          },
+          {
+            id: 'student-d10-evidence',
+            session: 'd10',
+            track: 'evidence',
+            kicker: 'Review',
+            label: 'What is launch-ready and what still needs reteach',
+            title: 'Culture Camp Day 10: Readiness Review and Launch',
+            subhead: 'Student Culture Camp | Evidence and Sustainability',
+            vision: 'The class leaves Culture Camp knowing what is solid and what still needs rebuilding.',
+            consensus: 'Readiness is not pretending everything is perfect. It is naming the next work clearly.',
+            problem: 'Teams often end launches with vague confidence instead of real evidence.',
+            skill: 'Use green, yellow, red evidence on routines, transitions, leadership, and repair.',
+            bridge: 'This gives leaders and teachers a direct reteach agenda for Weeks 3-4.',
+            resources: 'Day-by-Day Teacher Guide, Culture Camp Fidelity Checklist, Day 10 Readiness Review.',
+            action: 'Run an honest readiness check across anchor, spaces, classroom, repair, and celebration.',
+            debrief: 'Which routine is launch-ready? Which one still breaks when adult narration drops?',
+            sources: ['05_CULTURE_CAMP/Day-by-Day_Teacher_Guide.md', '05_CULTURE_CAMP/Culture_Camp_Fidelity_Checklist.md', '05_CULTURE_CAMP/Day_10_Readiness_Review.md']
+          },
+          {
+            id: 'student-d10-adult',
+            session: 'd10',
+            track: 'adult',
+            kicker: 'Observe',
+            label: 'Lighter adult prompting reveals the real weak spots',
+            title: 'Culture Camp Day 10: Adult Observation Mode',
+            subhead: 'Student Culture Camp | Adult Calibration',
+            vision: 'Adults intervene only where the routine truly depends on them.',
+            consensus: 'Launch readiness means adults can observe more than they narrate.',
+            problem: 'If adults keep over-carrying the room, student readiness is impossible to read honestly.',
+            skill: 'Use checklists, short cues, and selective resets instead of full reteach narration.',
+            bridge: 'This makes Day 10 a real test instead of a heavily supported performance.',
+            resources: 'Day-by-Day Teacher Guide, Culture Camp Leadership Walkthrough Tool.',
+            action: 'Switch adults into observer stance and mark where students still rely on invisible support.',
+            debrief: 'What still works only because the adult is quietly carrying it?',
+            sources: ['05_CULTURE_CAMP/Day-by-Day_Teacher_Guide.md', '05_CULTURE_CAMP/Culture_Camp_Leadership_Walkthrough_Tool.md']
+          },
+          {
+            id: 'student-d10-classroom',
+            session: 'd10',
+            track: 'classroom',
+            kicker: 'Launch',
+            label: 'Students move through the day with lighter scaffolds',
+            title: 'Culture Camp Day 10: Classroom Launch Check',
+            subhead: 'Student Culture Camp | Classroom Systems',
+            vision: 'Students can carry classroom systems with fewer reminders and quicker recovery.',
+            consensus: 'Independence is the proof that the routine is installed.',
+            problem: 'A classroom can look “good” while still running on teacher rescue.',
+            skill: 'Check transitions, materials, collaboration, cleanup, and end-of-day systems under reduced prompting.',
+            bridge: 'This is the bridge from Culture Camp into regular academic weeks.',
+            resources: 'Day-by-Day Teacher Guide, Teacher Weekly Prep Sheet, Classroom Exit Routine Guide.',
+            action: 'Run a mini-day and capture every moment that still needs adult rescue.',
+            debrief: 'Which classroom system is closest to independence, and which one still collapses?',
+            sources: ['05_CULTURE_CAMP/Day-by-Day_Teacher_Guide.md', '03_TEACHER_IMPLEMENTATION/Teacher_Weekly_Prep_Sheet.md']
+          }
+        ]
+      }
     };
 
     const state = {
-      rows: []
+      mode: 'adult',
+      trackFilter: 'all',
+      sessionId: BOARD_DATA.adult.sessions[0].id,
+      cardId: null
     };
-
-    const searchInput = document.getElementById('searchInput');
-    const focusFilter = document.getElementById('focusFilter');
-    const sortMode = document.getElementById('sortMode');
-    const csvInput = document.getElementById('csvInput');
-    const statusMessage = document.getElementById('statusMessage');
-    const summaryGrid = document.getElementById('summaryGrid');
-    const priorityList = document.getElementById('priorityList');
-    const folderGrid = document.getElementById('folderGrid');
 
     function createNode(tag, className, text) {
       const node = document.createElement(tag);
@@ -704,412 +1472,495 @@
       return node;
     }
 
-    function setStatus(message, tone) {
-      statusMessage.textContent = message;
-      statusMessage.className = 'status-message' + (tone ? ' ' + tone : '');
+    function currentBoard() {
+      return BOARD_DATA[state.mode];
     }
 
-    function parseCsv(text) {
-      const rows = [];
-      let row = [];
-      let value = '';
-      let inQuotes = false;
+    function currentSession() {
+      return currentBoard().sessions.find((session) => session.id === state.sessionId) || currentBoard().sessions[0];
+    }
 
-      const source = text.replace(/^\uFEFF/, '');
-
-      for (let i = 0; i < source.length; i += 1) {
-        const char = source[i];
-        const next = source[i + 1];
-
-        if (inQuotes) {
-          if (char === '"' && next === '"') {
-            value += '"';
-            i += 1;
-          } else if (char === '"') {
-            inQuotes = false;
-          } else {
-            value += char;
-          }
-          continue;
-        }
-
-        if (char === '"') {
-          inQuotes = true;
-          continue;
-        }
-
-        if (char === ',') {
-          row.push(value);
-          value = '';
-          continue;
-        }
-
-        if (char === '\n') {
-          row.push(value.replace(/\r$/, ''));
-          rows.push(row);
-          row = [];
-          value = '';
-          continue;
-        }
-
-        value += char;
+    function visibleCards() {
+      const cards = currentBoard().cards;
+      if (state.trackFilter === 'all') {
+        return cards;
       }
+      return cards.filter((card) => card.track === state.trackFilter);
+    }
 
-      if (value.length > 0 || row.length > 0) {
-        row.push(value.replace(/\r$/, ''));
-        rows.push(row);
+    function activeCard() {
+      const cards = visibleCards();
+      return cards.find((card) => card.id === state.cardId) || null;
+    }
+
+    function firstCardForSession(sessionId) {
+      return visibleCards().find((card) => card.session === sessionId) || null;
+    }
+
+    function ensureActiveCard() {
+      const card = activeCard();
+      if (card) {
+        return card;
       }
-
-      const headers = rows.shift() || [];
-      return rows
-        .filter((cells) => cells.some((cell) => cell !== ''))
-        .map((cells) => {
-          const record = {};
-          headers.forEach((header, index) => {
-            record[header] = cells[index] || '';
-          });
-          return record;
-        });
-    }
-
-    function splitCell(cell) {
-      const raw = (cell || '').trim();
-      const separator = ' | ';
-      const separatorIndex = raw.indexOf(separator);
-
-      if (separatorIndex === -1) {
-        return {
-          status: raw || 'UNKNOWN',
-          detail: ''
-        };
+      const sessionCard = firstCardForSession(state.sessionId);
+      if (sessionCard) {
+        state.cardId = sessionCard.id;
+        return sessionCard;
       }
-
-      return {
-        status: raw.slice(0, separatorIndex).trim(),
-        detail: raw.slice(separatorIndex + separator.length).trim()
-      };
+      const firstVisible = visibleCards()[0] || null;
+      state.cardId = firstVisible ? firstVisible.id : null;
+      return firstVisible;
     }
 
-    function classifyMainGap(text) {
-      const value = (text || '').trim();
-      if (!value) {
-        return 'open';
+    function setMode(mode) {
+      state.mode = mode;
+      state.trackFilter = 'all';
+      state.sessionId = currentBoard().sessions[0].id;
+      state.cardId = null;
+      ensureActiveCard();
+      render();
+    }
+
+    function setTrackFilter(trackId) {
+      state.trackFilter = trackId;
+      const currentVisible = activeCard();
+      if (!currentVisible) {
+        state.cardId = null;
       }
-      if (value.startsWith('CLOSED')) {
-        return 'closed';
-      }
-      if (value.startsWith('PARTIAL')) {
-        return 'partial';
-      }
-      if (value.startsWith('GAP')) {
-        return 'gap';
-      }
-      return 'open';
+      ensureActiveCard();
+      render();
     }
 
-    function enrichRow(row) {
-      const counts = {
-        MET: 0,
-        PARTIAL: 0,
-        GAP: 0,
-        'N/A': 0,
-        UNKNOWN: 0
-      };
-
-      const details = {};
-
-      CRITERIA.forEach((key) => {
-        const parsed = splitCell(row[key]);
-        details[key] = parsed;
-        counts[parsed.status] = (counts[parsed.status] || 0) + 1;
-      });
-
-      const actionable = CRITERIA.length - counts['N/A'];
-      const metRatio = actionable > 0 ? counts.MET / actionable : 1;
-      const priorityScore = counts.GAP * 3 + counts.PARTIAL;
-      const severity = counts.GAP > 0 ? 'gap' : counts.PARTIAL > 0 ? 'partial' : 'met';
-      const mainGapState = classifyMainGap(row.main_gap);
-      const folderNumber = Number.parseInt(row.folder_id, 10) || 0;
-      const searchBlob = Object.values(row).join(' ').toLowerCase();
-
-      return {
-        ...row,
-        details,
-        counts,
-        actionable,
-        metRatio,
-        priorityScore,
-        severity,
-        mainGapState,
-        folderNumber,
-        searchBlob
-      };
+    function setSession(sessionId) {
+      state.sessionId = sessionId;
+      const next = firstCardForSession(sessionId);
+      state.cardId = next ? next.id : null;
+      render();
     }
 
-    function summaryStat(label, value, subtext, extraClass) {
-      const card = createNode('div', 'summary-card' + (extraClass ? ' ' + extraClass : ''));
-      card.appendChild(createNode('div', 'label', label));
-      card.appendChild(createNode('div', 'value', String(value)));
-      card.appendChild(createNode('div', 'subtext', subtext));
-      return card;
-    }
-
-    function chip(text, tone) {
-      return createNode('span', 'status-chip ' + tone, text);
-    }
-
-    function renderSummary(rows) {
-      summaryGrid.innerHTML = '';
-      summaryGrid.hidden = false;
-
-      const totals = rows.reduce((accumulator, row) => {
-        accumulator.folders += 1;
-        accumulator.actionable += row.actionable;
-        accumulator.met += row.counts.MET;
-        accumulator.partial += row.counts.PARTIAL;
-        accumulator.gap += row.counts.GAP;
-        accumulator.na += row.counts['N/A'];
-        if (row.counts.GAP > 0) {
-          accumulator.foldersWithGap += 1;
-        }
-        return accumulator;
-      }, {
-        folders: 0,
-        actionable: 0,
-        met: 0,
-        partial: 0,
-        gap: 0,
-        na: 0,
-        foldersWithGap: 0
-      });
-
-      const completion = totals.actionable > 0 ? Math.round((totals.met / totals.actionable) * 100) : 0;
-
-      summaryGrid.appendChild(summaryStat('Folders shown', totals.folders, 'Current filtered board view'));
-      summaryGrid.appendChild(summaryStat('Actionable chains', totals.actionable, completion + '% currently MET'));
-      summaryGrid.appendChild(summaryStat('MET', totals.met, 'Closed completion checks', 'met'));
-      summaryGrid.appendChild(summaryStat('PARTIAL', totals.partial, 'Checks still in progress', 'partial'));
-      summaryGrid.appendChild(summaryStat('GAP', totals.gap, totals.foldersWithGap + ' folders still carry a GAP', 'gap'));
-    }
-
-    function renderPriority(rows) {
-      priorityList.innerHTML = '';
-
-      const ranked = rows
-        .slice()
-        .sort((left, right) => {
-          if (right.priorityScore !== left.priorityScore) {
-            return right.priorityScore - left.priorityScore;
-          }
-          return left.folderNumber - right.folderNumber;
-        })
-        .slice(0, 6);
-
-      if (ranked.length === 0) {
-        priorityList.appendChild(createNode('div', 'empty-state', 'No folders match the current filters.'));
+    function setCard(cardId) {
+      const card = currentBoard().cards.find((entry) => entry.id === cardId);
+      if (!card) {
         return;
       }
+      state.sessionId = card.session;
+      state.cardId = cardId;
+      render();
+    }
 
-      ranked.forEach((row) => {
-        const button = createNode('button', 'priority-item');
+    function trackConnections(trackId) {
+      const connections = {
+        spine: {
+          safe: 'Shared language lowers ambiguity and gives students the same definition of safety in every room.',
+          respectful: 'Common value language protects how students and adults speak to and about one another.',
+          responsible: 'Students can explain what ownership looks like instead of guessing what adults mean.'
+        },
+        anchors: {
+          safe: 'Predictable openings calm nervous systems and reduce the need for reactive correction.',
+          respectful: 'Students protect speaker, space, time, and turn-taking during the first part of the day.',
+          responsible: 'Students manage entry, materials, and first moves with less adult narration.'
+        },
+        spaces: {
+          safe: 'Bodies move in calm, observable patterns across hallways, lunch, recess, and dismissal.',
+          respectful: 'Shared spaces stay usable because students honor lanes, noise levels, and handoffs.',
+          responsible: 'Students carry the routine across thresholds instead of restarting from zero in each space.'
+        },
+        classroom: {
+          safe: 'Clear procedures prevent chaos and make the learning environment feel secure.',
+          respectful: 'Collaboration, materials use, and transitions stay orderly and fair to peers.',
+          responsible: 'Students manage tools, work flow, cleanup, and room reset with visible ownership.'
+        },
+        repair: {
+          safe: 'Regulation comes before escalation, so students can actually recover and re-enter.',
+          respectful: 'Repair language protects dignity while still naming harm or routine breaks clearly.',
+          responsible: 'Students own the broken move, practice the fix, and return to community with accountability.'
+        },
+        recognition: {
+          safe: 'Recognition stays emotionally safe when it avoids favoritism, humiliation, and vague praise.',
+          respectful: 'Celebration remains fair because the criteria are public and evidence-based.',
+          responsible: 'Students can point to the exact action that earned recognition or leadership trust.'
+        },
+        adult: {
+          safe: 'Adults model calm bodies, low-drama resets, and consistency under pressure.',
+          respectful: 'Adult language protects dignity and keeps correction instructional instead of personal.',
+          responsible: 'Staff share cues, timing, and follow-through so students do not meet different systems.'
+        },
+        evidence: {
+          safe: 'Evidence prevents arbitrary reactions and keeps follow-up grounded in real observation.',
+          respectful: 'Recognition and coaching feel fair when the proof lane is visible.',
+          responsible: 'Teams own next steps because the data points to action instead of vague concern.'
+        }
+      };
+
+      return connections[trackId] || {
+        safe: 'The move keeps the environment calmer and more predictable.',
+        respectful: 'The move protects people, relationships, and space.',
+        responsible: 'The move makes ownership visible in practice.'
+      };
+    }
+
+    function gradeBandTranslation(mode, trackId, band) {
+      const trackLead = {
+        spine: 'value language and observable behavior examples',
+        anchors: 'opening routines and predictable first moves',
+        spaces: 'movement, line, and handoff routines',
+        classroom: 'materials, collaboration, and task-flow systems',
+        repair: 'regulation, reset, and repair language',
+        recognition: 'evidence-based celebration and identity cues',
+        adult: 'adult cueing, posture, and facilitation stance',
+        evidence: 'lightweight proof, look-fors, and next-step tracking'
+      };
+
+      const bandMoves = {
+        'K-2': 'short cue language, visuals, gestures, and immediate repeat practice',
+        '3-5': 'examples, non-examples, partner talk, and visible check-for-understanding loops',
+        '6-8': 'rationale, autonomy, peer leadership, and self-monitoring language'
+      };
+
+      const prefix = mode === 'adult' ? 'Adults prepare' : 'Students practice';
+      return `${prefix} ${trackLead[trackId] || 'the move'} through ${bandMoves[band]}.`;
+    }
+
+    function buildRecognitionHook(card) {
+      if (card.track === 'recognition' || card.track === 'evidence') {
+        return card.bridge;
+      }
+      return `Connect the visible move to recognition language so celebration names evidence, not vibe. ${card.bridge}`;
+    }
+
+    function buildReteachMove(card) {
+      return `Return to the exact broken step, re-model the move, and rerun it at full speed. For this session: ${card.action}`;
+    }
+
+    function buildCoachingLookFor(card) {
+      const track = TRACK_LOOKUP[card.track];
+      return `Look for whether ${track.title.toLowerCase()} is visible without extra explanation. Core look-for: ${card.skill}`;
+    }
+
+    function buildPromptSet(card) {
+      const defaultReflection = card.debrief || `What is clearer now about ${TRACK_LOOKUP[card.track].title.toLowerCase()}?`;
+      const reflectionMatch = (card.debrief || '').match(/Reflection:\s*(.*?)(?:Resistance:|$)/i);
+      const resistanceMatch = (card.debrief || '').match(/Resistance:\s*(.*?)(?:Revelation:|$)/i);
+      const revelationMatch = (card.debrief || '').match(/Revelation:\s*(.*)$/i);
+
+      return {
+        reflection: reflectionMatch ? reflectionMatch[1].trim() : defaultReflection,
+        resistance: resistanceMatch ? resistanceMatch[1].trim() : card.problem,
+        revelation: revelationMatch ? revelationMatch[1].trim() : `What is the next move that makes ${card.label.toLowerCase()} more visible tomorrow?`
+      };
+    }
+
+    function buildAssetFlags(card) {
+      return [
+        { label: 'BOY training needed', value: state.mode === 'adult' },
+        { label: 'Culture camp needed', value: state.mode === 'student' },
+        { label: 'Needs slide', value: true },
+        { label: 'Needs student lesson', value: state.mode === 'student' },
+        { label: 'Needs teacher guide', value: true },
+        { label: 'Needs rehearsal card', value: true },
+        { label: 'Needs coaching tool', value: true },
+        { label: 'Needs grade-band translation', value: card.track !== 'evidence' }
+      ];
+    }
+
+    function buildDetailModel(card, session) {
+      const track = TRACK_LOOKUP[card.track];
+      const prompts = buildPromptSet(card);
+      const connections = trackConnections(card.track);
+
+      return {
+        dayOrSession: state.mode === 'adult' ? `BOY ${session.label.replace('Session ', '')}` : session.label,
+        track: track.title,
+        whatThisTeaches: card.skill,
+        whyItMatters: `${card.bridge} ${card.problem}`,
+        safeConnection: connections.safe,
+        respectfulConnection: connections.respectful,
+        responsibleConnection: connections.responsible,
+        adultMoves: state.mode === 'adult'
+          ? `${card.action} Adult facilitation stays aligned to: ${card.consensus}`
+          : `Teacher move: ${card.action}`,
+        studentSteps: state.mode === 'adult'
+          ? `Adults script the student-facing sequence for ${track.title.toLowerCase()} and identify the exact student behaviors they will model, practice, reset, and recognize.`
+          : `${card.skill} Students should be able to name the move, practice it, and repeat it with less adult prompting.`,
+        k2Translation: gradeBandTranslation(state.mode, card.track, 'K-2'),
+        grade35Translation: gradeBandTranslation(state.mode, card.track, '3-5'),
+        grade68Translation: gradeBandTranslation(state.mode, card.track, '6-8'),
+        resourcesNeeded: card.resources,
+        rehearsalMove: card.action,
+        recognitionHook: buildRecognitionHook(card),
+        reteachMove: buildReteachMove(card),
+        coachingLookFor: buildCoachingLookFor(card),
+        reflectionPrompt: prompts.reflection,
+        resistancePrompt: prompts.resistance,
+        revelationPrompt: prompts.revelation,
+        sourceFiles: card.sources,
+        playbookLocation: `${state.mode === 'adult' ? 'BOY Adult Calibration' : 'Culture Camp'} / ${track.title} / ${session.title}`,
+        flags: buildAssetFlags(card)
+      };
+    }
+
+    function renderModes() {
+      const modeRow = document.getElementById('modeRow');
+      modeRow.innerHTML = '';
+      Object.values(BOARD_DATA).forEach((board) => {
+        const button = createNode('button', 'mode-pill' + (state.mode === board.key ? ' active' : ''), board.button);
         button.type = 'button';
-        button.addEventListener('click', () => {
-          const target = document.getElementById('folder-' + row.folder_id);
-          if (target) {
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
-        });
-
-        button.appendChild(createNode('strong', '', row.folder_name));
-        button.appendChild(createNode('small', '', row.counts.GAP + ' GAP, ' + row.counts.PARTIAL + ' PARTIAL'));
-        priorityList.appendChild(button);
+        button.addEventListener('click', () => setMode(board.key));
+        modeRow.appendChild(button);
       });
     }
 
-    function renderFolders(rows) {
-      folderGrid.innerHTML = '';
+    function renderLegend() {
+      const legendRow = document.getElementById('legendRow');
+      legendRow.innerHTML = '';
+      TRACKS.forEach((track) => {
+        const pill = createNode('div', 'legend-pill');
+        const dot = createNode('span', 'legend-dot');
+        dot.style.color = track.color;
+        dot.style.background = track.color;
+        pill.appendChild(dot);
+        pill.appendChild(createNode('span', '', track.title));
+        legendRow.appendChild(pill);
+      });
+    }
 
-      if (rows.length === 0) {
-        folderGrid.appendChild(createNode('div', 'empty-state', 'No folders match the current search and filter settings.'));
+    function renderFilters() {
+      const filterRow = document.getElementById('filterRow');
+      filterRow.innerHTML = '';
+      const all = createNode('button', 'filter-pill' + (state.trackFilter === 'all' ? ' active' : ''), 'All Tracks');
+      all.type = 'button';
+      all.addEventListener('click', () => setTrackFilter('all'));
+      filterRow.appendChild(all);
+
+      TRACKS.forEach((track) => {
+        const button = createNode('button', 'filter-pill' + (state.trackFilter === track.id ? ' active' : ''), track.title.replace(' and ', ' / '));
+        button.type = 'button';
+        button.addEventListener('click', () => setTrackFilter(track.id));
+        filterRow.appendChild(button);
+      });
+    }
+
+    function renderOverview() {
+      const board = currentBoard();
+      document.getElementById('boardSubtitle').textContent = board.subtitle;
+      document.getElementById('overviewTitle').textContent = board.overviewTitle;
+      document.getElementById('overviewCopy').textContent = board.overviewCopy;
+    }
+
+    function renderMatrix() {
+      const grid = document.getElementById('matrixGrid');
+      grid.innerHTML = '';
+      const board = currentBoard();
+      const active = ensureActiveCard();
+      const visible = visibleCards();
+
+      const corner = createNode('div', 'corner-cell', state.mode === 'adult' ? 'Adult Tracks' : 'Culture Camp Tracks');
+      grid.appendChild(corner);
+
+      board.sessions.forEach((session) => {
+        const sessionCell = createNode('div', 'session-cell');
+        const button = createNode('button', 'session-button' + (state.sessionId === session.id ? ' active' : ''));
+        button.type = 'button';
+        button.title = session.title;
+        button.setAttribute('aria-label', session.title);
+        button.addEventListener('click', () => setSession(session.id));
+        button.appendChild(createNode('span', 'session-label', session.label));
+        button.appendChild(createNode('span', 'session-chip', session.short));
+        sessionCell.appendChild(button);
+        grid.appendChild(sessionCell);
+      });
+
+      TRACKS.forEach((track) => {
+        const rowVisible = state.trackFilter === 'all' || state.trackFilter === track.id;
+        if (!rowVisible) {
+          return;
+        }
+
+        const trackCell = createNode('div', 'track-cell');
+        const index = createNode('div', 'track-index');
+        index.innerHTML = `<strong>${track.short}</strong>${track.title.toUpperCase()}`;
+        trackCell.appendChild(index);
+        trackCell.appendChild(createNode('div', 'track-strap', track.strap));
+        grid.appendChild(trackCell);
+
+        board.sessions.forEach((session) => {
+          const cell = createNode('div', 'matrix-cell' + (state.sessionId === session.id ? ' session-active' : ''));
+          const stack = createNode('div', 'matrix-card-stack');
+          const cards = visible.filter((card) => card.track === track.id && card.session === session.id);
+
+          if (cards.length === 0) {
+            stack.appendChild(createNode('div', 'muted-empty', state.sessionId === session.id ? 'No primary move highlighted in this lane for the selected session.' : ''));
+          } else {
+            cards.forEach((card) => {
+              const button = createNode('button', `matrix-card ${TRACK_LOOKUP[card.track].className}` + (active && active.id === card.id ? ' active' : ''));
+              button.type = 'button';
+              button.title = card.title;
+              button.setAttribute('aria-label', card.title);
+              button.addEventListener('click', () => setCard(card.id));
+              button.appendChild(createNode('span', 'mini-kicker', card.kicker));
+              button.appendChild(createNode('span', 'mini-title', card.label));
+              stack.appendChild(button);
+            });
+          }
+
+          cell.appendChild(stack);
+          grid.appendChild(cell);
+        });
+      });
+    }
+
+    function renderDetail() {
+      const panel = document.getElementById('detailPanel');
+      panel.innerHTML = '';
+      const card = ensureActiveCard();
+      const session = currentSession();
+
+      const tag = createNode('div', 'mode-tag');
+      const dot = createNode('span', 'legend-dot');
+      dot.style.background = '#ffd97a';
+      dot.style.color = '#ffd97a';
+      tag.appendChild(dot);
+      tag.appendChild(createNode('span', '', state.mode === 'adult' ? 'BOY Adult Calibration Track' : '10-Day Student Culture Camp Track'));
+      panel.appendChild(tag);
+
+      if (!card) {
+        panel.appendChild(createNode('h3', '', session.title));
+        panel.appendChild(createNode('p', 'detail-subhead', 'No card is visible under the current filter.'));
         return;
       }
 
-      rows.forEach((row) => {
-        const card = createNode('article', 'folder-card severity-' + row.severity);
-        card.id = 'folder-' + row.folder_id;
+      const detailModel = buildDetailModel(card, session);
 
-        const top = createNode('div', 'folder-top');
-        const heading = createNode('div');
-        heading.appendChild(createNode('p', 'folder-id', 'Folder ' + row.folder_id));
-        heading.appendChild(createNode('h3', 'folder-title', row.folder_name));
-        heading.appendChild(createNode('p', 'folder-path', row.working_folder_path));
-        top.appendChild(heading);
+      panel.appendChild(createNode('h3', '', card.title));
+      panel.appendChild(createNode('p', 'detail-subhead', card.subhead));
 
-        const scoreBox = createNode('div', 'score-box');
-        scoreBox.appendChild(createNode('strong', '', row.counts.MET + '/' + row.actionable));
-        scoreBox.appendChild(createNode('span', '', 'chains MET'));
-        top.appendChild(scoreBox);
-        card.appendChild(top);
+      const metaRow = createNode('div', 'detail-meta-row');
+      [
+        ['Day/Session', detailModel.dayOrSession],
+        ['Track', detailModel.track],
+        ['Playbook location', detailModel.playbookLocation]
+      ].forEach(([label, value]) => {
+        metaRow.appendChild(createNode('span', 'detail-meta-pill', `${label}: ${value}`));
+      });
+      panel.appendChild(metaRow);
 
-        const progressTrack = createNode('div', 'progress-track');
-        const progressFill = createNode('div', 'progress-fill');
-        progressFill.style.width = Math.max(4, Math.round(row.metRatio * 100)) + '%';
-        progressTrack.appendChild(progressFill);
-        card.appendChild(progressTrack);
-
-        const chips = createNode('div', 'chip-row');
-        chips.appendChild(chip('MET ' + row.counts.MET, 'met'));
-        chips.appendChild(chip('PARTIAL ' + row.counts.PARTIAL, 'partial'));
-        chips.appendChild(chip('GAP ' + row.counts.GAP, 'gap'));
-        chips.appendChild(chip('N/A ' + row.counts['N/A'], 'na'));
-        if (row.mainGapState === 'closed') {
-          chips.appendChild(chip('Main gap closed', 'closed'));
+      const sectionDefinitions = [
+        {
+          title: 'What / Why',
+          fields: [
+            ['What this teaches', detailModel.whatThisTeaches],
+            ['Why it matters', detailModel.whyItMatters]
+          ]
+        },
+        {
+          title: 'Safe / Respectful / Responsible',
+          fields: [
+            ['Safe connection', detailModel.safeConnection],
+            ['Respectful connection', detailModel.respectfulConnection],
+            ['Responsible connection', detailModel.responsibleConnection]
+          ]
+        },
+        {
+          title: 'Adult / Student Moves',
+          fields: [
+            ['Adult moves', detailModel.adultMoves],
+            ['Student steps', detailModel.studentSteps],
+            ['Resources needed', detailModel.resourcesNeeded],
+            ['Rehearsal move', detailModel.rehearsalMove],
+            ['Recognition hook', detailModel.recognitionHook],
+            ['Reteach move', detailModel.reteachMove],
+            ['Coaching look-for', detailModel.coachingLookFor]
+          ]
+        },
+        {
+          title: 'Grade-Band Translation',
+          fields: [
+            ['K-2 translation', detailModel.k2Translation],
+            ['3-5 translation', detailModel.grade35Translation],
+            ['6-8 translation', detailModel.grade68Translation]
+          ]
+        },
+        {
+          title: 'Prompts',
+          fields: [
+            ['Reflection prompt', detailModel.reflectionPrompt],
+            ['Resistance prompt', detailModel.resistancePrompt],
+            ['Revelation prompt', detailModel.revelationPrompt]
+          ]
         }
-        card.appendChild(chips);
+      ];
 
-        const gapBlock = createNode('div', 'main-gap-block');
-        gapBlock.appendChild(createNode('p', 'main-gap-label', 'Main gap'));
-        gapBlock.appendChild(createNode('p', 'main-gap-copy', row.main_gap || 'No main gap provided.'));
-        card.appendChild(gapBlock);
+      sectionDefinitions.forEach((sectionDef) => {
+        const block = createNode('section', 'detail-block');
+        block.appendChild(createNode('h4', '', sectionDef.title));
+        const grid = createNode('div', 'detail-grid');
 
-        const details = createNode('details');
-        const summary = createNode('summary', '', 'Open evidence map');
-        details.appendChild(summary);
+        sectionDef.fields.forEach(([label, value]) => {
+          const field = createNode('div', 'detail-field');
+          field.appendChild(createNode('span', 'detail-field-label', label));
 
-        const detailGrid = createNode('div', 'details-grid');
+          if (label === 'Why it matters') {
+            const callout = createNode('div', 'problem-callout');
+            callout.appendChild(createNode('p', 'detail-field-value', value));
+            field.appendChild(callout);
+          } else {
+            field.appendChild(createNode('p', 'detail-field-value', value));
+          }
 
-        const sourceCard = createNode('section', 'criterion-card');
-        const sourceHead = createNode('div', 'criterion-head');
-        sourceHead.appendChild(createNode('div', 'criterion-title', 'Source anchor examples'));
-        sourceCard.appendChild(sourceHead);
-        sourceCard.appendChild(createNode('p', 'criterion-detail', row.source_anchor_examples || 'No source anchor examples listed.'));
-        detailGrid.appendChild(sourceCard);
-
-        CRITERIA.forEach((key) => {
-          const criterion = createNode('section', 'criterion-card');
-          const criterionHead = createNode('div', 'criterion-head');
-          criterionHead.appendChild(createNode('div', 'criterion-title', LABELS[key]));
-          criterionHead.appendChild(chip(row.details[key].status, row.details[key].status.toLowerCase().replace('/', '').replace(/[^a-z]/g, '') || 'na'));
-          criterion.appendChild(criterionHead);
-          criterion.appendChild(createNode('p', 'criterion-detail', row.details[key].detail || 'No additional detail listed.'));
-          detailGrid.appendChild(criterion);
+          grid.appendChild(field);
         });
 
-        details.appendChild(detailGrid);
-        details.appendChild(createNode('p', 'meta-note', 'CSV schema fields: folder_id, folder_name, working_folder_path, source_anchor_examples, the 10 completion chains, and main_gap.'));
-        card.appendChild(details);
-
-        folderGrid.appendChild(card);
-      });
-    }
-
-    function filteredRows() {
-      const query = searchInput.value.trim().toLowerCase();
-      const focus = focusFilter.value;
-      const sort = sortMode.value;
-
-      const rows = state.rows.filter((row) => {
-        const matchesQuery = !query || row.searchBlob.includes(query);
-        if (!matchesQuery) {
-          return false;
-        }
-
-        if (focus === 'gap') {
-          return row.counts.GAP > 0;
-        }
-        if (focus === 'partial') {
-          return row.counts.GAP === 0 && row.counts.PARTIAL > 0;
-        }
-        if (focus === 'closed') {
-          return row.mainGapState === 'closed';
-        }
-        if (focus === 'met') {
-          return row.counts.GAP === 0 && row.counts.PARTIAL === 0;
-        }
-        return true;
+        block.appendChild(grid);
+        panel.appendChild(block);
       });
 
-      rows.sort((left, right) => {
-        if (sort === 'folder') {
-          return left.folderNumber - right.folderNumber;
-        }
-        if (sort === 'complete') {
-          if (right.metRatio !== left.metRatio) {
-            return right.metRatio - left.metRatio;
-          }
-          return left.folderNumber - right.folderNumber;
-        }
-        if (right.priorityScore !== left.priorityScore) {
-          return right.priorityScore - left.priorityScore;
-        }
-        if (right.counts.GAP !== left.counts.GAP) {
-          return right.counts.GAP - left.counts.GAP;
-        }
-        return left.folderNumber - right.folderNumber;
+      const flagsBlock = createNode('section', 'detail-block');
+      flagsBlock.appendChild(createNode('h4', '', 'Build Assets'));
+      const flagsRow = createNode('div', 'flag-row');
+      detailModel.flags.forEach((flag) => {
+        flagsRow.appendChild(createNode('span', `flag-pill ${flag.value ? 'yes' : 'no'}`, `${flag.label}: ${flag.value ? 'Yes' : 'No'}`));
       });
+      flagsBlock.appendChild(flagsRow);
+      panel.appendChild(flagsBlock);
 
-      return rows;
+      const sourceBlock = createNode('section', 'detail-block');
+      sourceBlock.appendChild(createNode('h4', '', 'Source Files'));
+      const sourceList = createNode('div', 'source-list');
+      detailModel.sourceFiles.forEach((source) => {
+        sourceList.appendChild(createNode('span', 'source-pill', source));
+      });
+      sourceBlock.appendChild(sourceList);
+      panel.appendChild(sourceBlock);
+
+      panel.appendChild(createNode('p', 'footer-note', state.mode === 'adult'
+        ? 'Adult track built from the BOY calibration logic implied by the rollout bundle, the Culture Camp guides, and the training documents. The right rail now follows the original tracker schema more closely so the macro board and the explanatory session breakdown read as one system.'
+        : 'Student track grounded directly in the Day-by-Day Teacher Guide themes, the Culture Camp overview, and linked operating docs. The board now combines the macro ten-day arc with the original tracker-style session fields so the what, how, and why are easier to scan.'));
     }
 
-    function renderBoard(sourceMessage) {
-      const rows = filteredRows();
-      renderSummary(rows);
-      renderPriority(rows);
-      renderFolders(rows);
-      setStatus(rows.length + ' of ' + state.rows.length + ' folders shown. ' + sourceMessage, 'success');
-    }
+    function syncMatrixFocus() {
+      const activeButton = document.querySelector('.session-button.active');
+      if (activeButton) {
+        activeButton.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+      }
 
-    function loadCsv(text, sourceMessage) {
-      try {
-        const parsed = parseCsv(text).map(enrichRow);
-        if (parsed.length === 0) {
-          throw new Error('No data rows found in CSV.');
-        }
-        state.rows = parsed;
-        renderBoard(sourceMessage);
-      } catch (error) {
-        console.error(error);
-        setStatus('The CSV could not be parsed. Check that the file uses the expected schema.', 'error');
+      const activeCard = document.querySelector('.matrix-card.active');
+      if (activeCard) {
+        activeCard.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
       }
     }
 
-    async function loadDefaultCsv() {
-      try {
-        const response = await fetch('./matchbook_tracker_data.csv', { cache: 'no-store' });
-        if (!response.ok) {
-          throw new Error('CSV request failed with status ' + response.status);
-        }
-        const text = await response.text();
-        loadCsv(text, 'Loaded matchbook_tracker_data.csv from this folder.');
-      } catch (error) {
-        console.error(error);
-        setStatus('Auto-load failed. If you opened the HTML locally, use "Load CSV manually" to choose matchbook_tracker_data.csv.', 'error');
-      }
+    function render() {
+      renderModes();
+      renderLegend();
+      renderFilters();
+      renderOverview();
+      renderMatrix();
+      renderDetail();
+      requestAnimationFrame(syncMatrixFocus);
     }
 
-    [searchInput, focusFilter, sortMode].forEach((control) => {
-      control.addEventListener('input', () => {
-        if (state.rows.length > 0) {
-          renderBoard('Using the current in-memory tracker data.');
-        }
-      });
-      control.addEventListener('change', () => {
-        if (state.rows.length > 0) {
-          renderBoard('Using the current in-memory tracker data.');
-        }
-      });
-    });
-
-    csvInput.addEventListener('change', async (event) => {
-      const file = event.target.files && event.target.files[0];
-      if (!file) {
-        return;
-      }
-      const text = await file.text();
-      loadCsv(text, 'Loaded ' + file.name + ' from your device.');
-    });
-
-    loadDefaultCsv();
+    ensureActiveCard();
+    render();
   </script>
 </body>
 </html>
