@@ -1454,6 +1454,67 @@
       }
     };
 
+    const CURRENT_TRACKER_RECORDS = [
+      {
+        view: 'BOY',
+        mode: 'adult',
+        session: 'a1',
+        trackId: 'spine',
+        day_or_session: 'BOY 1',
+        track: 'Culture Spine',
+        title: 'Introduction to Matchbook Culture',
+        status: 'Planned',
+        matrix_label: 'Safe, Respectful, Responsible spine',
+        what_this_teaches: 'Introduce the Safe, Respectful, and Responsible spine and why it matters.',
+        why_it_matters: 'Sets the shared language for Matchbook culture and anchors all routines.',
+        safe_connection: 'Defines physical and emotional safety behaviors.',
+        respectful_connection: 'Defines how students respect peers and adults.',
+        responsible_connection: 'Defines how students take ownership of learning and spaces.',
+        adult_moves: 'Model the three core behaviors and narrate them.',
+        student_steps: 'Students repeat the definitions and identify examples.',
+        k2_translation: 'Use concrete objects and pictures.',
+        grade35_translation: 'Include examples and non-examples with group discussion.',
+        grade68_translation: 'Incorporate rationales, autonomy, and leadership roles.',
+        resource_needed: 'Teacher guide & slides',
+        rehearsal_move: 'Whole group modeling and practice',
+        recognition_hook: 'LiveSchool recognition connected to behaviors',
+        reteach_move: 'Reteach using examples and non-examples during classroom launch',
+        coaching_look_for: 'Observe use of key terms and modeling',
+        reflection_prompt: 'What was clear about our culture spine?',
+        resistance_prompt: 'What confusion or reluctance remains?',
+        revelation_prompt: 'How will I model Safe, Respectful, and Responsible tomorrow?',
+        source_file: 'Introduction guide',
+        playbook_location: 'Section 1: Culture Spine',
+        boy_training_needed: true,
+        culture_camp_needed: false,
+        needs_slide: true,
+        needs_student_lesson: true,
+        needs_teacher_guide: true,
+        needs_rehearsal_card: true,
+        needs_coaching_tool: true,
+        needs_grade_band_translation: false,
+        notes: 'Sample session for demonstration.'
+      }
+    ];
+
+    function applyCurrentTrackerRecords() {
+      CURRENT_TRACKER_RECORDS.forEach((record) => {
+        const board = BOARD_DATA[record.mode] || BOARD_DATA.adult;
+        const target = board.cards.find((card) => card.session === record.session && card.track === record.trackId);
+        if (!target) {
+          return;
+        }
+
+        target.trackerRecord = record;
+        target.title = record.title || target.title;
+        target.label = record.matrix_label || target.label;
+        target.resources = record.resource_needed || target.resources;
+        target.sources = record.source_file ? [record.source_file] : target.sources;
+      });
+    }
+
+    applyCurrentTrackerRecords();
+
     const state = {
       mode: 'adult',
       trackFilter: 'all',
@@ -1651,51 +1712,63 @@
     }
 
     function buildAssetFlags(card) {
+      const record = card.trackerRecord || {};
+      const flagValue = (key, fallback) => typeof record[key] === 'boolean' ? record[key] : fallback;
+
       return [
-        { label: 'BOY training needed', value: state.mode === 'adult' },
-        { label: 'Culture camp needed', value: state.mode === 'student' },
-        { label: 'Needs slide', value: true },
-        { label: 'Needs student lesson', value: state.mode === 'student' },
-        { label: 'Needs teacher guide', value: true },
-        { label: 'Needs rehearsal card', value: true },
-        { label: 'Needs coaching tool', value: true },
-        { label: 'Needs grade-band translation', value: card.track !== 'evidence' }
+        { label: 'BOY training needed', value: flagValue('boy_training_needed', state.mode === 'adult') },
+        { label: 'Culture camp needed', value: flagValue('culture_camp_needed', state.mode === 'student') },
+        { label: 'Needs slide', value: flagValue('needs_slide', true) },
+        { label: 'Needs student lesson', value: flagValue('needs_student_lesson', state.mode === 'student') },
+        { label: 'Needs teacher guide', value: flagValue('needs_teacher_guide', true) },
+        { label: 'Needs rehearsal card', value: flagValue('needs_rehearsal_card', true) },
+        { label: 'Needs coaching tool', value: flagValue('needs_coaching_tool', true) },
+        { label: 'Needs grade-band translation', value: flagValue('needs_grade_band_translation', card.track !== 'evidence') }
       ];
+    }
+
+    function trackerValue(record, key, fallback) {
+      const value = record[key];
+      return value === undefined || value === null || value === '' ? fallback : value;
     }
 
     function buildDetailModel(card, session) {
       const track = TRACK_LOOKUP[card.track];
       const prompts = buildPromptSet(card);
       const connections = trackConnections(card.track);
+      const record = card.trackerRecord || {};
+      const sourceFiles = record.source_file ? [record.source_file] : card.sources;
 
       return {
-        dayOrSession: state.mode === 'adult' ? `BOY ${session.label.replace('Session ', '')}` : session.label,
-        track: track.title,
-        whatThisTeaches: card.skill,
-        whyItMatters: `${card.bridge} ${card.problem}`,
-        safeConnection: connections.safe,
-        respectfulConnection: connections.respectful,
-        responsibleConnection: connections.responsible,
-        adultMoves: state.mode === 'adult'
+        dayOrSession: trackerValue(record, 'day_or_session', state.mode === 'adult' ? `BOY ${session.label.replace('Session ', '')}` : session.label),
+        track: trackerValue(record, 'track', track.title),
+        status: trackerValue(record, 'status', ''),
+        whatThisTeaches: trackerValue(record, 'what_this_teaches', card.skill),
+        whyItMatters: trackerValue(record, 'why_it_matters', `${card.bridge} ${card.problem}`),
+        safeConnection: trackerValue(record, 'safe_connection', connections.safe),
+        respectfulConnection: trackerValue(record, 'respectful_connection', connections.respectful),
+        responsibleConnection: trackerValue(record, 'responsible_connection', connections.responsible),
+        adultMoves: trackerValue(record, 'adult_moves', state.mode === 'adult'
           ? `${card.action} Adult facilitation stays aligned to: ${card.consensus}`
-          : `Teacher move: ${card.action}`,
-        studentSteps: state.mode === 'adult'
+          : `Teacher move: ${card.action}`),
+        studentSteps: trackerValue(record, 'student_steps', state.mode === 'adult'
           ? `Adults script the student-facing sequence for ${track.title.toLowerCase()} and identify the exact student behaviors they will model, practice, reset, and recognize.`
-          : `${card.skill} Students should be able to name the move, practice it, and repeat it with less adult prompting.`,
-        k2Translation: gradeBandTranslation(state.mode, card.track, 'K-2'),
-        grade35Translation: gradeBandTranslation(state.mode, card.track, '3-5'),
-        grade68Translation: gradeBandTranslation(state.mode, card.track, '6-8'),
-        resourcesNeeded: card.resources,
-        rehearsalMove: card.action,
-        recognitionHook: buildRecognitionHook(card),
-        reteachMove: buildReteachMove(card),
-        coachingLookFor: buildCoachingLookFor(card),
-        reflectionPrompt: prompts.reflection,
-        resistancePrompt: prompts.resistance,
-        revelationPrompt: prompts.revelation,
-        sourceFiles: card.sources,
-        playbookLocation: `${state.mode === 'adult' ? 'BOY Adult Calibration' : 'Culture Camp'} / ${track.title} / ${session.title}`,
-        flags: buildAssetFlags(card)
+          : `${card.skill} Students should be able to name the move, practice it, and repeat it with less adult prompting.`),
+        k2Translation: trackerValue(record, 'k2_translation', gradeBandTranslation(state.mode, card.track, 'K-2')),
+        grade35Translation: trackerValue(record, 'grade35_translation', gradeBandTranslation(state.mode, card.track, '3-5')),
+        grade68Translation: trackerValue(record, 'grade68_translation', gradeBandTranslation(state.mode, card.track, '6-8')),
+        resourcesNeeded: trackerValue(record, 'resource_needed', card.resources),
+        rehearsalMove: trackerValue(record, 'rehearsal_move', card.action),
+        recognitionHook: trackerValue(record, 'recognition_hook', buildRecognitionHook(card)),
+        reteachMove: trackerValue(record, 'reteach_move', buildReteachMove(card)),
+        coachingLookFor: trackerValue(record, 'coaching_look_for', buildCoachingLookFor(card)),
+        reflectionPrompt: trackerValue(record, 'reflection_prompt', prompts.reflection),
+        resistancePrompt: trackerValue(record, 'resistance_prompt', prompts.resistance),
+        revelationPrompt: trackerValue(record, 'revelation_prompt', prompts.revelation),
+        sourceFiles,
+        playbookLocation: trackerValue(record, 'playbook_location', `${state.mode === 'adult' ? 'BOY Adult Calibration' : 'Culture Camp'} / ${track.title} / ${session.title}`),
+        flags: buildAssetFlags(card),
+        notes: trackerValue(record, 'notes', '')
       };
     }
 
@@ -1835,11 +1908,17 @@
       panel.appendChild(createNode('p', 'detail-subhead', card.subhead));
 
       const metaRow = createNode('div', 'detail-meta-row');
-      [
+      const metaItems = [
         ['Day/Session', detailModel.dayOrSession],
         ['Track', detailModel.track],
         ['Playbook location', detailModel.playbookLocation]
-      ].forEach(([label, value]) => {
+      ];
+
+      if (detailModel.status) {
+        metaItems.splice(2, 0, ['Status', detailModel.status]);
+      }
+
+      metaItems.forEach(([label, value]) => {
         metaRow.appendChild(createNode('span', 'detail-meta-pill', `${label}: ${value}`));
       });
       panel.appendChild(metaRow);
@@ -1924,13 +2003,20 @@
       panel.appendChild(flagsBlock);
 
       const sourceBlock = createNode('section', 'detail-block');
-      sourceBlock.appendChild(createNode('h4', '', 'Source Files'));
+      sourceBlock.appendChild(createNode('h4', '', 'Source File(s)'));
       const sourceList = createNode('div', 'source-list');
       detailModel.sourceFiles.forEach((source) => {
         sourceList.appendChild(createNode('span', 'source-pill', source));
       });
       sourceBlock.appendChild(sourceList);
       panel.appendChild(sourceBlock);
+
+      if (detailModel.notes) {
+        const notesBlock = createNode('section', 'detail-block');
+        notesBlock.appendChild(createNode('h4', '', 'Notes'));
+        notesBlock.appendChild(createNode('p', 'detail-field-value', detailModel.notes));
+        panel.appendChild(notesBlock);
+      }
 
       panel.appendChild(createNode('p', 'footer-note', state.mode === 'adult'
         ? 'Adult track built from the BOY calibration logic implied by the rollout bundle, the Culture Camp guides, and the training documents. The right rail now follows the original tracker schema more closely so the macro board and the explanatory session breakdown read as one system.'
