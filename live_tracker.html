@@ -1,0 +1,1115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Matchbook Live Culture Tracker</title>
+  <style>
+    :root {
+      --bg: #f6efe4;
+      --bg-accent: #e6efe3;
+      --ink: #16202b;
+      --muted: #5d6a72;
+      --card: rgba(255, 252, 247, 0.92);
+      --line: rgba(22, 32, 43, 0.12);
+      --shadow: 0 24px 60px rgba(36, 41, 46, 0.12);
+      --met: #2d7d46;
+      --partial: #c7791b;
+      --gap: #b73a31;
+      --na: #64748b;
+      --closed: #21536b;
+      --accent: #154e63;
+      --accent-soft: #d7e7ec;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Aptos, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(201, 109, 58, 0.14), transparent 28%),
+        radial-gradient(circle at top right, rgba(44, 106, 90, 0.15), transparent 24%),
+        linear-gradient(180deg, #fbf6ef 0%, #eef3eb 100%);
+      min-height: 100vh;
+    }
+
+    .page-shell {
+      width: min(1400px, calc(100vw - 32px));
+      margin: 0 auto;
+      padding: 24px 0 40px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.7fr) minmax(280px, 0.9fr);
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .hero-copy,
+    .hero-panel,
+    .toolbar,
+    .summary-card,
+    .highlights-panel,
+    .folder-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero-copy {
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-copy::after {
+      content: "";
+      position: absolute;
+      inset: auto -80px -100px auto;
+      width: 220px;
+      height: 220px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, rgba(21, 78, 99, 0.18), rgba(21, 78, 99, 0));
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      font-family: "Book Antiqua", "Palatino Linotype", Georgia, serif;
+      margin: 0;
+      line-height: 1.05;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      max-width: 12ch;
+      margin-bottom: 14px;
+    }
+
+    .hero-copy p,
+    .hero-panel p,
+    .status-message,
+    .meta-note,
+    .criterion-detail,
+    .folder-path,
+    .main-gap-copy,
+    .empty-state,
+    .pill-note {
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    .hero-panel {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .hero-panel-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .mini-stat {
+      padding: 14px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(22, 32, 43, 0.08);
+    }
+
+    .mini-stat strong {
+      display: block;
+      font-size: 1.4rem;
+      margin-bottom: 4px;
+      color: var(--ink);
+    }
+
+    .mini-stat span {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .toolbar {
+      padding: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .toolbar input,
+    .toolbar select,
+    .toolbar a,
+    .toolbar label {
+      border-radius: 14px;
+      border: 1px solid rgba(22, 32, 43, 0.12);
+      background: rgba(255, 255, 255, 0.92);
+      color: var(--ink);
+      font: inherit;
+      text-decoration: none;
+    }
+
+    .toolbar input,
+    .toolbar select {
+      padding: 12px 14px;
+      min-height: 46px;
+    }
+
+    #searchInput {
+      flex: 1 1 280px;
+      min-width: 220px;
+    }
+
+    .toolbar select {
+      min-width: 190px;
+    }
+
+    .button-link,
+    .upload-label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 16px;
+      min-height: 46px;
+      cursor: pointer;
+      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+    }
+
+    .button-link:hover,
+    .upload-label:hover,
+    .toolbar input:focus,
+    .toolbar select:focus {
+      border-color: rgba(21, 78, 99, 0.45);
+      background: #ffffff;
+      outline: none;
+      transform: translateY(-1px);
+    }
+
+    .status-message {
+      margin: 0 0 16px;
+      padding: 0 4px;
+      font-size: 0.95rem;
+    }
+
+    .status-message.error {
+      color: var(--gap);
+    }
+
+    .status-message.success {
+      color: var(--accent);
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .summary-card {
+      padding: 18px;
+    }
+
+    .summary-card .label {
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .summary-card .value {
+      font-size: clamp(1.6rem, 3vw, 2.3rem);
+      font-weight: 800;
+      color: var(--ink);
+    }
+
+    .summary-card .subtext {
+      font-size: 0.92rem;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .highlights-panel {
+      padding: 20px;
+      position: sticky;
+      top: 20px;
+    }
+
+    .panel-heading {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: baseline;
+      margin-bottom: 14px;
+    }
+
+    .priority-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .priority-item {
+      width: 100%;
+      text-align: left;
+      padding: 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(22, 32, 43, 0.08);
+      background: rgba(255, 255, 255, 0.82);
+      cursor: pointer;
+      color: inherit;
+      font: inherit;
+      transition: transform 160ms ease, border-color 160ms ease;
+    }
+
+    .priority-item:hover {
+      transform: translateY(-1px);
+      border-color: rgba(21, 78, 99, 0.35);
+    }
+
+    .priority-item strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--ink);
+    }
+
+    .priority-item small {
+      color: var(--muted);
+    }
+
+    .folder-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .folder-card {
+      padding: 20px;
+      scroll-margin-top: 24px;
+    }
+
+    .folder-card.severity-gap {
+      border-color: rgba(183, 58, 49, 0.24);
+    }
+
+    .folder-card.severity-partial {
+      border-color: rgba(199, 121, 27, 0.22);
+    }
+
+    .folder-card.severity-met {
+      border-color: rgba(45, 125, 70, 0.22);
+    }
+
+    .folder-top {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .folder-id {
+      margin: 0 0 4px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .folder-title {
+      font-size: clamp(1.35rem, 2vw, 1.7rem);
+      margin-bottom: 8px;
+      overflow-wrap: anywhere;
+    }
+
+    .folder-path {
+      margin: 0;
+      font-size: 0.92rem;
+      overflow-wrap: anywhere;
+    }
+
+    .score-box {
+      min-width: 112px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(21, 78, 99, 0.11), rgba(255, 255, 255, 0.75));
+      border: 1px solid rgba(21, 78, 99, 0.16);
+      text-align: right;
+    }
+
+    .score-box strong {
+      display: block;
+      font-size: 1.65rem;
+      color: var(--ink);
+    }
+
+    .score-box span {
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+
+    .progress-track {
+      margin: 14px 0 16px;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(22, 32, 43, 0.08);
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #154e63, #2d7d46);
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .status-chip,
+    .note-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+
+    .status-chip.met,
+    .note-chip.met {
+      color: var(--met);
+      background: rgba(45, 125, 70, 0.1);
+      border-color: rgba(45, 125, 70, 0.18);
+    }
+
+    .status-chip.partial,
+    .note-chip.partial {
+      color: var(--partial);
+      background: rgba(199, 121, 27, 0.11);
+      border-color: rgba(199, 121, 27, 0.2);
+    }
+
+    .status-chip.gap,
+    .note-chip.gap {
+      color: var(--gap);
+      background: rgba(183, 58, 49, 0.1);
+      border-color: rgba(183, 58, 49, 0.2);
+    }
+
+    .status-chip.na,
+    .note-chip.na {
+      color: var(--na);
+      background: rgba(100, 116, 139, 0.11);
+      border-color: rgba(100, 116, 139, 0.2);
+    }
+
+    .status-chip.closed,
+    .note-chip.closed {
+      color: var(--closed);
+      background: rgba(33, 83, 107, 0.1);
+      border-color: rgba(33, 83, 107, 0.18);
+    }
+
+    .main-gap-block {
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.74);
+      border: 1px solid rgba(22, 32, 43, 0.08);
+      margin-bottom: 14px;
+    }
+
+    .main-gap-label {
+      margin: 0 0 8px;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+
+    .main-gap-copy {
+      margin: 0;
+      color: var(--ink);
+      overflow-wrap: anywhere;
+    }
+
+    details {
+      border-top: 1px solid rgba(22, 32, 43, 0.08);
+      padding-top: 14px;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 700;
+      color: var(--accent);
+      list-style: none;
+    }
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+    summary::after {
+      content: "+";
+      float: right;
+      font-size: 1.1rem;
+      color: var(--accent);
+    }
+
+    details[open] summary::after {
+      content: "-";
+    }
+
+    .details-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .criterion-card {
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.86);
+      border: 1px solid rgba(22, 32, 43, 0.08);
+    }
+
+    .criterion-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+
+    .criterion-title {
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .criterion-detail {
+      margin: 0;
+      font-size: 0.93rem;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .meta-note {
+      margin-top: 14px;
+      font-size: 0.92rem;
+    }
+
+    .empty-state {
+      padding: 20px;
+      border-radius: 20px;
+      border: 1px dashed rgba(22, 32, 43, 0.18);
+      background: rgba(255, 255, 255, 0.6);
+      text-align: center;
+    }
+
+    @media (max-width: 1080px) {
+      .summary-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .highlights-panel {
+        position: static;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .page-shell {
+        width: min(100vw - 20px, 1400px);
+        padding-top: 14px;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .folder-top,
+      .details-grid,
+      .hero-panel-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .score-box {
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero">
+      <section class="hero-copy">
+        <p class="eyebrow">Culture Camp rollout board</p>
+        <h1>Matchbook Live Culture Tracker</h1>
+        <p>This board reads the tracker CSV in the same folder and turns the folder-first audit into a searchable implementation view. Use it to see where the rollout is closed, where it is partial, and which folders still need the next operating move.</p>
+      </section>
+      <aside class="hero-panel">
+        <div>
+          <p class="eyebrow">What this board expects</p>
+          <p>The page looks for <strong>matchbook_tracker_data.csv</strong> beside the HTML file. If you open the page locally and auto-load is blocked, use the manual CSV loader below.</p>
+        </div>
+        <div class="hero-panel-grid">
+          <div class="mini-stat">
+            <strong>20</strong>
+            <span>rollout folders tracked</span>
+          </div>
+          <div class="mini-stat">
+            <strong>10</strong>
+            <span>completion chains per folder</span>
+          </div>
+          <div class="mini-stat">
+            <strong>CSV</strong>
+            <span>same-folder template support</span>
+          </div>
+          <div class="mini-stat">
+            <strong>Live</strong>
+            <span>search, filter, and sort controls</span>
+          </div>
+        </div>
+      </aside>
+    </header>
+
+    <section class="toolbar">
+      <input id="searchInput" type="search" placeholder="Search folders, gaps, paths, or evidence..." aria-label="Search tracker rows">
+      <select id="focusFilter" aria-label="Focus filter">
+        <option value="all">All folders</option>
+        <option value="gap">Folders with at least one GAP</option>
+        <option value="partial">Folders with no GAP but at least one PARTIAL</option>
+        <option value="closed">Folders whose main gap is marked CLOSED</option>
+        <option value="met">Folders with every actionable chain MET</option>
+      </select>
+      <select id="sortMode" aria-label="Sort mode">
+        <option value="priority">Sort by priority</option>
+        <option value="complete">Sort by completion</option>
+        <option value="folder">Sort by folder ID</option>
+      </select>
+      <label class="upload-label" for="csvInput">Load CSV manually</label>
+      <input id="csvInput" type="file" accept=".csv,text/csv" hidden>
+      <a class="button-link" href="./matchbook_tracker_data.csv" download>Download CSV template</a>
+    </section>
+
+    <p id="statusMessage" class="status-message">Loading matchbook_tracker_data.csv...</p>
+
+    <section id="summaryGrid" class="summary-grid" hidden></section>
+
+    <section class="content-grid">
+      <aside class="highlights-panel">
+        <div class="panel-heading">
+          <h2>Priority view</h2>
+        </div>
+        <p class="meta-note">These folders rise to the top when they carry the most open GAP and PARTIAL chains.</p>
+        <div id="priorityList" class="priority-list"></div>
+      </aside>
+
+      <main>
+        <div id="folderGrid" class="folder-grid"></div>
+      </main>
+    </section>
+  </div>
+
+  <script>
+    const CRITERIA = [
+      'path_locked',
+      'operating_artifacts_visible',
+      'adult_moves_named',
+      'audience_separation',
+      'training_facilitation',
+      'coaching_observation',
+      'data_permissions',
+      'grade_band_differences',
+      'slide_alignment',
+      'tracker_crosswalk_backlog'
+    ];
+
+    const LABELS = {
+      path_locked: 'Path locked',
+      operating_artifacts_visible: 'Operating artifacts visible',
+      adult_moves_named: 'Adult moves named',
+      audience_separation: 'Audience separation',
+      training_facilitation: 'Training facilitation',
+      coaching_observation: 'Coaching observation',
+      data_permissions: 'Data permissions',
+      grade_band_differences: 'Grade-band differences',
+      slide_alignment: 'Slide alignment',
+      tracker_crosswalk_backlog: 'Tracker crosswalk backlog'
+    };
+
+    const state = {
+      rows: []
+    };
+
+    const searchInput = document.getElementById('searchInput');
+    const focusFilter = document.getElementById('focusFilter');
+    const sortMode = document.getElementById('sortMode');
+    const csvInput = document.getElementById('csvInput');
+    const statusMessage = document.getElementById('statusMessage');
+    const summaryGrid = document.getElementById('summaryGrid');
+    const priorityList = document.getElementById('priorityList');
+    const folderGrid = document.getElementById('folderGrid');
+
+    function createNode(tag, className, text) {
+      const node = document.createElement(tag);
+      if (className) {
+        node.className = className;
+      }
+      if (text !== undefined) {
+        node.textContent = text;
+      }
+      return node;
+    }
+
+    function setStatus(message, tone) {
+      statusMessage.textContent = message;
+      statusMessage.className = 'status-message' + (tone ? ' ' + tone : '');
+    }
+
+    function parseCsv(text) {
+      const rows = [];
+      let row = [];
+      let value = '';
+      let inQuotes = false;
+
+      const source = text.replace(/^\uFEFF/, '');
+
+      for (let i = 0; i < source.length; i += 1) {
+        const char = source[i];
+        const next = source[i + 1];
+
+        if (inQuotes) {
+          if (char === '"' && next === '"') {
+            value += '"';
+            i += 1;
+          } else if (char === '"') {
+            inQuotes = false;
+          } else {
+            value += char;
+          }
+          continue;
+        }
+
+        if (char === '"') {
+          inQuotes = true;
+          continue;
+        }
+
+        if (char === ',') {
+          row.push(value);
+          value = '';
+          continue;
+        }
+
+        if (char === '\n') {
+          row.push(value.replace(/\r$/, ''));
+          rows.push(row);
+          row = [];
+          value = '';
+          continue;
+        }
+
+        value += char;
+      }
+
+      if (value.length > 0 || row.length > 0) {
+        row.push(value.replace(/\r$/, ''));
+        rows.push(row);
+      }
+
+      const headers = rows.shift() || [];
+      return rows
+        .filter((cells) => cells.some((cell) => cell !== ''))
+        .map((cells) => {
+          const record = {};
+          headers.forEach((header, index) => {
+            record[header] = cells[index] || '';
+          });
+          return record;
+        });
+    }
+
+    function splitCell(cell) {
+      const raw = (cell || '').trim();
+      const separator = ' | ';
+      const separatorIndex = raw.indexOf(separator);
+
+      if (separatorIndex === -1) {
+        return {
+          status: raw || 'UNKNOWN',
+          detail: ''
+        };
+      }
+
+      return {
+        status: raw.slice(0, separatorIndex).trim(),
+        detail: raw.slice(separatorIndex + separator.length).trim()
+      };
+    }
+
+    function classifyMainGap(text) {
+      const value = (text || '').trim();
+      if (!value) {
+        return 'open';
+      }
+      if (value.startsWith('CLOSED')) {
+        return 'closed';
+      }
+      if (value.startsWith('PARTIAL')) {
+        return 'partial';
+      }
+      if (value.startsWith('GAP')) {
+        return 'gap';
+      }
+      return 'open';
+    }
+
+    function enrichRow(row) {
+      const counts = {
+        MET: 0,
+        PARTIAL: 0,
+        GAP: 0,
+        'N/A': 0,
+        UNKNOWN: 0
+      };
+
+      const details = {};
+
+      CRITERIA.forEach((key) => {
+        const parsed = splitCell(row[key]);
+        details[key] = parsed;
+        counts[parsed.status] = (counts[parsed.status] || 0) + 1;
+      });
+
+      const actionable = CRITERIA.length - counts['N/A'];
+      const metRatio = actionable > 0 ? counts.MET / actionable : 1;
+      const priorityScore = counts.GAP * 3 + counts.PARTIAL;
+      const severity = counts.GAP > 0 ? 'gap' : counts.PARTIAL > 0 ? 'partial' : 'met';
+      const mainGapState = classifyMainGap(row.main_gap);
+      const folderNumber = Number.parseInt(row.folder_id, 10) || 0;
+      const searchBlob = Object.values(row).join(' ').toLowerCase();
+
+      return {
+        ...row,
+        details,
+        counts,
+        actionable,
+        metRatio,
+        priorityScore,
+        severity,
+        mainGapState,
+        folderNumber,
+        searchBlob
+      };
+    }
+
+    function summaryStat(label, value, subtext, extraClass) {
+      const card = createNode('div', 'summary-card' + (extraClass ? ' ' + extraClass : ''));
+      card.appendChild(createNode('div', 'label', label));
+      card.appendChild(createNode('div', 'value', String(value)));
+      card.appendChild(createNode('div', 'subtext', subtext));
+      return card;
+    }
+
+    function chip(text, tone) {
+      return createNode('span', 'status-chip ' + tone, text);
+    }
+
+    function renderSummary(rows) {
+      summaryGrid.innerHTML = '';
+      summaryGrid.hidden = false;
+
+      const totals = rows.reduce((accumulator, row) => {
+        accumulator.folders += 1;
+        accumulator.actionable += row.actionable;
+        accumulator.met += row.counts.MET;
+        accumulator.partial += row.counts.PARTIAL;
+        accumulator.gap += row.counts.GAP;
+        accumulator.na += row.counts['N/A'];
+        if (row.counts.GAP > 0) {
+          accumulator.foldersWithGap += 1;
+        }
+        return accumulator;
+      }, {
+        folders: 0,
+        actionable: 0,
+        met: 0,
+        partial: 0,
+        gap: 0,
+        na: 0,
+        foldersWithGap: 0
+      });
+
+      const completion = totals.actionable > 0 ? Math.round((totals.met / totals.actionable) * 100) : 0;
+
+      summaryGrid.appendChild(summaryStat('Folders shown', totals.folders, 'Current filtered board view'));
+      summaryGrid.appendChild(summaryStat('Actionable chains', totals.actionable, completion + '% currently MET'));
+      summaryGrid.appendChild(summaryStat('MET', totals.met, 'Closed completion checks', 'met'));
+      summaryGrid.appendChild(summaryStat('PARTIAL', totals.partial, 'Checks still in progress', 'partial'));
+      summaryGrid.appendChild(summaryStat('GAP', totals.gap, totals.foldersWithGap + ' folders still carry a GAP', 'gap'));
+    }
+
+    function renderPriority(rows) {
+      priorityList.innerHTML = '';
+
+      const ranked = rows
+        .slice()
+        .sort((left, right) => {
+          if (right.priorityScore !== left.priorityScore) {
+            return right.priorityScore - left.priorityScore;
+          }
+          return left.folderNumber - right.folderNumber;
+        })
+        .slice(0, 6);
+
+      if (ranked.length === 0) {
+        priorityList.appendChild(createNode('div', 'empty-state', 'No folders match the current filters.'));
+        return;
+      }
+
+      ranked.forEach((row) => {
+        const button = createNode('button', 'priority-item');
+        button.type = 'button';
+        button.addEventListener('click', () => {
+          const target = document.getElementById('folder-' + row.folder_id);
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+
+        button.appendChild(createNode('strong', '', row.folder_name));
+        button.appendChild(createNode('small', '', row.counts.GAP + ' GAP, ' + row.counts.PARTIAL + ' PARTIAL'));
+        priorityList.appendChild(button);
+      });
+    }
+
+    function renderFolders(rows) {
+      folderGrid.innerHTML = '';
+
+      if (rows.length === 0) {
+        folderGrid.appendChild(createNode('div', 'empty-state', 'No folders match the current search and filter settings.'));
+        return;
+      }
+
+      rows.forEach((row) => {
+        const card = createNode('article', 'folder-card severity-' + row.severity);
+        card.id = 'folder-' + row.folder_id;
+
+        const top = createNode('div', 'folder-top');
+        const heading = createNode('div');
+        heading.appendChild(createNode('p', 'folder-id', 'Folder ' + row.folder_id));
+        heading.appendChild(createNode('h3', 'folder-title', row.folder_name));
+        heading.appendChild(createNode('p', 'folder-path', row.working_folder_path));
+        top.appendChild(heading);
+
+        const scoreBox = createNode('div', 'score-box');
+        scoreBox.appendChild(createNode('strong', '', row.counts.MET + '/' + row.actionable));
+        scoreBox.appendChild(createNode('span', '', 'chains MET'));
+        top.appendChild(scoreBox);
+        card.appendChild(top);
+
+        const progressTrack = createNode('div', 'progress-track');
+        const progressFill = createNode('div', 'progress-fill');
+        progressFill.style.width = Math.max(4, Math.round(row.metRatio * 100)) + '%';
+        progressTrack.appendChild(progressFill);
+        card.appendChild(progressTrack);
+
+        const chips = createNode('div', 'chip-row');
+        chips.appendChild(chip('MET ' + row.counts.MET, 'met'));
+        chips.appendChild(chip('PARTIAL ' + row.counts.PARTIAL, 'partial'));
+        chips.appendChild(chip('GAP ' + row.counts.GAP, 'gap'));
+        chips.appendChild(chip('N/A ' + row.counts['N/A'], 'na'));
+        if (row.mainGapState === 'closed') {
+          chips.appendChild(chip('Main gap closed', 'closed'));
+        }
+        card.appendChild(chips);
+
+        const gapBlock = createNode('div', 'main-gap-block');
+        gapBlock.appendChild(createNode('p', 'main-gap-label', 'Main gap'));
+        gapBlock.appendChild(createNode('p', 'main-gap-copy', row.main_gap || 'No main gap provided.'));
+        card.appendChild(gapBlock);
+
+        const details = createNode('details');
+        const summary = createNode('summary', '', 'Open evidence map');
+        details.appendChild(summary);
+
+        const detailGrid = createNode('div', 'details-grid');
+
+        const sourceCard = createNode('section', 'criterion-card');
+        const sourceHead = createNode('div', 'criterion-head');
+        sourceHead.appendChild(createNode('div', 'criterion-title', 'Source anchor examples'));
+        sourceCard.appendChild(sourceHead);
+        sourceCard.appendChild(createNode('p', 'criterion-detail', row.source_anchor_examples || 'No source anchor examples listed.'));
+        detailGrid.appendChild(sourceCard);
+
+        CRITERIA.forEach((key) => {
+          const criterion = createNode('section', 'criterion-card');
+          const criterionHead = createNode('div', 'criterion-head');
+          criterionHead.appendChild(createNode('div', 'criterion-title', LABELS[key]));
+          criterionHead.appendChild(chip(row.details[key].status, row.details[key].status.toLowerCase().replace('/', '').replace(/[^a-z]/g, '') || 'na'));
+          criterion.appendChild(criterionHead);
+          criterion.appendChild(createNode('p', 'criterion-detail', row.details[key].detail || 'No additional detail listed.'));
+          detailGrid.appendChild(criterion);
+        });
+
+        details.appendChild(detailGrid);
+        details.appendChild(createNode('p', 'meta-note', 'CSV schema fields: folder_id, folder_name, working_folder_path, source_anchor_examples, the 10 completion chains, and main_gap.'));
+        card.appendChild(details);
+
+        folderGrid.appendChild(card);
+      });
+    }
+
+    function filteredRows() {
+      const query = searchInput.value.trim().toLowerCase();
+      const focus = focusFilter.value;
+      const sort = sortMode.value;
+
+      const rows = state.rows.filter((row) => {
+        const matchesQuery = !query || row.searchBlob.includes(query);
+        if (!matchesQuery) {
+          return false;
+        }
+
+        if (focus === 'gap') {
+          return row.counts.GAP > 0;
+        }
+        if (focus === 'partial') {
+          return row.counts.GAP === 0 && row.counts.PARTIAL > 0;
+        }
+        if (focus === 'closed') {
+          return row.mainGapState === 'closed';
+        }
+        if (focus === 'met') {
+          return row.counts.GAP === 0 && row.counts.PARTIAL === 0;
+        }
+        return true;
+      });
+
+      rows.sort((left, right) => {
+        if (sort === 'folder') {
+          return left.folderNumber - right.folderNumber;
+        }
+        if (sort === 'complete') {
+          if (right.metRatio !== left.metRatio) {
+            return right.metRatio - left.metRatio;
+          }
+          return left.folderNumber - right.folderNumber;
+        }
+        if (right.priorityScore !== left.priorityScore) {
+          return right.priorityScore - left.priorityScore;
+        }
+        if (right.counts.GAP !== left.counts.GAP) {
+          return right.counts.GAP - left.counts.GAP;
+        }
+        return left.folderNumber - right.folderNumber;
+      });
+
+      return rows;
+    }
+
+    function renderBoard(sourceMessage) {
+      const rows = filteredRows();
+      renderSummary(rows);
+      renderPriority(rows);
+      renderFolders(rows);
+      setStatus(rows.length + ' of ' + state.rows.length + ' folders shown. ' + sourceMessage, 'success');
+    }
+
+    function loadCsv(text, sourceMessage) {
+      try {
+        const parsed = parseCsv(text).map(enrichRow);
+        if (parsed.length === 0) {
+          throw new Error('No data rows found in CSV.');
+        }
+        state.rows = parsed;
+        renderBoard(sourceMessage);
+      } catch (error) {
+        console.error(error);
+        setStatus('The CSV could not be parsed. Check that the file uses the expected schema.', 'error');
+      }
+    }
+
+    async function loadDefaultCsv() {
+      try {
+        const response = await fetch('./matchbook_tracker_data.csv', { cache: 'no-store' });
+        if (!response.ok) {
+          throw new Error('CSV request failed with status ' + response.status);
+        }
+        const text = await response.text();
+        loadCsv(text, 'Loaded matchbook_tracker_data.csv from this folder.');
+      } catch (error) {
+        console.error(error);
+        setStatus('Auto-load failed. If you opened the HTML locally, use "Load CSV manually" to choose matchbook_tracker_data.csv.', 'error');
+      }
+    }
+
+    [searchInput, focusFilter, sortMode].forEach((control) => {
+      control.addEventListener('input', () => {
+        if (state.rows.length > 0) {
+          renderBoard('Using the current in-memory tracker data.');
+        }
+      });
+      control.addEventListener('change', () => {
+        if (state.rows.length > 0) {
+          renderBoard('Using the current in-memory tracker data.');
+        }
+      });
+    });
+
+    csvInput.addEventListener('change', async (event) => {
+      const file = event.target.files && event.target.files[0];
+      if (!file) {
+        return;
+      }
+      const text = await file.text();
+      loadCsv(text, 'Loaded ' + file.name + ' from your device.');
+    });
+
+    loadDefaultCsv();
+  </script>
+</body>
+</html>
