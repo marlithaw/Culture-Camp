@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Matchbook Live Culture Tracker</title>
+  <meta http-equiv="refresh" content="0; url=./live_tracker.html">
+  <style>
+    :root {
+      --bg: #f6efe4;
+      --ink: #16202b;
+      --muted: #5d6a72;
+      --card: rgba(255, 252, 247, 0.94);
+      --line: rgba(22, 32, 43, 0.12);
+      --accent: #154e63;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      font-family: Aptos, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(201, 109, 58, 0.14), transparent 28%),
+        radial-gradient(circle at top right, rgba(44, 106, 90, 0.15), transparent 24%),
+        linear-gradient(180deg, #fbf6ef 0%, #eef3eb 100%);
+    }
+
+    .card {
+      width: min(560px, 100%);
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: var(--card);
+      text-align: center;
+      box-shadow: 0 24px 60px rgba(36, 41, 46, 0.12);
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-family: "Book Antiqua", "Palatino Linotype", Georgia, serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.05;
+    }
+
+    p {
+      margin: 0 0 16px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    a {
+      color: var(--accent);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    a:hover { text-decoration: underline; }
+  </style>
+  <script>
+    window.location.replace('./live_tracker.html');
+  </script>
+</head>
+<body>
+  <main class="card">
+    <h1>Opening the live culture tracker</h1>
+    <p>If the board does not open automatically, use the link below.</p>
+    <p><a href="./live_tracker.html">Open the tracker board</a></p>
+  </main>
+</body>
+</html>
