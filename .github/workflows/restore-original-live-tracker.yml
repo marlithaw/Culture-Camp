@@ -1,0 +1,30 @@
+name: Restore original Matchbook tracker frontend
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/restore-original-live-tracker.yml
+
+permissions:
+  contents: write
+
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Restore exact pre-redesign tracker
+        run: |
+          curl --fail --location --silent --show-error \
+            https://raw.githubusercontent.com/marlithaw/Culture-Camp/08c227ce419d2686fb7a5c6f546097fa6fdb1826/live_tracker.html \
+            --output live_tracker.html
+          echo "ecc97011eaa7fe99b62a3208da9c129605a3ee112e5cb1d8737f0e4d512d4c72  live_tracker.html" | sha256sum --check
+      - name: Commit restoration and remove temporary workflow
+        run: |
+          rm .github/workflows/restore-original-live-tracker.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add live_tracker.html .github/workflows/restore-original-live-tracker.yml
+          git commit -m "Restore original live tracker design"
+          git push
