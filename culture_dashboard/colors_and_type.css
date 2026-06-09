@@ -1,0 +1,203 @@
+/* ============================================================
+   MATCHBOOK LEARNING — Colors & Type
+   Design tokens for Matchbook Learning Schools of Indiana.
+   Brand: bold, warm, educator-inviting. "The Matchbook Way."
+   ============================================================ */
+
+/* ---- Webfonts (Google Fonts — see README for substitution notes) ---- */
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@400;500;600;700&family=Mulish:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,700&family=Caveat:wght@600;700&display=swap');
+
+:root {
+  /* ---------- BRAND COLORS ---------- */
+  --spark-red:    #E21C24;  /* primary — logo, buttons, hero fields, accents */
+  --spark-red-press: #B5151A; /* pressed / hover-dark for red surfaces */
+  --ember:        #C8161D;  /* deep red, large fills & gradients */
+  --dream-yellow: #F9DC7C;  /* callout cards (K-8 feature blocks) */
+  --gold:         #F7B23C;  /* warm gold — newsletter display, highlights */
+
+  /* ---------- INK & NEUTRALS ---------- */
+  --ink:        #1A1A1A;  /* headlines, primary text */
+  --charcoal:   #232323;  /* dark feature cards */
+  --slate:      #4A4A4A;  /* body copy */
+  --muted:      #8A8A8A;  /* secondary labels, school sub-names */
+  --hairline:   #E4E2DE;  /* borders, dividers */
+  --paper:      #F6F6F4;  /* off-white section background */
+  --cloud:      #EDEDEB;  /* light fill */
+  --white:      #FFFFFF;
+
+  /* ---------- SEMANTIC ---------- */
+  --bg:           var(--white);
+  --bg-alt:       var(--paper);
+  --bg-invert:    var(--charcoal);
+  --fg1:          var(--ink);     /* primary text */
+  --fg2:          var(--slate);   /* body */
+  --fg3:          var(--muted);   /* tertiary */
+  --fg-invert:    var(--white);
+  --accent:       var(--spark-red);
+  --accent-soft:  var(--dream-yellow);
+  --border:       var(--hairline);
+
+  /* ---------- TYPE FAMILIES ---------- */
+  --font-display: 'Anton', 'Arial Narrow', sans-serif;        /* ultra-bold condensed display */
+  --font-cond:    'Oswald', 'Arial Narrow', sans-serif;       /* condensed labels, nav, buttons, kickers */
+  --font-body:    'Mulish', system-ui, -apple-system, sans-serif; /* body copy */
+  --font-script:  'Caveat', 'Comic Sans MS', cursive;         /* playful flyer accent (use sparingly) */
+
+  /* ---------- RADII ---------- */
+  --radius-none:  0px;     /* cards & photos are SHARP-cornered */
+  --radius-sm:    4px;
+  --radius-pill:  999px;   /* buttons are full pills */
+
+  /* ---------- SHADOWS (flat brand; used sparingly) ---------- */
+  --shadow-sm:  0 1px 3px rgba(26,26,26,.10);
+  --shadow-md:  0 6px 20px rgba(26,26,26,.12);
+  --shadow-lg:  0 16px 44px rgba(26,26,26,.16);
+
+  /* ---------- SPACING SCALE (4px base) ---------- */
+  --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px;
+  --sp-5: 24px; --sp-6: 32px; --sp-7: 48px; --sp-8: 64px;
+  --sp-9: 96px; --sp-10: 128px;
+
+  /* ---------- MOTION ---------- */
+  --ease: cubic-bezier(.2,.7,.2,1); /* @kind other */
+  --dur:  180ms; /* @kind other */
+}
+
+/* ============================================================
+   BASE TYPE STYLES
+   ============================================================ */
+body {
+  font-family: var(--font-body);
+  color: var(--fg1);
+  background: var(--bg);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---- Display: giant condensed caps (hero headlines) ---- */
+.mb-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 0.92;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.mb-display--red { color: var(--spark-red); }
+.mb-display--white { color: var(--white); }
+
+h1, .mb-h1 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(48px, 7vw, 104px);
+  line-height: 0.92;
+  text-transform: uppercase;
+  letter-spacing: 0.005em;
+  color: var(--ink);
+  margin: 0;
+}
+h2, .mb-h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(34px, 4.4vw, 60px);
+  line-height: 0.96;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+  margin: 0;
+}
+h3, .mb-h3 {
+  font-family: var(--font-cond);
+  font-weight: 700;
+  font-size: clamp(22px, 2.4vw, 32px);
+  line-height: 1.05;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+  margin: 0;
+}
+
+/* ---- Eyebrow / kicker: letterspaced condensed caps ---- */
+.mb-kicker {
+  font-family: var(--font-cond);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.mb-kicker--red { color: var(--spark-red); }
+
+/* ---- Wordmark (logo lockup text) ---- */
+.mb-wordmark {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  color: var(--spark-red);
+  letter-spacing: 0.01em;
+  line-height: 0.9;
+}
+
+/* ---- Body ---- */
+p, .mb-body {
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--fg2);
+  margin: 0 0 1em;
+}
+.mb-lead { font-size: 20px; line-height: 1.6; color: var(--fg2); }
+.mb-small { font-size: 14px; line-height: 1.5; color: var(--fg3); }
+
+/* ---- Nav / button label ---- */
+.mb-label {
+  font-family: var(--font-cond);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+a { color: var(--spark-red); text-decoration: none; }
+
+/* ============================================================
+   SIGNATURE ELEMENTS
+   ============================================================ */
+
+/* Pill button (primary red) */
+.mb-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--font-cond); font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.06em; font-size: 15px;
+  padding: 14px 28px; border: 0; cursor: pointer;
+  background: var(--spark-red); color: var(--white);
+  border-radius: var(--radius-pill);
+  transition: background var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.mb-btn:hover { background: var(--spark-red-press); }
+.mb-btn:active { transform: scale(0.97); }
+.mb-btn--ghost {
+  background: transparent; color: var(--ink);
+  border: 2px solid var(--ink);
+}
+.mb-btn--ghost:hover { background: var(--ink); color: var(--white); }
+
+/* Red rule (the underline under feature titles) */
+.mb-rule { height: 5px; width: 100%; background: var(--spark-red); border: 0; }
+
+/* Numbered step marker */
+.mb-step-num {
+  font-family: var(--font-display); font-size: 40px; color: var(--ink);
+  line-height: 1;
+}
+
+/* Dark feature card (sharp corners) */
+.mb-card-dark {
+  background: var(--charcoal); color: var(--white);
+  padding: var(--sp-6); border-radius: var(--radius-none);
+}
+/* Yellow callout card */
+.mb-card-yellow {
+  background: var(--dream-yellow); color: var(--ink);
+  padding: var(--sp-6); border-radius: var(--radius-none);
+}

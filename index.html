@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Matchbook Live Culture Tracker</title>
-  <meta http-equiv="refresh" content="0; url=./live_tracker.html">
+  <title>Matchbook Culture Tracker</title>
   <style>
     :root {
       --bg: #f6efe4;
@@ -13,6 +12,7 @@
       --card: rgba(255, 252, 247, 0.94);
       --line: rgba(22, 32, 43, 0.12);
       --accent: #154e63;
+      --spark: #E21C24;
     }
 
     * { box-sizing: border-box; }
@@ -32,8 +32,8 @@
     }
 
     .card {
-      width: min(560px, 100%);
-      padding: 28px;
+      width: min(620px, 100%);
+      padding: 32px;
       border: 1px solid var(--line);
       border-radius: 24px;
       background: var(--card);
@@ -42,35 +42,100 @@
     }
 
     h1 {
-      margin: 0 0 12px;
+      margin: 0 0 10px;
       font-family: "Book Antiqua", "Palatino Linotype", Georgia, serif;
       font-size: clamp(2rem, 4vw, 3rem);
       line-height: 1.05;
     }
 
     p {
-      margin: 0 0 16px;
+      margin: 0 0 24px;
       color: var(--muted);
-      line-height: 1.5;
+      line-height: 1.55;
     }
 
-    a {
-      color: var(--accent);
-      font-weight: 700;
+    .choices {
+      display: grid;
+      gap: 14px;
+      text-align: left;
+    }
+
+    .choice {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 20px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.7);
+      color: inherit;
       text-decoration: none;
+      transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
     }
 
-    a:hover { text-decoration: underline; }
+    .choice:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(36, 41, 46, 0.14);
+      border-color: rgba(22, 32, 43, 0.28);
+    }
+
+    .choice .glyph {
+      flex: 0 0 auto;
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      font-size: 22px;
+      background: rgba(21, 78, 99, 0.1);
+    }
+
+    .choice.primary .glyph { background: rgba(21, 78, 99, 0.14); }
+    .choice.board .glyph { background: rgba(226, 28, 36, 0.12); }
+
+    .choice .label { font-weight: 700; font-size: 1.05rem; }
+    .choice .desc { color: var(--muted); font-size: 0.9rem; margin-top: 2px; }
+
+    .badge {
+      display: inline-block;
+      margin-left: 8px;
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--spark);
+      vertical-align: middle;
+    }
+
+    .foot { margin: 22px 0 0; font-size: 0.82rem; color: var(--muted); }
+    .foot a { color: var(--accent); font-weight: 700; text-decoration: none; }
+    .foot a:hover { text-decoration: underline; }
   </style>
-  <script>
-    window.location.replace('./live_tracker.html');
-  </script>
 </head>
 <body>
   <main class="card">
-    <h1>Opening the live culture tracker</h1>
-    <p>If the board does not open automatically, use the link below.</p>
-    <p><a href="./live_tracker.html">Open the tracker board</a></p>
+    <h1>Matchbook Culture Tracker</h1>
+    <p>Choose how you want to view the Culture Camp &amp; BOY build status. Both views read the same session data.</p>
+
+    <nav class="choices">
+      <a class="choice primary" href="./live_tracker.html">
+        <span class="glyph" aria-hidden="true">📋</span>
+        <span>
+          <span class="label">Live Tracker</span>
+          <span class="desc">The original full-session macro board.</span>
+        </span>
+      </a>
+
+      <a class="choice board" href="./culture_dashboard.html">
+        <span class="glyph" aria-hidden="true">🔥</span>
+        <span>
+          <span class="label">Culture Dashboard <span class="badge">Board View</span></span>
+          <span class="desc">KPI strip, filters, and a slide-in detail drawer.</span>
+        </span>
+      </a>
+    </nav>
+
+    <p class="foot">Heading straight to the board you used last time? <a href="./live_tracker.html">Open the live tracker →</a></p>
   </main>
 </body>
 </html>
