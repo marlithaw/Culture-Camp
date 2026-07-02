@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>App / Data Architecture Deck</title>
+<link rel="stylesheet" href="_shared/culture-lab-deck.css">
+<style>
+  .schema { display:flex; flex-direction:column; gap:14px; }
+  .obj { border:2px solid var(--hairline); background:#fff; }
+  .obj .obj-h { font-family:var(--font-cond); font-weight:700; text-transform:uppercase; letter-spacing:.06em; font-size:22px; color:#fff; background:var(--charcoal); padding:12px 18px; }
+  .obj .obj-f { font-family:var(--font-body); font-size:18px; color:var(--slate); padding:12px 18px; line-height:1.4; }
+  .permgrid td .yes { color:var(--spark-red); font-family:var(--font-display); font-size:24px; }
+  .permgrid td { text-align:center; }
+  .permgrid td:first-child { text-align:left; }
+  .permgrid th:first-child { text-align:left; }
+</style>
+<script type="application/json" id="speaker-notes">[
+"SPEAKER NOTES: This deck presents the data model and app vision behind the Culture Lab — for leaders and developers. Open with the non-negotiable that frames every design decision: the app must reduce teacher burden, not add to it. Technology serves the routine; the routine never serves the technology.\n\nFACILITATOR ACTION: Set the framing; name who in the room owns build, data, and rollout decisions.\n\nPARTICIPANT ACTION: Name the single workflow you most want the app to make faster.\n\nLINKED ARTIFACT: 14_DATA_TRACKING_AND_APP_READINESS/Backend_Data_Architecture",
+"SPEAKER NOTES: Vision and purpose. The app exists to reduce cognitive load, capture evidence quickly, and connect that evidence to recognition, coaching, and family partnership. Explain why an app is needed: to streamline documentation, convert evidence into actionable data, and protect privacy — without adding to teacher burden.\n\nFACILITATOR ACTION: State the three jobs: reduce load, capture evidence, connect data; show the app concept visual.\n\nPARTICIPANT ACTION: Rank those three jobs for your context.\n\nLINKED ARTIFACT: 14_DATA_TRACKING_AND_APP_READINESS/Backend_Data_Architecture",
+"SPEAKER NOTES: Purpose and audience of the deck itself. This is a working spec conversation for leaders who approve and developers who build. The goal is a shared understanding of the objects, the conversion logic, the modules, and the guardrails before any code is written.\n\nFACILITATOR ACTION: Clarify the deck moves from vision to schema to logic to modules to privacy to roadmap.\n\nPARTICIPANT ACTION: Note the section your role most influences.\n\nLINKED ARTIFACT: 14_DATA_TRACKING_AND_APP_READINESS/Data_Dictionary",
+"SPEAKER NOTES: Walk the agenda: vision, data architecture, evidence conversion logic, modules and permissions, privacy and teacher burden, and the roadmap. Flag evidence conversion and privacy as the two slides where design choices carry the most risk.\n\nFACILITATOR ACTION: Set pace; mark the decision points along the way.\n\nPARTICIPANT ACTION: Flag the section most relevant to your role.\n\nLINKED ARTIFACT: 14_DATA_TRACKING_AND_APP_READINESS/Backend_Data_Architecture",
+"SPEAKER NOTES: Vision and purpose, in depth. The app reduces cognitive load, captures evidence, and connects data to recognition, coaching, and family partnership. The design test for every feature: does this make documentation easier? If it adds a tap without adding value, it does not ship.\n\nFACILITATOR ACTION: Apply the design test to one proposed feature live.\n\nPARTICIPANT ACTION: Propose a feature and test it against 'does this reduce burden?'\n\nLINKED ARTIFACT: 14_DATA_TRACKING_AND_APP_READINESS/Backend_Data_Architecture",
+"SPEAKER NOTES: Data architecture overview. Object schemas exist for scripts, message boards, Morning Meeting records, student evidence, family connections, observations, and recognition. Summarize the Backend Data Architecture and Data Dictionary; emphasize the relationships between objects and the privacy considerations baked into the model.\n\nFACILITATOR ACTION: Walk the ER relationships; show how a Morning Meeting record links to student evidence and recognition.\n\nPARTICIPANT ACTION: Trace one object to the two objects it connects to.\n\nLINKED ARTIFACT: 14_DATA_TRACKING_AND_APP_READINESS/Data_Dictionary",
+"SPEAKER NOTES: Evidence conversion logic — the most consequential design. Qualitative evidence (e.g., the quality of a student's share) converts into quantitative indicators (participation, alignment to the value). Rules define eligibility for recognition so it stays evidence-based, not popularity-based. Walk an example from observation to data to recognition eligibility.\n\nFACILITATOR ACTION: Walk one full conversion example; surface edge cases.\n\nPARTICIPANT ACTION: Define what counts as evidence for one value.\n\nLINKED ARTIFACT: 14_DATA_TRACKING_AND_APP_READINESS/Evidence_Conversion_Logic",
+"SPEAKER NOTES: App modules. Eight modules make up the app: Morning Meeting, Practice Move Catalogue, Family Connection, Responsive Behavior, Repair, Cypher, Dashboard, and Settings. Each maps to a Culture Lab component so the tool mirrors the practice. Walk the App Module Map and note that no module exists without a real routine behind it.\n\nFACILITATOR ACTION: Walk the eight modules; tie each to its component deck.\n\nPARTICIPANT ACTION: Name the module your role would open most.\n\nLINKED ARTIFACT: 14_DATA_TRACKING_AND_APP_READINESS/App_Module_Map",
+"SPEAKER NOTES: Stakeholder permissions. Each user role sees only what it needs. Walk the Stakeholder Permissions Map; clarify exactly which fields teachers, leaders, students, and families can see. The default is least-privilege — visibility is granted deliberately, never by accident.\n\nFACILITATOR ACTION: Walk the permissions grid; confirm no role sees more than necessary.\n\nPARTICIPANT ACTION: Check one module and confirm the right roles have access.\n\nLINKED ARTIFACT: 14_DATA_TRACKING_AND_APP_READINESS/Stakeholder_Permissions_Map",
+"SPEAKER NOTES: Privacy and teacher burden — the two guardrails. Implement privacy and visibility rules so sensitive data is shown only to those who need it. Use dropdowns, auto-generated summaries, and quick taps to minimize teacher effort. Reinforce: the app must make documentation easier, not harder, or teachers will not use it and the data will be empty.\n\nFACILITATOR ACTION: Review the privacy rules and the Teacher Burden Check; set a max-taps standard.\n\nPARTICIPANT ACTION: Propose a privacy rule for one sensitive field.\n\nLINKED ARTIFACT: 14_DATA_TRACKING_AND_APP_READINESS/Privacy_and_Visibility_Rules",
+"SPEAKER NOTES: Roadmap and next steps. Define development phases: gather requirements, build an MVP, pilot with select classrooms, then iterate based on data and feedback, ensuring alignment with Culture Lab practices throughout. Integration with existing systems comes after the MVP proves value.\n\nFACILITATOR ACTION: Walk the roadmap milestones; assign owners to the first phase.\n\nPARTICIPANT ACTION: Name the classrooms that should pilot first and why.\n\nLINKED ARTIFACT: 14_DATA_TRACKING_AND_APP_READINESS/Backend_Data_Architecture",
+"SPEAKER NOTES: Reflection and commitment. Ask leaders and developers to name the one guardrail they will hold (usually the burden ceiling) and the first deliverable they will own. The data architecture only matters if the routine still feels human.\n\nFACILITATOR ACTION: Two minutes of reflection; capture first-phase commitments.\n\nPARTICIPANT ACTION: Write the guardrail you will protect and your first deliverable.\n\nLINKED ARTIFACT: 14_DATA_TRACKING_AND_APP_READINESS/Backend_Data_Architecture",
+"SPEAKER NOTES: Next steps and resources. Finalize requirements, confirm the data dictionary, scope the MVP modules, and choose pilot classrooms. Point to the Backend Data Architecture, Data Dictionary, and Evidence Conversion Logic.\n\nFACILITATOR ACTION: Confirm the requirements deadline and MVP scope; assign owners.\n\nPARTICIPANT ACTION: Add your first deliverable and date to the project plan.\n\nLINKED ARTIFACT: 14_DATA_TRACKING_AND_APP_READINESS (full folder)",
+"SPEAKER NOTES: Close on the principle that governs the whole build. The best culture data system is the one teachers barely notice using. Reduce burden, protect privacy, and keep evidence honest — and the data will serve recognition, coaching, and families for years. End by naming the first build milestone.\n\nFACILITATOR ACTION: Reaffirm the burden-first principle; thank the team.\n\nPARTICIPANT ACTION: Say the first milestone date aloud.\n\nLINKED ARTIFACT: 01_START_HERE/Implementation_Non-Negotiables.md"
+]</script>
+</head>
+<body>
+<deck-stage width="1920" height="1080">
+
+  <!-- 1 TITLE -->
+  <section data-label="Title" data-screen-label="01">
+    <div class="slide slide--ink slide--center">
+      <img src="_shared/flame-logo.svg" height="120" alt="" style="filter:brightness(0) invert(1);margin-bottom:36px;">
+      <p class="kick red" style="margin-bottom:24px;">The System Behind The System</p>
+      <h1 class="disp white" style="font-size:128px;">App &amp; Data<br>Architecture</h1>
+      <p class="lead on-dark" style="margin-top:34px;max-width:1180px;font-size:40px;">Capturing evidence with less teacher burden — and connecting it to what matters.</p>
+      <div class="footer"><span class="wm">Matchbook Learning Schools of Indiana</span><span>App / Data Architecture · 2025–26</span></div>
+    </div>
+  </section>
+
+  <!-- 2 VISION -->
+  <section data-label="Vision & Purpose" data-screen-label="02">
+    <div class="slide">
+      <div class="slide-head"><p class="kick red">Vision &amp; Purpose</p><h2 class="disp">Technology Serves<br>The Routine</h2><hr class="rule"></div>
+      <div class="row fill" style="margin-top:var(--gap-title);align-items:center;gap:48px;">
+        <div class="grid g3" style="flex:1.4;">
+          <div class="card card-paper"><div class="card-num">1</div><div class="h3">Reduce Load</div><p class="small">Less cognitive burden, not more.</p></div>
+          <div class="card card-paper"><div class="card-num">2</div><div class="h3">Capture Evidence</div><p class="small">Quick, structured, in seconds.</p></div>
+          <div class="card card-paper"><div class="card-num">3</div><div class="h3">Connect Data</div><p class="small">To recognition, coaching, family.</p></div>
+        </div>
+        <div class="callout callout--red" style="flex:1;"><p class="mantra" style="font-size:40px;">It Must Make<br>Documentation Easier,<br>Never Harder.</p></div>
+      </div>
+      <div class="footer"><span class="wm"><img src="_shared/flame-logo.svg" alt="">App / Data Architecture</span><span>02</span></div>
+    </div>
+  </section>
+
+  <!-- 3 AUDIENCE -->
+  <section data-label="Audience" data-screen-label="03">
+    <div class="slide slide--paper">
+      <div class="slide-head"><p class="kick red">Audience</p><h2 class="disp">Leaders &amp;<br>Developers</h2><hr class="rule"></div>
+      <div class="grid g3 fill" style="align-items:start;margin-top:var(--gap-title);">
+        <div class="card"><div class="h3">Leaders</div><p class="small">Approve scope, protect the burden ceiling, choose pilots.</p></div>
+        <div class="card"><div class="h3">Developers</div><p class="small">Build the schema, modules, and conversion logic.</p></div>
+        <div class="card"><div class="h3">Data Owners</div><p class="small">Steward privacy, dashboards, and integrations.</p></div>
+      </div>
+      <div class="footer"><span class="wm"><img src="_shared/flame-logo.svg" alt="">App / Data Architecture</span><span>03</span></div>
+    </div>
+  </section>
+
+  <!-- 4 AGENDA -->
+  <section data-label="Agenda" data-screen-label="04">
+    <div class="slide">
+      <div class="slide-head"><p class="kick red">Agenda</p><h2 class="disp">From Vision<br>To Roadmap</h2></div>
+      <div class="agenda fill" style="margin-top:var(--gap-title);">
+        <div class="item"><span class="no">01</span><span class="ttl">Vision &amp; Data Architecture</span></div>
+        <div class="item"><span class="no">02</span><span class="ttl">Evidence Conversion Logic</span></div>
+        <div class="item"><span class="no">03</span><span class="ttl">Modules &amp; Permissions</span></div>
+        <div class="item"><span class="no">04</span><span class="ttl">Privacy, Burden &amp; Roadmap</span></div>
+      </div>
+      <div class="footer"><span class="wm"><img src="_shared/flame-logo.svg" alt="">App / Data Architecture</span><span>04</span></div>
+    </div>
+  </section>
+
+  <!-- 5 DESIGN TEST -->
+  <section data-label="The Design Test" data-screen-label="05">
+    <div class="slide slide--red slide--center">
+      <p class="kick white" style="margin-bottom:24px;">The Test For Every Feature</p>
+      <h2 class="disp white" style="font-size:96px;">"Does This Make<br>Documentation Easier?"</h2>
+      <p class="lead on-dark" style="margin-top:34px;max-width:1150px;">If a feature adds a tap without adding value, it does not ship. The best culture-data system is the one teachers barely notice using.</p>
+    </div>
+  </section>
+
+  <!-- 6 DATA ARCHITECTURE -->
+  <section data-label="Data Architecture" data-screen-label="06">
+    <div class="slide slide--paper">
+      <div class="slide-head"><p class="kick red">Data Architecture Overview</p><h2 class="disp">Seven Core<br>Objects</h2></div>
+      <div class="grid g4 fill" style="align-items:start;margin-top:28px;">
+        <div class="obj"><div class="obj-h">Scripts</div><div class="obj-f">Facilitator language &amp; frames.</div></div>
+        <div class="obj"><div class="obj-h">Message Boards</div><div class="obj-f">Day · value · action · task.</div></div>
+        <div class="obj"><div class="obj-h">MM Records</div><div class="obj-f">Daily routine completion.</div></div>
+        <div class="obj"><div class="obj-h">Student Evidence</div><div class="obj-f">Practice &amp; participation.</div></div>
+        <div class="obj"><div class="obj-h">Family Connections</div><div class="obj-f">Calls &amp; outcomes.</div></div>
+        <div class="obj"><div class="obj-h">Observations</div><div class="obj-f">Walkthrough &amp; coaching.</div></div>
+        <div class="obj"><div class="obj-h">Recognition</div><div class="obj-f">Evidence-based nominations.</div></div>
+        <div class="obj" style="border-color:var(--spark-red);"><div class="obj-h" style="background:var(--spark-red);">Relationships</div><div class="obj-f">Objects link; privacy is built in.</div></div>
+      </div>
+      <div class="footer"><span class="wm"><img src="_shared/flame-logo.svg" alt="">Artifact · Data Dictionary · Backend Data Architecture</span><span>06</span></div>
+    </div>
+  </section>
+
+  <!-- 7 EVIDENCE CONVERSION -->
+  <section data-label="Evidence Conversion" data-screen-label="07">
+    <div class="slide slide--ink">
+      <div class="slide-head"><p class="kick red">Evidence Conversion Logic</p><h2 class="disp white">Qualitative In,<br>Quantitative Out</h2></div>
+      <div class="process fill" style="margin-top:var(--gap-title);">
+        <div class="step" style="border-color:rgba(255,255,255,.18);"><span class="step-no">Input</span><span class="step-name white">Observe</span><p class="small on-dark">A student's share quality, a practice move.</p></div>
+        <div class="step" style="border-color:rgba(255,255,255,.18);"><span class="step-no">Convert</span><span class="step-name white">Indicator</span><p class="small on-dark">Participation, alignment to value.</p></div>
+        <div class="step" style="border-color:rgba(255,255,255,.18);"><span class="step-no">Rule</span><span class="step-name white">Eligibility</span><p class="small on-dark">Rules keep recognition evidence-based.</p></div>
+        <div class="step" style="border-color:rgba(255,255,255,.18);"><span class="step-no">Output</span><span class="step-name white">Action</span><p class="small on-dark">Recognition · coaching · family.</p></div>
+      </div>
+      <p class="small on-dark" style="margin-top:20px;">Rules define eligibility so recognition stays <strong class="white">evidence-based, not popularity-based.</strong></p>
+      <div class="footer"><span class="wm"><img src="_shared/flame-logo.svg" alt="">Artifact · Evidence Conversion Logic</span><span>07</span></div>
+    </div>
+  </section>
+
+  <!-- 8 MODULES -->
+  <section data-label="Modules" data-screen-label="08">
+    <div class="slide slide--paper">
+      <div class="slide-head"><p class="kick red">App Modules</p><h2 class="disp">Eight Modules,<br>One App</h2></div>
+      <div class="grid g4 fill" style="align-items:start;margin-top:28px;">
+        <div class="card"><div class="h3" style="font-size:28px;">Morning Meeting</div></div>
+        <div class="card"><div class="h3" style="font-size:28px;">Practice Catalogue</div></div>
+        <div class="card"><div class="h3" style="font-size:28px;">Family Connection</div></div>
+        <div class="card"><div class="h3" style="font-size:28px;">Responsive Behavior</div></div>
+        <div class="card"><div class="h3" style="font-size:28px;">Repair</div></div>
+        <div class="card"><div class="h3" style="font-size:28px;">Cypher</div></div>
+        <div class="card"><div class="h3" style="font-size:28px;">Dashboard</div></div>
+        <div class="card card-yellow"><div class="h3" style="font-size:28px;">Settings</div></div>
+      </div>
+      <div class="footer"><span class="wm"><img src="_shared/flame-logo.svg" alt="">Artifact · App Module Map</span><span>08</span></div>
+    </div>
+  </section>
+
+  <!-- 9 PERMISSIONS -->
+  <section data-label="Permissions" data-screen-label="09">
+    <div class="slide">
+      <div class="slide-head"><p class="kick red">Stakeholder Permissions</p><h2 class="disp">Each Role Sees<br>Only What It Needs</h2></div>
+      <table class="tbl permgrid fill" style="margin-top:24px;">
+        <thead><tr><th>Module</th><th>Teacher</th><th>Leader</th><th>Student</th><th>Family</th></tr></thead>
+        <tbody>
+          <tr><td class="lead-cell">Morning Meeting</td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td>—</td></tr>
+          <tr><td class="lead-cell">Family Connection</td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td>—</td><td><span class="yes">✓</span></td></tr>
+          <tr><td class="lead-cell">Responsive Behavior</td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td>—</td><td>—</td></tr>
+          <tr><td class="lead-cell">Dashboard</td><td>partial</td><td><span class="yes">✓</span></td><td>—</td><td>—</td></tr>
+          <tr><td class="lead-cell">Recognition / Cypher</td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td>recap</td></tr>
+        </tbody>
+      </table>
+      <div class="footer"><span class="wm"><img src="_shared/flame-logo.svg" alt="">Artifact · Stakeholder Permissions Map</span><span>09</span></div>
+    </div>
+  </section>
+
+  <!-- 10 PRIVACY & BURDEN -->
+  <section data-label="Privacy & Burden" data-screen-label="10">
+    <div class="slide slide--red">
+      <div class="slide-head"><p class="kick white">Privacy &amp; Teacher Burden</p><h2 class="disp white">Two Guardrails<br>That Govern Everything</h2><hr class="rule" style="background:#fff;"></div>
+      <div class="grid g2 fill" style="align-items:start;margin-top:var(--gap-title);">
+        <div class="card"><div class="h3">Privacy &amp; Visibility</div><p class="body">Sensitive data shows only to those who need it. Rules enforced at the field level.</p></div>
+        <div class="card card-yellow"><div class="h3">Burden Check</div><p class="body">Dropdowns, auto-summaries, quick taps. If teachers won't use it, the data is empty.</p></div>
+      </div>
+      <div class="footer"><span class="wm"><img src="_shared/flame-logo.svg" alt="">Artifact · Privacy and Visibility Rules · Teacher Burden Check</span><span>10</span></div>
+    </div>
+  </section>
+
+  <!-- 11 ROADMAP -->
+  <section data-label="Roadmap" data-screen-label="11">
+    <div class="slide slide--ink">
+      <div class="slide-head"><p class="kick red">Roadmap &amp; Next Steps</p><h2 class="disp white">Build Small,<br>Prove Value, Iterate</h2></div>
+      <div class="process fill" style="margin-top:var(--gap-title);">
+        <div class="step" style="border-color:rgba(255,255,255,.18);"><span class="step-no">Phase 1</span><span class="step-name white">Requirements</span><p class="small on-dark">Confirm objects &amp; dictionary.</p></div>
+        <div class="step" style="border-color:rgba(255,255,255,.18);"><span class="step-no">Phase 2</span><span class="step-name white">MVP</span><p class="small on-dark">Core modules only.</p></div>
+        <div class="step" style="border-color:rgba(255,255,255,.18);"><span class="step-no">Phase 3</span><span class="step-name white">Pilot</span><p class="small on-dark">Select classrooms.</p></div>
+        <div class="step" style="border-color:rgba(255,255,255,.18);"><span class="step-no">Phase 4</span><span class="step-name white">Iterate</span><p class="small on-dark">Data &amp; feedback loops.</p></div>
+        <div class="step" style="border-color:rgba(255,255,255,.18);"><span class="step-no">Phase 5</span><span class="step-name white">Integrate</span><p class="small on-dark">Connect existing systems.</p></div>
+      </div>
+      <div class="footer"><span class="wm"><img src="_shared/flame-logo.svg" alt="">Artifact · Backend Data Architecture</span><span>11</span></div>
+    </div>
+  </section>
+
+  <!-- 12 REFLECTION / COMMITMENT -->
+  <section data-label="Commitment" data-screen-label="12">
+    <div class="slide slide--paper">
+      <div class="slide-head"><p class="kick red">Reflection &amp; Commitment</p><h2 class="disp">Keep The Routine<br>Human</h2></div>
+      <div class="grid g2 fill" style="align-items:start;margin-top:var(--gap-title);">
+        <div class="card"><div class="h3">Hold The Guardrail</div><p class="body">Which guardrail will you protect — usually the burden ceiling?</p></div>
+        <div class="card card-yellow"><div class="h3">First Deliverable</div><p class="body">What is the first thing you will own and ship?</p></div>
+      </div>
+      <div class="footer"><span class="wm"><img src="_shared/flame-logo.svg" alt="">App / Data Architecture</span><span>12</span></div>
+    </div>
+  </section>
+
+  <!-- 13 NEXT STEPS -->
+  <section data-label="Next Steps" data-screen-label="13">
+    <div class="slide">
+      <div class="slide-head"><p class="kick red">Next Steps &amp; Resources</p><h2 class="disp">Scope The<br>MVP</h2><hr class="rule"></div>
+      <div class="agenda fill" style="margin-top:var(--gap-title);">
+        <div class="item"><span class="no">01</span><span class="ttl">Finalize requirements &amp; data dictionary</span></div>
+        <div class="item"><span class="no">02</span><span class="ttl">Scope the MVP modules</span></div>
+        <div class="item"><span class="no">03</span><span class="ttl">Choose pilot classrooms</span></div>
+        <div class="item"><span class="no">04</span><span class="ttl">Set the burden ceiling &amp; privacy rules</span></div>
+      </div>
+      <div class="footer"><span class="wm"><img src="_shared/flame-logo.svg" alt="">App / Data Architecture</span><span>13</span></div>
+    </div>
+  </section>
+
+  <!-- 14 CLOSING -->
+  <section data-label="Closing" data-screen-label="14">
+    <div class="slide slide--red slide--center">
+      <img src="_shared/flame-logo.svg" height="110" alt="" style="filter:brightness(0) invert(1);margin-bottom:30px;">
+      <h2 class="disp white" style="font-size:108px;">The Best Data System<br>Is The One You<br>Barely Notice.</h2>
+      <p class="lead on-dark" style="margin:34px 0 44px;max-width:1150px;">Reduce burden, protect privacy, keep evidence honest — and the data serves people for years.</p>
+      <div class="pill"><img src="_shared/flame-logo.svg" height="30" alt="" style="filter:brightness(0) invert(1);"> The Matchbook Way</div>
+      <div class="footer"><span class="wm">Matchbook Learning Schools of Indiana</span><span>14</span></div>
+    </div>
+  </section>
+
+</deck-stage>
+<script src="_shared/deck-stage.js"></script>
+</body>
+</html>

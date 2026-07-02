@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Morning Meeting — The Matchbook Way</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@400;500;600;700&family=Mulish:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_shared/colors_and_type.css">
+<style>
+  deck-stage:not(:defined){visibility:hidden}
+  html,body{margin:0;background:#111}
+  section{
+    background:#fff;overflow:hidden;
+    font-family:var(--font-body);color:var(--ink);
+    --pad:120px;
+  }
+  .slide{box-sizing:border-box;width:100%;height:100%;padding:var(--pad);display:flex;flex-direction:column;}
+  .disp{font-family:var(--font-display);text-transform:uppercase;line-height:.9;letter-spacing:.01em;margin:0;}
+  .kick{font-family:var(--font-cond);font-weight:600;letter-spacing:.2em;text-transform:uppercase;font-size:28px;}
+  .red{color:var(--spark-red);}
+  .white{color:#fff;}
+  .ink{color:var(--ink);}
+  .lead{font-family:var(--font-body);font-size:34px;line-height:1.5;color:var(--slate);}
+  .rule{height:8px;background:var(--spark-red);border:0;}
+  .h3{font-family:var(--font-cond);font-weight:700;text-transform:uppercase;font-size:42px;letter-spacing:.01em;margin:0;line-height:1.02;}
+  .num{font-family:var(--font-display);font-size:80px;line-height:1;color:var(--ink);}
+  .pill{display:inline-flex;align-items:center;gap:14px;background:var(--spark-red);color:#fff;border-radius:999px;
+    font-family:var(--font-cond);font-weight:600;text-transform:uppercase;letter-spacing:.05em;font-size:30px;padding:22px 44px;}
+  .footer{margin-top:auto;display:flex;align-items:center;justify-content:space-between;
+    font-family:var(--font-cond);font-weight:600;letter-spacing:.1em;text-transform:uppercase;font-size:22px;color:var(--muted);}
+  .footer .wm{display:flex;align-items:center;gap:14px;}
+</style>
+<script type="application/json" id="speaker-notes">[]</script>
+</head>
+<body>
+<deck-stage width="1920" height="1080">
+
+  <!-- 1 · TITLE -->
+  <section data-label="Title">
+    <div class="slide" style="background:var(--spark-red);justify-content:center;">
+      <img src="_shared/flame-logo.svg" height="150" alt="" style="filter:brightness(0) invert(1);margin-bottom:40px;">
+      <div class="kick white" style="margin-bottom:24px;">The Matchbook Way</div>
+      <h1 class="disp white" style="font-size:230px;">Morning<br>Meeting</h1>
+      <p class="lead" style="color:rgba(255,255,255,.92);font-size:40px;margin-top:36px;max-width:1100px;">
+        How we ignite every day, together — a shared start that makes every student feel known, loved, and ready to learn.
+      </p>
+      <div class="footer" style="color:rgba(255,255,255,.8);">
+        <span class="wm">Matchbook Learning Schools of Indiana</span>
+        <span>Staff Rollout · 2025–26</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · WHY -->
+  <section data-label="Why">
+    <div class="slide">
+      <div class="kick red" style="margin-bottom:20px;">Why We Gather</div>
+      <h2 class="disp ink" style="font-size:130px;max-width:1500px;">Every Student,<br>Seen By 8:15.</h2>
+      <p class="lead" style="margin:44px 0 64px;max-width:1280px;">
+        Morning Meeting is the first promise we keep each day. Ten focused minutes that build belonging,
+        set the tone, and turn a room of students into a community of learners.
+      </p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:60px;">
+        <div><div class="num red">10</div><hr class="rule" style="width:70px;margin:18px 0 18px;"><div class="h3">Minutes, Daily</div><p class="lead" style="font-size:26px;margin-top:14px;">Same time, every classroom, every morning.</p></div>
+        <div><div class="num">4</div><hr class="rule" style="width:70px;margin:18px 0 18px;"><div class="h3">Simple Moves</div><p class="lead" style="font-size:26px;margin-top:14px;">Greeting, Sharing, Activity, Message.</p></div>
+        <div><div class="num">1</div><hr class="rule" style="width:70px;margin:18px 0 18px;"><div class="h3">Shared Spark</div><p class="lead" style="font-size:26px;margin-top:14px;">One school, starting as one.</p></div>
+      </div>
+      <div class="footer"><span class="wm"><img src="_shared/flame-logo.svg" height="34" alt="">Matchbook Learning</span><span>01</span></div>
+    </div>
+  </section>
+
+  <!-- 3 · THE FOUR SPARKS -->
+  <section data-label="The Four Sparks">
+    <div class="slide" style="background:var(--paper);">
+      <div class="kick red" style="margin-bottom:16px;">The Routine</div>
+      <h2 class="disp ink" style="font-size:120px;margin-bottom:60px;">The Four Sparks</h2>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:36px;flex:1;">
+        <div style="background:#232323;color:#fff;padding:54px;display:flex;flex-direction:column;">
+          <div class="num white">1</div><div class="h3" style="color:#fff;margin:18px 0 14px;">Greeting</div>
+          <p class="lead" style="color:#D8D8D8;font-size:28px;">Every student greeted by name. Eye contact, a handshake, a hello in their language.</p>
+        </div>
+        <div style="background:var(--dream-yellow);color:var(--ink);padding:54px;display:flex;flex-direction:column;">
+          <div class="num">2</div><div class="h3" style="margin:18px 0 14px;">Sharing</div>
+          <p class="lead" style="color:var(--ink);font-size:28px;">One voice at a time. Students share, peers respond — building empathy and listening.</p>
+        </div>
+        <div style="background:var(--dream-yellow);color:var(--ink);padding:54px;display:flex;flex-direction:column;">
+          <div class="num">3</div><div class="h3" style="margin:18px 0 14px;">Activity</div>
+          <p class="lead" style="color:var(--ink);font-size:28px;">A quick, joyful group game that builds team and energy for the day ahead.</p>
+        </div>
+        <div style="background:#232323;color:#fff;padding:54px;display:flex;flex-direction:column;">
+          <div class="num white">4</div><div class="h3" style="color:#fff;margin:18px 0 14px;">Message</div>
+          <p class="lead" style="color:#D8D8D8;font-size:28px;">A shared morning message that previews the day and names what we're working toward.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · BIG QUOTE -->
+  <section data-label="Quote">
+    <div class="slide" style="background:var(--spark-red);justify-content:center;">
+      <img src="_shared/matchstick.svg" height="120" alt="" style="filter:brightness(0) invert(1);opacity:.9;margin-bottom:48px;">
+      <blockquote class="disp white" style="font-size:120px;line-height:.96;margin:0;max-width:1500px;">
+        “I like how the teachers treat us like students, but also family.”
+      </blockquote>
+      <p class="lead" style="color:rgba(255,255,255,.9);font-size:32px;margin-top:48px;">— A Matchbook student. This is the feeling Morning Meeting protects.</p>
+    </div>
+  </section>
+
+  <!-- 5 · DAY IN THE LIFE PHOTO -->
+  <section data-label="In Practice">
+    <div class="slide" style="padding:0;flex-direction:row;">
+      <div style="flex:1;background:url(_shared/life2.jpg) center/cover;filter:grayscale(1);"></div>
+      <div style="flex:1;padding:120px;display:flex;flex-direction:column;justify-content:center;">
+        <div class="kick red" style="margin-bottom:18px;">In Practice</div>
+        <h2 class="disp ink" style="font-size:100px;">Structured.<br>And Completely<br>Free.</h2>
+        <p class="lead" style="margin-top:40px;max-width:640px;">
+          The routine is tight so the connection can be loose. Predictable moves give every
+          student the safety to show up as themselves — and every educator a repeatable way
+          to start strong.
+        </p>
+        <div class="footer" style="margin-top:64px;"><span class="wm"><img src="_shared/flame-logo.svg" height="34" alt="">Matchbook Learning</span><span>02</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 · CLOSING -->
+  <section data-label="Closing">
+    <div class="slide" style="justify-content:center;align-items:flex-start;">
+      <img src="_shared/flame-logo.svg" height="130" alt="" style="margin-bottom:36px;">
+      <h2 class="disp ink" style="font-size:160px;">Let's Ignite<br>Every Morning.</h2>
+      <p class="lead" style="margin:40px 0 56px;max-width:1100px;">
+        Start tomorrow. Same ten minutes, the four sparks, every classroom. Your coach will
+        be in to greet the day with you this week.
+      </p>
+      <div class="pill"><img src="_shared/flame-logo.svg" height="34" alt="" style="filter:brightness(0) invert(1);"> The Matchbook Way</div>
+      <div class="footer" style="width:100%;"><span class="wm">Questions? Your grade-level coach &amp; the leadership team.</span><span>317-333-8012</span></div>
+    </div>
+  </section>
+
+</deck-stage>
+<script src="_shared/deck-stage.js"></script>
+</body>
+</html>

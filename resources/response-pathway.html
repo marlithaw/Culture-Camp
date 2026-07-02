@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Responsive Behavior Plan Training Deck</title>
+<link rel="stylesheet" href="_shared/culture-lab-deck.css">
+<style>
+  /* ---- Escalation ramp (slide 06) ---- */
+  .ramp { display:flex; flex-direction:column; gap:18px; }
+  .ramp .rung2 { display:flex; align-items:center; gap:26px; padding:22px 28px; background:rgba(255,255,255,.10); }
+  .ramp .rung2 .tag { font-family:var(--font-cond); font-weight:700; text-transform:uppercase; letter-spacing:.08em; font-size:26px; color:#fff; min-width:200px; }
+  .ramp .rung2 .desc { font-size:28px; line-height:1.3; color:rgba(255,255,255,.92); }
+  .ramp .rung2 .bar { height:18px; border-radius:999px; flex:none; }
+
+  /* ---- Escalation Awareness ladder (slide 09) ---- */
+  .ladder { display:flex; flex-direction:column; gap:8px; margin-top:8px; }
+  .lhead, .rung { display:grid; grid-template-columns:330px 1fr 1.05fr; }
+  .lhead span { font-family:var(--font-cond); font-weight:700; text-transform:uppercase; letter-spacing:.1em; font-size:20px; color:var(--muted); padding:0 22px 8px; }
+  .lhead span:first-child { padding-left:24px; }
+  .rung { border:2px solid var(--hairline); align-items:stretch; }
+  .rung .lvl { display:flex; flex-direction:column; justify-content:center; gap:3px; padding:16px 22px; color:#fff; }
+  .rung .lvl .ln { font-family:var(--font-cond); font-weight:700; letter-spacing:.12em; text-transform:uppercase; font-size:18px; opacity:.9; }
+  .rung .lvl .nm { font-family:var(--font-display); text-transform:uppercase; font-size:30px; line-height:.88; }
+  .rung .c { padding:14px 22px; font-size:23px; line-height:1.26; color:var(--slate); display:flex; align-items:center; }
+  .rung .c.mid { border-left:2px solid var(--hairline); border-right:2px solid var(--hairline); }
+  .lvl-1 { background:#E6B23C; } .lvl-1 .ln { color:#5b430a; }
+  .lvl-2 { background:#E2731C; }
+  .lvl-3 { background:var(--spark-red); }
+  .lvl-4 { background:#9E1318; }
+  .lvl-5 { background:#1A1A1A; }
+
+  /* ---- Live Card mockup (slide 12) ---- */
+  .livecard { background:#fff; border:3px solid var(--ink); flex:none; width:760px; box-shadow:14px 14px 0 rgba(26,26,26,.10); }
+  .livecard .lc-head { display:flex; align-items:center; justify-content:space-between; background:var(--ink); color:#fff; padding:18px 28px; }
+  .livecard .lc-head .t { font-family:var(--font-display); text-transform:uppercase; font-size:34px; letter-spacing:.01em; white-space:nowrap; line-height:1; }
+  .blist li > span { display:block; }
+  .livecard .lc-head .d { font-family:var(--font-cond); text-transform:uppercase; letter-spacing:.1em; font-size:18px; color:rgba(255,255,255,.7); }
+  .livecard .lc-row { display:grid; grid-template-columns:230px 1fr; border-bottom:2px solid var(--hairline); }
+  .livecard .lc-row:last-child { border-bottom:0; }
+  .livecard .lc-lab { font-family:var(--font-cond); font-weight:700; text-transform:uppercase; letter-spacing:.06em; font-size:18px; color:var(--spark-red); padding:16px 22px; background:var(--paper); border-right:2px solid var(--hairline); display:flex; align-items:center; }
+  .livecard .lc-val { padding:16px 22px; font-size:21px; line-height:1.3; color:var(--slate); font-family:var(--font-body); }
+  .livecard .lc-val em { font-style:italic; color:var(--ink); }
+
+  /* ---- R-R-R stages (slide 13) ---- */
+  .rrr { display:flex; gap:0; align-items:stretch; }
+  .rrr .stage { flex:1; padding:34px 30px; display:flex; flex-direction:column; gap:14px; position:relative; }
+  .rrr .stage + .stage { border-left:2px solid var(--hairline); }
+  .rrr .stage .sn { font-family:var(--font-display); font-size:64px; line-height:.8; color:var(--spark-red); }
+  .rrr .stage .st { font-family:var(--font-display); text-transform:uppercase; font-size:40px; line-height:.9; color:var(--ink); }
+  .rrr .stage .sd { font-size:24px; line-height:1.32; color:var(--slate); }
+
+  /* ---- Scenario cards (slide 16) ---- */
+  .scen { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  .scen .sc { border:2px solid var(--hairline); padding:26px 28px; display:flex; flex-direction:column; gap:12px; background:#fff; }
+  .scen .sc .scn { font-family:var(--font-display); font-size:40px; line-height:.8; color:var(--spark-red); }
+  .scen .sc .sct { font-family:var(--font-cond); font-weight:700; text-transform:uppercase; letter-spacing:.02em; font-size:26px; line-height:1.02; color:var(--ink); }
+  .scen .sc .scd { font-size:21px; line-height:1.3; color:var(--slate); }
+  .scen .sc .scw { margin-top:auto; font-family:var(--font-cond); font-weight:600; text-transform:uppercase; letter-spacing:.06em; font-size:17px; color:var(--muted); }
+
+  /* pathway 6-step grid */
+  .pgrid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  .pstep { border:2px solid rgba(255,255,255,.16); padding:26px 28px; display:flex; flex-direction:column; gap:10px; }
+  .pstep .pn { font-family:var(--font-cond); font-weight:700; letter-spacing:.14em; text-transform:uppercase; font-size:20px; color:var(--gold); }
+  .pstep .pt { font-family:var(--font-display); text-transform:uppercase; font-size:42px; line-height:.86; color:#fff; }
+  .pstep .pd { font-size:22px; line-height:1.3; color:rgba(255,255,255,.82); }
+
+  .twocol-scripts { display:flex; flex-direction:column; gap:18px; }
+
+  /* Four-Principles slide — compact cards so titles + body fit two rows */
+  .principles .card { padding:28px 32px; gap:10px; justify-content:flex-start; }
+  .principles .card-num { font-size:40px; }
+  .principles .h3 { font-size:30px; line-height:1.04; }
+  .principles .body { font-size:25px; line-height:1.4; }
+</style>
+<script type="application/json" id="speaker-notes">[
+"SPEAKER NOTES: The Responsive Behavior Plan is how every adult responds to dysregulation the same calm, dignified way in every room. Open on the central truth: the adult response is the intervention — not the consequence, not the lecture. The plan exists so a student gets the same predictable response no matter which adult is standing there. Adults regulate themselves first; as escalation rises, words decrease.\n\nFACILITATOR ACTION: State the purpose; show the title and read the one-line promise aloud.\n\nPARTICIPANT ACTION: Recall a recent escalation and notice whether your words increased or decreased as it rose.\n\nLINKED ARTIFACT: 09_RESPONSIVE_BEHAVIOR_PLAN/Responsive_Behavior_Plan_Overview",
+"SPEAKER NOTES: Purpose of this deck: give every adult a shared, rehearsable pathway for the moment of dysregulation, so the response is predictable rather than personality-driven. Predictability protects the student AND the adult. Note the deck's arc: principle → cycle → live pathway → escalation → documentation → repair → practice.\n\nFACILITATOR ACTION: Clarify the deck moves from philosophy to the live pathway to repair and practice.\n\nPARTICIPANT ACTION: Name the part of a tough moment you most want a script for.\n\nLINKED ARTIFACT: 09_RESPONSIVE_BEHAVIOR_PLAN/Responsive_Behavior_Plan_Overview",
+"SPEAKER NOTES: Audience: EVERY adult who works with students — teachers, paraprofessionals, leaders, support staff, anyone in the building. Consistency only works if everyone uses the same pathway and the same language. One inconsistent adult undoes the system for a student. Confirm every role is represented in the room.\n\nFACILITATOR ACTION: Confirm all adult roles are present; pair people now for the scenario practice on slide 16.\n\nPARTICIPANT ACTION: Find your scenario-practice partner.\n\nLINKED ARTIFACT: 09_RESPONSIVE_BEHAVIOR_PLAN/Responsive_Behavior_Plan_Overview",
+"SPEAKER NOTES: Walk the agenda so people know where we are going. Four moves: the principles and the implementation cycle; the live response pathway and escalation awareness; the tools — the break, reset scripts, the Live Card; and repair, the private check-in, and scenario practice. Flag the Response Pathway, the Escalation Ladder, and the Scenario Bank as the parts to rehearse most.\n\nFACILITATOR ACTION: Set pace; promise live scenario practice near the end.\n\nPARTICIPANT ACTION: Flag the section you most need today.\n\nLINKED ARTIFACT: 09_RESPONSIVE_BEHAVIOR_PLAN/Teach_It-Use_It_Live-Reflect_and_Report_Guide",
+"SPEAKER NOTES: The four principles are the whole plan in miniature. (1) Fewer words as escalation increases — say less, focus on safety and regulation. (2) Correct the routine, not the child — re-teach the expectation; never label the student. (3) Repair after regulation — never in the heat of the moment. (4) Document and reflect — capture what happened and your response so we can support, not punish. Every move downstream is one of these four.\n\nFACILITATOR ACTION: Read each principle; ask for a one-word reaction to the one that challenges them most.\n\nPARTICIPANT ACTION: Circle the principle you most need to strengthen.\n\nLINKED ARTIFACT: 09_RESPONSIVE_BEHAVIOR_PLAN/Responsive_Behavior_Plan_Overview",
+"SPEAKER NOTES: The first principle, made physical. As a situation intensifies, the adult uses FEWER words, not more. Calm: full sentences, choices, teaching language. Rising: short phrases, one direction at a time. Crisis: safety only — few or no words. The instinct under stress is to over-explain; the discipline is to shrink language and let your regulated body do the work. Calm is contagious — so is panic.\n\nFACILITATOR ACTION: Model a calm, low-word response to a rising scenario; have the room take one regulating breath with you.\n\nPARTICIPANT ACTION: Practice taking one breath before responding.\n\nLINKED ARTIFACT: 09_RESPONSIVE_BEHAVIOR_PLAN/Escalation_Awareness_Guide",
+"SPEAKER NOTES: The three-part implementation cycle. Teach It: teach the regulation and correction language ahead of time, role-play it, and practice it with adults in PD — it must be familiar before it is needed. Use It Live: apply the SOP in the moment, stay calm, call for support if unsure. Reflect & Report: after action, reflect with the student once regulated, document on the Live Card, share with coaches. You cannot use live what you never taught.\n\nFACILITATOR ACTION: Walk the three phases; give one concrete example of each.\n\nPARTICIPANT ACTION: Decide when this week you will teach the language proactively to students.\n\nLINKED ARTIFACT: 09_RESPONSIVE_BEHAVIOR_PLAN/Teach_It-Use_It_Live-Reflect_and_Report_Guide",
+"SPEAKER NOTES: The Response Pathway is the same six steps every time — post it in the room and the workroom. Observe early signs. Regulate with a break. Address by correcting the routine in few words, offering a choice. Document on the Live Card. Repair if harm occurred. Reflect with a coach to spot patterns. The power is the predictability: when the steps are automatic for the adult, the student's nervous system can borrow that order.\n\nFACILITATOR ACTION: Walk the flow with two real scenarios; have pairs run the steps aloud.\n\nPARTICIPANT ACTION: Run the six steps aloud for one scenario with your partner.\n\nLINKED ARTIFACT: 09_RESPONSIVE_BEHAVIOR_PLAN/Response_Pathway",
+"SPEAKER NOTES: Escalation Awareness — read the level, match the response. Level 1 Pre-Escalation: minor agitation; offer a regulation strategy and reinforce. Level 2 Mild: raised voice or refusal; fewer words, a choice. Level 3 Moderate: disrespect, disruption; pause the routine, guide to a break, no debate. Level 4 High: yelling, throwing, leaving; call support, ensure class safety, no power struggle. Level 5 Crisis: danger to self or others; crisis protocol, do not restrain unless trained. As you move down the ladder, your words go DOWN and safety goes UP.\n\nFACILITATOR ACTION: Name a behavior; have the room call the level and the response.\n\nPARTICIPANT ACTION: Identify which level you tend to over-talk at.\n\nLINKED ARTIFACT: 09_RESPONSIVE_BEHAVIOR_PLAN/Escalation_Awareness_Guide",
+"SPEAKER NOTES: The break is the heart of Regulate — but a break is a TOOL, and the full move is Break, Reset, Return. Break: offer a calm, neutral spot — 'It looks like you need a break. Let's step aside so you can reset and return.' Reset: stay nearby, do not lecture; let them breathe, drink water, use a calming tool. Return: bring them back with dignity and a clean re-entry. A break that has no return isn't regulation — it's exclusion. Use non-verbal cues to invite the break whenever you can.\n\nFACILITATOR ACTION: Demonstrate the break invitation with calm posture and few words.\n\nPARTICIPANT ACTION: Rehearse the break-offer line in your own voice.\n\nLINKED ARTIFACT: 09_RESPONSIVE_BEHAVIOR_PLAN/Responsive_Behavior_Plan_SOP",
+"SPEAKER NOTES: Adults regulate too. When you feel yourself heating up, use a reset script out loud — students learn regulation and repair by watching you do it. Pause and breathe with the class. Name your emotion and reset. Restate the expectation — correct the routine, not the person. Model repair: 'I'm sorry I raised my voice. Next time I'll pause and speak calmly.' Modeling your own regulation is not weakness; it is the most powerful teaching move in the room.\n\nFACILITATOR ACTION: Read each reset script aloud; ask who will keep one posted at their desk.\n\nPARTICIPANT ACTION: Choose the reset script you'll use this week and say it once aloud.\n\nLINKED ARTIFACT: 09_RESPONSIVE_BEHAVIOR_PLAN/Teacher_Reset_Scripts",
+"SPEAKER NOTES: The Live Card is how we Document — in real time, factually, fast. Five sections: Context (date, time, location, routine step, value focus); Behavior Description (what was said or done — factual, not judgmental); Adult Response (regulation support and correction language used, choices offered); Outcome (did the student re-engage? did it de-escalate?); Follow-Up Needed (repair, family contact, further support). Keep cards accessible, fill them out immediately, transfer to the digital database daily. Bullet points, never essays.\n\nFACILITATOR ACTION: Show the card; time one entry to prove it takes under a minute.\n\nPARTICIPANT ACTION: Mentally complete a card for one recent incident.\n\nLINKED ARTIFACT: 09_RESPONSIVE_BEHAVIOR_PLAN/Live_Card_System",
+"SPEAKER NOTES: Repair and re-entry — after regulation, never before. Use Perry's Regulate, Relate, Reason (student-facing) held by R³ adult capacity (Reflection, Resistance, Revelation). Regulate: ensure the student is calm; the adult must already be tracking her own body (R³ Reflection). Relate: build connection with empathy and active listening — 'I can see you were frustrated' — only sustainable when the adult locates her own activation (R³ Resistance). Reason: explore what happened, who was affected, and how to make it right, then agree on a specific, achievable plan — held by the adult's ability to use the moment as data (R³ Revelation). This is the bridge to the Restorative Repair Framework. Repair is dignified and specific — never a forced apology.\n\nFACILITATOR ACTION: Read a sample repair script; emphasize 'after regulation, not before.' Name which R³ capacity each Perry step requires.\n\nPARTICIPANT ACTION: Choose one Reason question you'll use to invite repair; identify which R³ capacity you most need to strengthen.\n\nLINKED ARTIFACT: 09_RESPONSIVE_BEHAVIOR_PLAN/Repair_and_Re-Entry_Routine · R3_Cue_Card",
+"SPEAKER NOTES: The Private Check-In Protocol is the trauma-informed follow-up after a student uses the break. The intervention is not over when they return to the group. Choose the right time — once they're calm and the class is in independent work. Use a private setting. Affirm presence first: 'I'm glad you're here with us' — avoid 'What was that about?' Invite their story, reflect and validate, identify what they need, then close with dignity. Silence is valid. Publicly calling attention to a stress response can retraumatize — privacy protects dignity.\n\nFACILITATOR ACTION: Contrast a public callout with a private check-in for the same moment.\n\nPARTICIPANT ACTION: Rehearse your opening affirmation line.\n\nLINKED ARTIFACT: 09_RESPONSIVE_BEHAVIOR_PLAN/Private_Check-In_Protocol",
+"SPEAKER NOTES: Documentation and reflection turn incidents into patterns we can support. Use the Reflection Tool to capture date, student, behavior, regulation strategy used, correction language used, outcome, and your reflection — what worked, what to improve. Bring entries to coaching. Look for patterns: times of day, triggers, disproportionality across identity. The data exists to drive support and coaching, not punishment. Run an equity check on your own responses.\n\nFACILITATOR ACTION: Show the reflection fields; complete one row together from a past incident.\n\nPARTICIPANT ACTION: Commit to logging the next incident within the day.\n\nLINKED ARTIFACT: 09_RESPONSIVE_BEHAVIOR_PLAN/Documentation_and_Reflection_Tool",
+"SPEAKER NOTES: Now we practice. These five scenarios come straight from the Scenario Bank. With your partner, take one scenario and run the full Response Pathway aloud — name the escalation level, the regulation move, the correction language, and the repair plan. There is no single right answer; role-play more than one approach and reflect on which feels most aligned with our values. This rehearsal is what makes the pathway automatic when it is real.\n\nFACILITATOR ACTION: Assign scenarios to pairs; circulate; debrief two aloud.\n\nPARTICIPANT ACTION: Run one scenario end-to-end with your partner using the pathway.\n\nLINKED ARTIFACT: 09_RESPONSIVE_BEHAVIOR_PLAN/Scenario_Bank",
+"SPEAKER NOTES: Reflection and commitment. Ask adults to name the self-regulation habit they will build before they respond, and the one pathway step they will rehearse until it is automatic. The adult's own regulation is the first and most important move — everything else is downstream of it.\n\nFACILITATOR ACTION: Two minutes of silent reflection; invite a few commitments aloud.\n\nPARTICIPANT ACTION: Write the self-regulation habit you will practice this week.\n\nLINKED ARTIFACT: 09_RESPONSIVE_BEHAVIOR_PLAN/Responsive_Behavior_Plan_Overview",
+"SPEAKER NOTES: Next steps and resources. This week: teach the regulation and correction language to students proactively, post the Response Pathway and Escalation Ladder in your room, keep the Live Cards and reset scripts accessible, and schedule a debrief with a coach after the first live use. Point people to the SOP, the Scenario Bank, and the Reflection Tool in Folder 09.\n\nFACILITATOR ACTION: Confirm when each adult will teach the language; show where the cards, scripts, and tools live.\n\nPARTICIPANT ACTION: Schedule the proactive teaching of the language with your students.\n\nLINKED ARTIFACT: 09_RESPONSIVE_BEHAVIOR_PLAN (full folder)",
+"SPEAKER NOTES: Close on the principle. The most powerful thing in a hard moment is a calm, predictable adult. The adult response is the intervention. End by naming the shared commitment: regulate first, every time.\n\nFACILITATOR ACTION: Reaffirm the principle; thank the team.\n\nPARTICIPANT ACTION: Say 'regulate first' aloud together as a shared commitment.\n\nLINKED ARTIFACT: 01_START_HERE/Implementation_Non-Negotiables.md"
+]</script>
+</head>
+<body>
+<deck-stage width="1920" height="1080">
+
+  <!-- 1 TITLE -->
+  <section data-label="Title" data-screen-label="01">
+    <div class="slide slide--ink slide--center">
+      <img src="_shared/flame-logo.svg" height="120" alt="" style="filter:brightness(0) invert(1);margin-bottom:36px;">
+      <p class="kick red" style="margin-bottom:24px;">Responding To Dysregulation</p>
+      <h1 class="disp white" style="font-size:132px;">The Responsive<br>Behavior Plan</h1>
+      <p class="lead on-dark" style="margin-top:34px;max-width:1180px;font-size:40px;">Respond consistently and calmly — because the adult response is the intervention.</p>
+      <div class="footer"><span class="wm">Matchbook Learning Schools of Indiana</span><span>Responsive Behavior · 2025–26</span></div>
+    </div>
+  </section>
+
+  <!-- 2 PURPOSE -->
+  <section data-label="Purpose" data-screen-label="02">
+    <div class="slide">
+      <div class="slide-head"><p class="kick red">Purpose</p><h2 class="disp">A Rehearsable<br>Pathway</h2><hr class="rule"></div>
+      <div class="row fill" style="margin-top:var(--gap-title);align-items:center;gap:48px;">
+        <p class="lead" style="flex:1;">Give every adult a shared, rehearsable pathway for the moment of dysregulation — so the response is predictable rather than personality-driven. Predictability protects both the student and the adult.</p>
+        <div class="callout callout--red" style="flex:1;"><p class="kick white">The Principle</p><p class="mantra">The Adult<br>Response Is The<br>Intervention.</p></div>
+      </div>
+      <div class="footer"><span class="wm"><img src="_shared/flame-logo.svg" alt="">Responsive Behavior Plan</span><span>02</span></div>
+    </div>
+  </section>
+
+  <!-- 3 AUDIENCE -->
+  <section data-label="Audience" data-screen-label="03">
+    <div class="slide slide--paper">
+      <div class="slide-head"><p class="kick red">Audience</p><h2 class="disp">Every Adult<br>With Students</h2><hr class="rule"></div>
+      <div class="grid g4 fill" style="align-items:start;margin-top:var(--gap-title);">
+        <div class="card"><div class="h3">Teachers</div><p class="small">Run the pathway in the classroom, every day.</p></div>
+        <div class="card"><div class="h3">Paras &amp; Support</div><p class="small">Use the exact same language everywhere students go.</p></div>
+        <div class="card"><div class="h3">Leaders</div><p class="small">Model calm and back the pathway publicly.</p></div>
+        <div class="card card-red"><div class="h3">All Staff</div><p class="small">One inconsistent adult undoes the system for a student.</p></div>
+      </div>
+      <div class="footer"><span class="wm"><img src="_shared/flame-logo.svg" alt="">Responsive Behavior Plan</span><span>03</span></div>
+    </div>
+  </section>
+
+  <!-- 4 AGENDA -->
+  <section data-label="Agenda" data-screen-label="04">
+    <div class="slide">
+      <div class="slide-head"><p class="kick red">Agenda</p><h2 class="disp">From Philosophy<br>To Practice</h2></div>
+      <div class="agenda fill" style="margin-top:var(--gap-title);">
+        <div class="item"><span class="no">01</span><span class="ttl">The Four Principles &amp; The Cycle</span><span class="meta">Slides 5–7</span></div>
+        <div class="item"><span class="no">02</span><span class="ttl">The Response Pathway &amp; Escalation</span><span class="meta">Slides 8–9</span></div>
+        <div class="item"><span class="no">03</span><span class="ttl">The Tools — Break, Reset, Live Card</span><span class="meta">Slides 10–12</span></div>
+        <div class="item"><span class="no">04</span><span class="ttl">Repair, Check-In &amp; Scenario Practice</span><span class="meta">Slides 13–16</span></div>
+      </div>
+      <div class="footer"><span class="wm"><img src="_shared/flame-logo.svg" alt="">Responsive Behavior Plan</span><span>04</span></div>
+    </div>
+  </section>
+
+  <!-- 5 FOUR PRINCIPLES -->
+  <section data-label="The Four Principles" data-screen-label="05">
+    <div class="slide slide--paper">
+      <div class="slide-head"><p class="kick red">Plan Overview</p><h2 class="disp">Four Principles<br>Hold It Together</h2></div>
+      <div class="grid g2 fill principles" style="align-items:stretch;margin-top:var(--gap-title);gap:24px;">
+        <div class="card"><div class="card-num">1</div><div class="h3">Fewer Words As Escalation Rises</div><p class="body">As a situation intensifies, the adult says less and focuses on safety and regulation.</p></div>
+        <div class="card"><div class="card-num">2</div><div class="h3">Correct The Routine, Not The Child</div><p class="body">Re-teach the expectation. Never label or shame the student.</p></div>
+        <div class="card"><div class="card-num">3</div><div class="h3">Repair After Regulation</div><p class="body">Address harm through restorative conversation — only once the student is calm.</p></div>
+        <div class="card"><div class="card-num">4</div><div class="h3">Document &amp; Reflect</div><p class="body">Capture what happened and your response. Data drives support, not punishment.</p></div>
+      </div>
+      <div class="footer"><span class="wm"><img src="_shared/flame-logo.svg" alt="">Artifact · Responsive Behavior Plan Overview</span><span>05</span></div>
+    </div>
+  </section>
+
+  <!-- 6 FEWER WORDS -->
+  <section data-label="Fewer Words" data-screen-label="06">
+    <div class="slide slide--red">
+      <div class="slide-head"><p class="kick white">Principle One, In Practice</p><h2 class="disp white">Fewer Words As<br>Escalation Rises</h2><hr class="rule" style="background:#fff;"></div>
+      <div class="ramp fill" style="margin-top:var(--gap-title);justify-content:center;">
+        <div class="rung2"><span class="bar" style="width:150px;background:#F9DC7C;"></span><span class="tag">Calm</span><span class="desc">Full sentences. Choices. Teaching language.</span></div>
+        <div class="rung2"><span class="bar" style="width:90px;background:#F7B23C;"></span><span class="tag">Rising</span><span class="desc">Short phrases. One direction at a time.</span></div>
+        <div class="rung2"><span class="bar" style="width:40px;background:#1A1A1A;"></span><span class="tag">Crisis</span><span class="desc">Safety only. Few or no words. Calm body.</span></div>
+      </div>
+      <div class="footer"><span class="wm"><img src="_shared/flame-logo.svg" alt="">Artifact · Escalation Awareness Guide</span><span>06</span></div>
+    </div>
+  </section>
+
+  <!-- 7 TEACH / USE LIVE / REFLECT -->
+  <section data-label="Teach · Use · Reflect" data-screen-label="07">
+    <div class="slide">
+      <div class="slide-head"><p class="kick red">The Implementation Cycle</p><h2 class="disp">Teach It · Use It Live ·<br>Reflect &amp; Report</h2></div>
+      <div class="grid g3 fill" style="align-items:start;margin-top:var(--gap-title);">
+        <div class="card"><div class="card-num">1</div><div class="h3">Teach It</div><p class="body">Teach regulation and correction language ahead of time. Role-play it. Practice with adults in PD — familiar before it's needed.</p></div>
+        <div class="card"><div class="card-num">2</div><div class="h3">Use It Live</div><p class="body">Apply the SOP in the moment. Stay calm, follow the steps, and call for a coach or dean if you are unsure.</p></div>
+        <div class="card"><div class="card-num">3</div><div class="h3">Reflect &amp; Report</div><p class="body">After action, reflect with the student once regulated. Document on the Live Card. Share with coaches.</p></div>
+      </div>
+      <div class="footer"><span class="wm"><img src="_shared/flame-logo.svg" alt="">Artifact · Teach It · Use It Live · Reflect &amp; Report Guide</span><span>07</span></div>
+    </div>
+  </section>
+
+  <!-- 8 RESPONSE PATHWAY (6 steps) -->
+  <section data-label="Response Pathway" data-screen-label="08">
+    <div class="slide slide--ink">
+      <div class="slide-head"><p class="kick red">The Response Pathway</p><h2 class="disp white">Six Steps,<br>Every Time</h2></div>
+      <div class="pgrid fill" style="margin-top:var(--gap-title);align-content:center;">
+        <div class="pstep"><span class="pn">Step 1</span><span class="pt">Observe</span><span class="pd">Notice early signs of dysregulation; use proactive regulation.</span></div>
+        <div class="pstep"><span class="pn">Step 2</span><span class="pt">Regulate</span><span class="pd">Offer a break; guide breathing, movement, water.</span></div>
+        <div class="pstep"><span class="pn">Step 3</span><span class="pt">Address</span><span class="pd">Correct the routine in few words; offer a choice.</span></div>
+        <div class="pstep"><span class="pn">Step 4</span><span class="pt">Document</span><span class="pd">Record the incident and response on the Live Card.</span></div>
+        <div class="pstep"><span class="pn">Step 5</span><span class="pt">Repair</span><span class="pd">If harm occurred, schedule a restorative conversation.</span></div>
+        <div class="pstep"><span class="pn">Step 6</span><span class="pt">Reflect</span><span class="pd">Review with a coach; spot patterns and supports.</span></div>
+      </div>
+      <div class="footer"><span class="wm"><img src="_shared/flame-logo.svg" alt="">Artifact · Response Pathway</span><span>08</span></div>
+    </div>
+  </section>
+
+  <!-- 9 ESCALATION AWARENESS LADDER -->
+  <section data-label="Escalation Awareness" data-screen-label="09">
+    <div class="slide">
+      <div class="slide-head"><p class="kick red">Escalation Awareness</p><h2 class="disp">Read The Level,<br>Match The Response</h2></div>
+      <div style="margin-top:30px;">
+        <div class="lhead"><span>Level</span><span>What you see</span><span>Adult response</span></div>
+        <div class="ladder">
+          <div class="rung"><div class="lvl lvl-1"><span class="ln">Level 1</span><span class="nm">Pre-Escalation</span></div><div class="c mid">Minor agitation — fidgeting, sighing, mild off-task.</div><div class="c">Offer a regulation strategy; remind calmly; reinforce.</div></div>
+          <div class="rung"><div class="lvl lvl-2"><span class="ln">Level 2</span><span class="nm">Mild</span></div><div class="c mid">Raised voice; refuses a prompt; side conversation.</div><div class="c">Fewer words; repeat the expectation; offer a choice.</div></div>
+          <div class="rung"><div class="lvl lvl-3"><span class="ln">Level 3</span><span class="nm">Moderate</span></div><div class="c mid">Disrespectful language; stands up; disrupts peers.</div><div class="c">Pause the routine; guide to a break; firm calm tone, no debate.</div></div>
+          <div class="rung"><div class="lvl lvl-4"><span class="ln">Level 4</span><span class="nm">High</span></div><div class="c mid">Yells; throws objects; leaves the area.</div><div class="c">Call support; ensure class safety; no power struggle.</div></div>
+          <div class="rung"><div class="lvl lvl-5"><span class="ln">Level 5</span><span class="nm">Crisis</span></div><div class="c mid">Physical danger to self or others.</div><div class="c">Crisis protocol; call the team; do not restrain unless trained.</div></div>
+        </div>
+      </div>
+      <div class="footer"><span class="wm"><img src="_shared/flame-logo.svg" alt="">Artifact · Escalation Awareness Guide · words decrease as the level rises</span><span>09</span></div>
+    </div>
+  </section>
+
+  <!-- 10 BREAK · RESET · RETURN -->
+  <section data-label="Break · Reset · Return" data-screen-label="10">
+    <div class="slide slide--paper">
+      <div class="slide-head"><p class="kick red">Step 2 — Regulate, In Full</p><h2 class="disp">A Break Is A Tool:<br>Break · Reset · Return</h2></div>
+      <div class="row fill" style="margin-top:var(--gap-title);gap:40px;align-items:stretch;">
+        <div class="col" style="flex:1.15;gap:18px;">
+          <div class="card card-paper" style="background:#fff;border:2px solid var(--hairline);"><div class="h3" style="font-size:34px;">Break</div><p class="body">Offer a calm, neutral spot. Invite with a non-verbal cue when you can.</p></div>
+          <div class="card card-paper" style="background:#fff;border:2px solid var(--hairline);"><div class="h3" style="font-size:34px;">Reset</div><p class="body">Stay nearby. Don't lecture. Let them breathe, drink water, use a calming tool.</p></div>
+          <div class="card card-paper" style="background:#fff;border:2px solid var(--hairline);"><div class="h3" style="font-size:34px;">Return</div><p class="body">Bring them back with dignity. A break with no return is exclusion, not regulation.</p></div>
+        </div>
+        <div class="col" style="flex:1;justify-content:center;">
+          <div class="script"><span class="who">Say It Like This</span><p class="say">"It looks like you need a break. Let's step aside so you can reset and return."</p></div>
+        </div>
+      </div>
+      <div class="footer"><span class="wm"><img src="_shared/flame-logo.svg" alt="">Artifact · Responsive Behavior Plan SOP</span><span>10</span></div>
+    </div>
+  </section>
+
+  <!-- 11 TEACHER RESET SCRIPTS -->
+  <section data-label="Teacher Reset Scripts" data-screen-label="11">
+    <div class="slide slide--ink">
+      <div class="slide-head"><p class="kick red">Adults Regulate Too</p><h2 class="disp white">Model It Out Loud</h2><hr class="rule"></div>
+      <div class="grid g2 fill" style="align-items:start;margin-top:var(--gap-title);gap:24px;">
+        <div class="script" style="background:rgba(255,255,255,.06);border-left-color:var(--gold);"><span class="who" style="color:var(--gold);">Pause &amp; Breathe</span><p class="say" style="color:#fff;">"I need a moment to take a breath. Let's all take three deep breaths together."</p></div>
+        <div class="script" style="background:rgba(255,255,255,.06);border-left-color:var(--gold);"><span class="who" style="color:var(--gold);">Acknowledge Emotion</span><p class="say" style="color:#fff;">"I'm feeling frustrated because we went off track. I'm going to reset and try again."</p></div>
+        <div class="script" style="background:rgba(255,255,255,.06);border-left-color:var(--gold);"><span class="who" style="color:var(--gold);">Restate Expectation</span><p class="say" style="color:#fff;">"We correct the routine, not the person. We're going to restart this move and do it right."</p></div>
+        <div class="script" style="background:rgba(255,255,255,.06);border-left-color:var(--gold);"><span class="who" style="color:var(--gold);">Model Repair</span><p class="say" style="color:#fff;">"I'm sorry I raised my voice. Next time I'll pause and speak calmly. Thank you for your patience."</p></div>
+      </div>
+      <div class="footer"><span class="wm"><img src="_shared/flame-logo.svg" alt="">Artifact · Teacher Reset Scripts</span><span>11</span></div>
+    </div>
+  </section>
+
+  <!-- 12 LIVE CARD SYSTEM -->
+  <section data-label="Live Card System" data-screen-label="12">
+    <div class="slide">
+      <div class="slide-head"><p class="kick red">The Live Card System</p><h2 class="disp">Document Live —<br>Factual &amp; Fast</h2></div>
+      <div class="row fill" style="margin-top:var(--gap-title);gap:48px;align-items:center;">
+        <div class="livecard">
+          <div class="lc-head"><span class="t">Live Card</span><span class="d">Fill out immediately</span></div>
+          <div class="lc-row"><div class="lc-lab">Context</div><div class="lc-val">Tues 9:05 · Meeting space · <em>Connect</em> · Value: Respectful</div></div>
+          <div class="lc-row"><div class="lc-lab">Behavior</div><div class="lc-val">Interrupted a peer's share twice; raised voice.</div></div>
+          <div class="lc-row"><div class="lc-lab">Adult Response</div><div class="lc-val">Offered break; restated listening routine; gave a choice.</div></div>
+          <div class="lc-row"><div class="lc-lab">Outcome</div><div class="lc-val">Reset in 2 min; re-engaged and shared at Commit.</div></div>
+          <div class="lc-row"><div class="lc-lab">Follow-Up</div><div class="lc-val">Quick repair with peer · note for coach</div></div>
+        </div>
+        <div class="col" style="flex:1;gap:20px;">
+          <ul class="blist">
+            <li><span><strong style="color:var(--ink);">Be factual, not judgmental</strong> — record what was said and done.</span></li>
+            <li><span>Keep cards accessible; fill out immediately after the incident.</span></li>
+            <li><span>Bullet points, never lengthy narratives.</span></li>
+            <li><span>Transfer into the digital database daily — it feeds the App Field Map.</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer"><span class="wm"><img src="_shared/flame-logo.svg" alt="">Artifact · Live Card System</span><span>12</span></div>
+    </div>
+  </section>
+
+  <!-- 13 REPAIR & RE-ENTRY -->
+  <section data-label="Repair & Re-Entry" data-screen-label="13">
+    <div class="slide slide--paper">
+      <div class="slide-head"><p class="kick red">Repair &amp; Re-Entry</p><h2 class="disp">After Regulation,<br>Never Before</h2></div>
+      <div class="rrr fill" style="margin-top:30px;background:#fff;border:2px solid var(--hairline);align-items:stretch;">
+        <div class="stage"><span class="sn">1</span><span class="st">Regulate</span><span class="sd">Ensure the student is calm. Breathing, movement, water before anything else.</span></div>
+        <div class="stage"><span class="sn">2</span><span class="st">Relate</span><span class="sd">Build connection. "I can see you were frustrated." Listen actively, no fixing.</span></div>
+        <div class="stage"><span class="sn">3</span><span class="st">Reason</span><span class="sd">"What happened before? Who was affected? What can we do to make it right?"</span></div>
+      </div>
+      <div class="callout callout--red" style="margin-top:24px;padding:24px 40px;"><p class="say" style="font-family:var(--font-body);font-style:italic;font-weight:600;font-size:30px;color:#fff;margin:0;">Repair is specific and dignified — never a forced apology. Re-entry returns the student to the group with belonging intact.</p></div>
+      <div class="footer"><span class="wm"><img src="_shared/flame-logo.svg" alt="">Artifact · Repair and Re-Entry Routine</span><span>13</span></div>
+    </div>
+  </section>
+
+  <!-- 14 PRIVATE CHECK-IN -->
+  <section data-label="Private Check-In" data-screen-label="14">
+    <div class="slide">
+      <div class="slide-head"><p class="kick red">Private Check-In Protocol</p><h2 class="disp">The Follow-Up Is<br>Part Of The Plan</h2></div>
+      <div class="row fill" style="margin-top:var(--gap-title);gap:44px;align-items:stretch;">
+        <div class="col" style="flex:1;justify-content:center;gap:18px;">
+          <ul class="blist">
+            <li><span><strong style="color:var(--ink);">Right time, private setting</strong> — once calm and the class is working.</span></li>
+            <li><span><strong style="color:var(--ink);">Affirm presence first</strong> — not "What was that about?"</span></li>
+            <li><span><strong style="color:var(--ink);">Invite the story; validate</strong> — silence is valid.</span></li>
+            <li><span><strong style="color:var(--ink);">Close with dignity</strong> — and document the follow-up.</span></li>
+          </ul>
+        </div>
+        <div class="col" style="flex:1.05;justify-content:center;gap:18px;">
+          <div class="script"><span class="who">Open With</span><p class="say">"I'm glad you're here with us."</p></div>
+          <div class="script"><span class="who">Invite</span><p class="say">"Would you like to tell me what you were feeling when you needed a break?"</p></div>
+          <div class="script"><span class="who">Close</span><p class="say">"Thank you for trusting me. I know you can do this."</p></div>
+        </div>
+      </div>
+      <div class="footer"><span class="wm"><img src="_shared/flame-logo.svg" alt="">Artifact · Private Check-In Protocol · trauma-informed &amp; healing-centered</span><span>14</span></div>
+    </div>
+  </section>
+
+  <!-- 15 DOCUMENTATION & REFLECTION -->
+  <section data-label="Documentation" data-screen-label="15">
+    <div class="slide slide--paper">
+      <div class="slide-head"><p class="kick red">Documentation &amp; Reflection</p><h2 class="disp">Evidence,<br>Not Narrative</h2></div>
+      <div class="fill" style="margin-top:30px;">
+        <table class="tbl">
+          <thead><tr><th>Behavior</th><th>Regulation Strategy</th><th>Correction Language</th><th>Outcome</th><th>Reflection</th></tr></thead>
+          <tbody>
+            <tr><td class="lead-cell">Interrupted Connect</td><td>Offered break + breathing</td><td>"During Connect we listen when others speak."</td><td>Re-engaged in 2 min</td><td>Earlier cue next time</td></tr>
+            <tr><td class="lead-cell">Refused practice move</td><td>Movement + water</td><td>"Share next, or listen first — your choice."</td><td>Chose to listen, then joined</td><td>Choice worked well</td></tr>
+          </tbody>
+        </table>
+        <div class="row" style="gap:24px;margin-top:24px;">
+          <p class="body" style="flex:1;">Bring entries to coaching. Look for <strong style="color:var(--ink);">patterns</strong> — times of day, triggers — and run an <strong style="color:var(--ink);">equity check</strong> on your responses.</p>
+          <div class="callout" style="flex:1;padding:22px 32px;"><p class="body" style="color:var(--ink);margin:0;">The data is for <strong>support and coaching</strong> — never punishment.</p></div>
+        </div>
+      </div>
+      <div class="footer"><span class="wm"><img src="_shared/flame-logo.svg" alt="">Artifact · Documentation and Reflection Tool</span><span>15</span></div>
+    </div>
+  </section>
+
+  <!-- 16 SCENARIO BANK -->
+  <section data-label="Scenario Practice" data-screen-label="16">
+    <div class="slide slide--ink">
+      <div class="slide-head"><p class="kick red">Practice — The Scenario Bank</p><h2 class="disp white">Run The Pathway<br>Out Loud</h2></div>
+      <div class="scen fill" style="margin-top:var(--gap-title);align-content:center;">
+        <div class="sc"><span class="scn">1</span><span class="sct">Outburst During Connect</span><span class="scd">A student interrupts loudly while a peer is sharing.</span><span class="scw">Regulate → correct the routine</span></div>
+        <div class="sc"><span class="scn">2</span><span class="sct">Refusal To Practice</span><span class="scd">Arms crossed, turned away, won't join the practice move.</span><span class="scw">Fewer words → offer a choice</span></div>
+        <div class="sc"><span class="scn">3</span><span class="sct">Off-Task Talk</span><span class="scd">Two students whisper during Commit despite reminders.</span><span class="scw">Fewer words → choice</span></div>
+        <div class="sc"><span class="scn">4</span><span class="sct">Escalating Argument</span><span class="scd">Two students raise voices during Transition.</span><span class="scw">De-escalate → move to repair</span></div>
+        <div class="sc"><span class="scn">5</span><span class="sct">Physical Disruption</span><span class="scd">A student throws a pencil during Regulate.</span><span class="scw">Safety first → repair</span></div>
+        <div class="sc" style="background:var(--spark-red);border-color:var(--spark-red);"><span class="sct" style="color:#fff;">Your Move</span><span class="scd" style="color:rgba(255,255,255,.92);">With your partner, name the level, the regulation move, the correction language, and the repair plan.</span><span class="scw" style="color:rgba(255,255,255,.8);">Role-play more than one approach</span></div>
+      </div>
+      <div class="footer"><span class="wm"><img src="_shared/flame-logo.svg" alt="">Artifact · Scenario Bank</span><span>16</span></div>
+    </div>
+  </section>
+
+  <!-- 17 REFLECTION / COMMITMENT -->
+  <section data-label="Commitment" data-screen-label="17">
+    <div class="slide">
+      <div class="slide-head"><p class="kick red">Reflection &amp; Commitment</p><h2 class="disp">Regulate First,<br>Every Time</h2><hr class="rule"></div>
+      <div class="grid g2 fill" style="align-items:start;margin-top:var(--gap-title);">
+        <div class="card card-dark"><div class="h3">Your Habit</div><p class="body">What self-regulation habit will you build in yourself before responding?</p></div>
+        <div class="card card-red"><div class="h3">Your Rehearsal</div><p class="body">Which pathway step will you rehearse until it's automatic?</p></div>
+      </div>
+      <div class="footer"><span class="wm"><img src="_shared/flame-logo.svg" alt="">Responsive Behavior Plan</span><span>17</span></div>
+    </div>
+  </section>
+
+  <!-- 18 NEXT STEPS -->
+  <section data-label="Next Steps" data-screen-label="18">
+    <div class="slide slide--paper">
+      <div class="slide-head"><p class="kick red">Next Steps &amp; Resources</p><h2 class="disp">Put It In<br>Place</h2><hr class="rule"></div>
+      <div class="agenda fill" style="margin-top:var(--gap-title);">
+        <div class="item"><span class="no">01</span><span class="ttl">Teach the regulation &amp; correction language this week</span></div>
+        <div class="item"><span class="no">02</span><span class="ttl">Post the Response Pathway &amp; Escalation Ladder in your room</span></div>
+        <div class="item"><span class="no">03</span><span class="ttl">Keep the Live Cards &amp; reset scripts accessible</span></div>
+        <div class="item"><span class="no">04</span><span class="ttl">Debrief with a coach after the first live use</span></div>
+      </div>
+      <div class="footer"><span class="wm"><img src="_shared/flame-logo.svg" alt="">Responsive Behavior Plan</span><span>18</span></div>
+    </div>
+  </section>
+
+  <!-- 19 CLOSING -->
+  <section data-label="Closing" data-screen-label="19">
+    <div class="slide slide--red slide--center">
+      <img src="_shared/flame-logo.svg" height="110" alt="" style="filter:brightness(0) invert(1);margin-bottom:30px;">
+      <h2 class="disp white" style="font-size:128px;">The Calmest Adult<br>In The Room.</h2>
+      <p class="lead on-dark" style="margin:34px 0 44px;max-width:1150px;">In a hard moment, a calm, predictable adult is the most powerful intervention there is.</p>
+      <div class="pill"><img src="_shared/flame-logo.svg" height="30" alt="" style="filter:brightness(0) invert(1);"> The Matchbook Way</div>
+      <div class="footer"><span class="wm">Matchbook Learning Schools of Indiana</span><span>19</span></div>
+    </div>
+  </section>
+
+</deck-stage>
+<script src="_shared/deck-stage.js"></script>
+</body>
+</html>
