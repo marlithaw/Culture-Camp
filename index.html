@@ -1,0 +1,269 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Matchbook Teacher Culture Dashboard</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <button class="brand" data-nav="constellation" aria-label="Open Constellation">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span><strong>MATCHBOOK</strong><small>Teacher Culture Dashboard</small></span>
+      </button>
+      <nav class="main-nav" aria-label="Primary">
+        <button class="nav-button active" data-nav="constellation"><span class="nav-icon">*</span>Constellation</button>
+        <button class="nav-button" data-nav="camp"><span class="nav-icon">^</span>Culture Camp</button>
+        <button class="nav-button" data-nav="library"><span class="nav-icon">[]</span>Lesson Library</button>
+        <button class="nav-button" data-nav="progress"><span class="nav-icon">||</span>Class Progress</button>
+      </nav>
+      <div class="teacher-chip">
+        <span class="status-dot"></span>
+        <span><strong id="teacher-name-label">Ms. Jordan</strong><small id="teacher-grade-label">5th Grade</small></span>
+      </div>
+    </header>
+
+    <main>
+      <section id="view-constellation" class="view active" aria-labelledby="constellation-title">
+        <div class="constellation-grid">
+          <section class="constellation-stage panel-dark">
+            <div class="hero-copy">
+              <p class="kicker">Culture Camp</p>
+              <h1 id="constellation-title">Safe. Respectful. Responsible.</h1>
+              <p>Teacher-facing local command center for Culture Camp, Morning Meeting, recognition evidence, and resource access.</p>
+              <div class="value-row" aria-label="Core values">
+                <span class="value-pill safe">Safe</span>
+                <span class="value-pill respectful">Respectful</span>
+                <span class="value-pill responsible">Responsible</span>
+              </div>
+            </div>
+            <div class="flame-map" aria-label="Interactive culture cluster map">
+              <div class="flame-core" aria-hidden="true">
+                <span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+              <div id="cluster-map" class="cluster-map"></div>
+            </div>
+          </section>
+
+          <aside class="lesson-panel" aria-label="Today resources">
+            <div class="panel-head compact">
+              <div>
+                <p class="kicker red">Today</p>
+                <h2 id="today-title">Day 2: Listening and Speaking Norms</h2>
+              </div>
+              <span class="day-badge" id="today-day-badge">Day 2</span>
+            </div>
+            <div class="value-row tight" id="today-values"></div>
+            <div class="highlight-card warm">
+              <strong>Future skill</strong>
+              <span id="today-skill">Communication</span>
+              <small id="today-career">Career connection: Teacher</small>
+            </div>
+            <div id="today-resource-list" class="resource-list"></div>
+            <button class="primary-action" data-nav="camp">Start Culture Camp</button>
+            <button class="outline-action" data-nav="library">Open Lesson Library</button>
+          </aside>
+        </div>
+
+        <section class="route-strip" aria-labelledby="routes-title">
+          <div class="section-title-row">
+            <div>
+              <p class="kicker red">Teacher workspaces</p>
+              <h2 id="routes-title">Open a workspace</h2>
+            </div>
+            <p>Move between the map, launch sequence, resource library, and progress capture.</p>
+          </div>
+          <div class="route-grid">
+            <button class="route-card route-card--constellation" data-nav="constellation">
+              <span class="route-visual constellation-preview" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+              <span><strong>Constellation Map</strong><small>Open culture clusters and final-draft resources.</small></span>
+            </button>
+            <button class="route-card route-card--camp" data-nav="camp">
+              <span class="route-visual camp-preview" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+              <span><strong>Culture Camp Journey</strong><small>Run the 10-day launch and capture completion.</small></span>
+            </button>
+            <button class="route-card route-card--library" data-nav="library">
+              <span class="route-visual library-preview" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+              <span><strong>Lesson Library</strong><small>Filter teacher guides, decks, PDFs, and playbooks.</small></span>
+            </button>
+            <button class="route-card route-card--progress" data-nav="progress">
+              <span class="route-visual progress-preview" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+              <span><strong>Class Progress</strong><small>Track participation, evidence, and exports.</small></span>
+            </button>
+          </div>
+        </section>
+      </section>
+
+      <section id="view-camp" class="view" aria-labelledby="camp-title">
+        <div class="camp-layout">
+          <aside class="side-panel">
+            <p class="kicker red">Your progress</p>
+            <h2 id="camp-title">Culture Camp Launch</h2>
+            <p class="muted">The finalized source is a 10-day Culture Camp launch. The whole system stays live each day.</p>
+            <div class="progress-meter"><span id="camp-progress-fill"></span></div>
+            <div class="stats-grid mini">
+              <div><strong id="camp-completed-count">1</strong><span>Completed</span></div>
+              <div><strong id="camp-current-day">2</strong><span>Current</span></div>
+              <div><strong id="camp-remaining-count">9</strong><span>Remaining</span></div>
+            </div>
+            <div class="pillar-card">
+              <strong>Daily non-negotiables</strong>
+              <ul>
+                <li>Arrival and First Five</li>
+                <li>Full Morning Meeting</li>
+                <li>Live transitions and shared-space coaching</li>
+                <li>End-of-day reflection and reteach plan</li>
+              </ul>
+            </div>
+          </aside>
+
+          <section class="journey-panel">
+            <div class="camp-hero">
+              <div>
+                <p class="kicker">Culture Camp</p>
+                <h2>10-day teacher launch</h2>
+                <p>Open the day, teach the live routine, capture evidence, and export a master-dashboard packet.</p>
+              </div>
+              <a class="hero-resource" href="../BOY CULTURE BUILD/Session_01_Culture_Promise_and_The_Meaning_Gap/Presentations_and_Facilitation/01_Staff-Facing/Session_1_Master_Complete_Production_Build.docx" target="_blank" rel="noreferrer">Open final build</a>
+            </div>
+            <div id="camp-days" class="day-grid"></div>
+          </section>
+
+          <aside class="lesson-panel selected-day-panel">
+            <button class="ghost-link" data-nav="library">Back to library</button>
+            <div class="panel-head compact">
+              <div>
+                <p class="kicker red" id="selected-cluster-label">Teach the Culture</p>
+                <h2 id="selected-day-title">Day 2</h2>
+              </div>
+              <span class="day-badge" id="selected-day-badge">Day 2</span>
+            </div>
+            <p id="selected-day-focus" class="selected-focus"></p>
+            <div id="selected-day-resources" class="resource-list"></div>
+            <button id="mark-day-complete" class="primary-action">Mark Day Complete</button>
+            <button id="set-current-day" class="outline-action">Set As Current Day</button>
+          </aside>
+        </div>
+      </section>
+
+      <section id="view-library" class="view" aria-labelledby="library-title">
+        <div class="library-layout">
+          <aside class="filter-panel">
+            <p class="kicker red">Filters</p>
+            <label>Search<input id="resource-search" type="search" placeholder="Search lessons, tools, decks..."></label>
+            <label>Cluster<select id="cluster-filter"><option value="all">All clusters</option></select></label>
+            <label>Type<select id="type-filter"><option value="all">All types</option></select></label>
+            <div class="filter-values">
+              <button class="chip-filter active" data-value-filter="all">All</button>
+              <button class="chip-filter safe" data-value-filter="Safe">Safe</button>
+              <button class="chip-filter respectful" data-value-filter="Respectful">Respectful</button>
+              <button class="chip-filter responsible" data-value-filter="Responsible">Responsible</button>
+            </div>
+          </aside>
+
+          <section class="library-main">
+            <div class="section-title-row library-head">
+              <div>
+                <h1 id="library-title">Lesson Library</h1>
+                <p>Browse the finalized culture resources. Open links point to the real documents in this Downloads build.</p>
+              </div>
+              <div class="sort-box"><span id="resource-count">0 resources</span></div>
+            </div>
+            <div id="resource-grid" class="resource-grid"></div>
+          </section>
+
+          <aside class="detail-panel" id="resource-detail" aria-live="polite"></aside>
+        </div>
+      </section>
+
+      <section id="view-progress" class="view" aria-labelledby="progress-title">
+        <div class="progress-layout">
+          <section class="progress-main">
+            <div class="section-title-row">
+              <div>
+                <h1 id="progress-title">Class Progress</h1>
+                <p>Track completion, participation, evidence, and culture growth. Data stays local until you export it.</p>
+              </div>
+              <div class="week-picker"><span id="today-date-label"></span></div>
+            </div>
+            <div id="metric-cards" class="metric-grid"></div>
+            <div class="two-col">
+              <section class="panel">
+                <div class="panel-head"><h2>Progress by cluster</h2><button class="small-action" data-nav="library">View resources</button></div>
+                <div id="cluster-progress-list" class="cluster-progress-list"></div>
+              </section>
+              <section class="panel">
+                <div class="panel-head"><h2>Pillar participation and evidence</h2><button class="small-action" id="export-json-top">Export JSON</button></div>
+                <div id="pillar-rings" class="pillar-rings"></div>
+              </section>
+            </div>
+            <section class="panel timeline-panel">
+              <div class="panel-head"><h2>Culture Camp timeline</h2><button class="small-action" data-nav="camp">Open journey</button></div>
+              <div id="timeline-table" class="timeline-table"></div>
+            </section>
+            <section class="panel">
+              <div class="panel-head"><h2>Class roster</h2><button class="small-action" id="add-student-button">Add student</button></div>
+              <div id="roster-list" class="roster-list"></div>
+            </section>
+          </section>
+
+          <aside class="capture-panel">
+            <div class="panel-head compact">
+              <div><p class="kicker red">Quick capture</p><h2>Today evidence</h2></div>
+            </div>
+            <form id="capture-form" class="capture-form">
+              <label>Date<input id="capture-date" type="date"></label>
+              <label>Focus value<select id="capture-value"><option>Safe</option><option>Respectful</option><option>Responsible</option></select></label>
+              <label>Practice move<select id="capture-move"></select></label>
+              <div class="student-capture-actions">
+                <button type="button" class="outline-action" id="select-all-students">All participated</button>
+                <button type="button" class="outline-action" id="clear-all-students">Clear</button>
+              </div>
+              <div id="student-capture-list" class="student-capture-list"></div>
+              <button class="primary-action" type="submit">Save meeting snapshot</button>
+            </form>
+
+            <form id="evidence-form" class="capture-form evidence-form">
+              <h3>Add named evidence</h3>
+              <label>Student<select id="evidence-student"></select></label>
+              <label>Evidence sentence<textarea id="evidence-description" rows="3" placeholder="I saw... during..."></textarea></label>
+              <label>Recognition type<select id="evidence-type"><option>Nomination</option><option>Shout-Out</option><option>Repair</option><option>Leadership</option></select></label>
+              <button class="primary-action" type="submit">Add evidence</button>
+            </form>
+
+            <section class="export-card">
+              <h3>Master dashboard export</h3>
+              <p>Downloads a packet shaped around the finalized data dictionary: students, morning meeting records, evidence records, lesson completion, and summary metrics.</p>
+              <div class="export-actions">
+                <button class="primary-action" id="export-json">Download JSON</button>
+                <button class="outline-action" id="export-csv">Download CSV</button>
+              </div>
+            </section>
+          </aside>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <template id="resource-card-template">
+    <article class="resource-card">
+      <button class="favorite-button" type="button" aria-label="Toggle favorite">*</button>
+      <div class="resource-thumb"></div>
+      <div class="resource-body">
+        <p class="resource-meta"></p>
+        <h3></h3>
+        <p class="resource-desc"></p>
+        <div class="tag-row"></div>
+      </div>
+      <div class="resource-actions"></div>
+    </article>
+  </template>
+
+  <script src="./app.js"></script>
+</body>
+</html>
+
+
+
