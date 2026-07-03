@@ -144,6 +144,15 @@
   function valueClass(value) { return String(value || "").toLowerCase(); }
   function unique(values) { return Array.from(new Set(values)).sort(); }
   function studentName(id) { return state.students.find(student => student.Student_ID === id)?.Student_Name || id; }
+  function resourceImage(resource) {
+    const text = [resource.title, resource.type, resource.cluster, resource.tags.join(" ")].join(" ").toLowerCase();
+    if (text.includes("goal") || text.includes("chart") || text.includes("data")) return imageAssets.goalChart;
+    if (text.includes("student") || text.includes("handout") || text.includes("workbook")) return imageAssets.lessonLibrary;
+    if (text.includes("evidence") || text.includes("recognition") || text.includes("cypher") || text.includes("family")) return imageAssets.progress;
+    if (text.includes("deck") || text.includes("training") || text.includes("morning")) return imageAssets.cultureCamp;
+    if (text.includes("playbook") || text.includes("operations") || text.includes("handbook")) return imageAssets.constellation;
+    return imageAssets.teacherCircle;
+  }
 
   function navigate(view) {
     qsa(".view").forEach(node => node.classList.remove("active"));
